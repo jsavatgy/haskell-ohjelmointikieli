@@ -1,0 +1,57 @@
+Oceanus Procellarum 	Myrskyjen valtameri
+Mare Anguis 	Käärmeitten meri
+Mare Australe 	Eteläinen meri
+Mare Cognitum 	Tunnettu meri
+Mare Crisium 	Vaarojen meri
+Mare Fecunditatis 	Hedelmällisyyden meri
+Mare Frigoris 	Kylmyyden meri
+Mare Humboldtianum 	Humboldtin meri
+Mare Humorum 	Kosteuden meri
+Mare Imbrium 	Sateiden meri	3.938
+Mare Ingenii 	Nerokkuuden meri
+Mare Insularum 	Saarten meri
+Mare Marginis 	Reunameri
+Mare Moscoviense 	Moskovan meri
+Mare Nectaris 	Nektarinmeri
+Mare Nubium 	Pilvien meri
+Mare Orientale 	Itäinen meri
+Mare Serenitatis 	Hiljaisuuden meri
+Mare Smythii 	Smythin meri
+Mare Spumans 	Vaahdon meri
+Mare Tranquillitatis 	Rauhallisuuden meri
+Mare Undarum 	Aaltojen meri
+Mare Vaporum 	Höyryjen meri
+Lacus Aestatis 	Kesän järvi
+Lacus Autumni 	Syksyn järvi
+Lacus Bonitatis 	Hyvyyden järvi
+Lacus Doloris 	Kärsimyksen järvi
+Lacus Excellentiae 	Erinomaisuuden järvi
+Lacus Felicitatis 	Onnellisuuden järvi
+Lacus Gaudii 	Ilon järvi
+Lacus Hiemalis 	Talven järvi
+Lacus Lenitatis 	Pehmeyden järvi
+Lacus Luxuriae 	Ylellisyyden järvi
+Lacus Mortis 	Kuoleman järvi
+Lacus Oblivionis 	Unohduksen järvi
+Lacus Odii 	Vihan järvi
+Lacus Perseverantiae 	Sinnikkyyden järvi
+Lacus Solitudinis 	Yksinäisyyden järvi
+Lacus Somniorum 	Unelmien järvi
+Lacus Spei 	Toivon järvi
+Lacus Temporis 	Ajan järvi	3.7
+Lacus Timoris 	Pelon järvi
+Lacus Veris 	Kevään järvi
+Sinus Aestuum 	Helteen lahti
+Sinus Iridum 	Sateenkaarten lahti
+Sinus Asperitatis 	Kovuuden lahti
+Sinus Medii 	Keskilahti
+Sinus Roris 	Aamukasteen lahti
+Sinus Amoris 	Rakkauden lahti
+Sinus Lunicus 	Lunan lahti
+Sinus Honoris 	Kunnian lahti
+Sinus Fidei 	Luottamuksen lahti
+Sinus Concordiae 	Sopusoinnun lahti
+Sinus Successus 	Menestyksen lahti
+Palus Epidemiarum 	Tautien suo
+Palus Putredinis 	Mätänemisen suo	3.4
+Palus Somni 	Unien suo

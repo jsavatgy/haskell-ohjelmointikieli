@@ -1,0 +1,16 @@
+#!/bin/bash
+
+fileprefix="chapter.fi" 
+echo "<meta charset=\"utf-8\">" >$fileprefix.html
+
+cat $1*.md  > $fileprefix.md
+echo $1*.md 
+
+pandoc  $fileprefix.md --from markdown_github --to html --standalone -c github-pandoc-2013.css -o $fileprefix.html
+
+# MARKDOWN = pandoc --from markdown_github --to html --standalone
+# markdown $fileprefix.md >>$fileprefix.html
+echo "Starting Firefox..."
+firefox $fileprefix.html  > /dev/null 2>&1 &
+# rm $fileprefix.html
+

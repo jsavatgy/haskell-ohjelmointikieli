@@ -1,0 +1,13 @@
+#!/bin/bash
+
+mkdir -p speak-book
+cp book.fi.md speak-book/
+cd speak-book/
+pandoc -s -S book.fi.md -t plain -o book-tmp.txt
+sed -i 's/``` {.haskell}/Haskell-lähdekoodia.\n``` {.haskell}/' book-tmp.txt
+sed '/``` {.haskell}/,/```/d' book-tmp.txt > book.txt
+espeak -vfi -f book.txt -w book.wav
+ffmpeg -y -i book.wav -f mp3 book.mp3
+rm book.wav
+
+

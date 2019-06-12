@@ -1,0 +1,41 @@
+\begin{tikzpicture}
+\tikzstyle{tri} = [>=triangle 45]
+\definecolor{White}{rgb}{1.000,1.000,1.000}
+\definecolor{Black}{rgb}{0.000,0.000,0.000}
+
+\begin{scope}[White]
+\coordinate (l0-p1-1) at (11.323384299999999,0.2999572);
+\coordinate (l0-p1-2) at (11.323384299999999,4.5743472999999994);
+\draw (l0-p1-1) -- (l0-p1-2);
+\end{scope}
+\begin{scope}[Black,line width=0.8pt]
+\coordinate (l1-p1-1) at (7.49893,0.7498929999999999);
+\coordinate (l1-p1-2) at (8.998715999999998,2.2496789999999995);
+\draw (l1-p1-1) -- (l1-p1-2);
+\coordinate (l1-p2) at (8.998715999999998,2.2496789999999995);
+\draw (l1-p2) circle (1.3498073999999995);
+\coordinate (l1-p3-1) at (7.49893,3.3745184999999998);
+\coordinate (l1-p3-2) at (7.873876499999999,2.6246254999999996);
+\coordinate (l1-p3-3) at (8.248823,3.3745184999999998);
+\coordinate (l1-p3-4) at (8.6237695,2.6246254999999996);
+\coordinate (l1-p3-5) at (8.998715999999998,3.3745184999999998);
+\coordinate (l1-p3-6) at (9.373662499999998,2.6246254999999996);
+\coordinate (l1-p3-7) at (9.748608999999998,3.3745184999999998);
+\coordinate (l1-p3-8) at (10.123555499999998,2.6246254999999996);
+\coordinate (l1-p3-9) at (10.498501999999998,3.3745184999999998);
+\coordinate (l1-p3-10) at (10.873448499999999,2.6246254999999996);
+\coordinate (l1-p3-11) at (11.248394999999999,3.3745184999999998);
+\draw (l1-p3-1) -- (l1-p3-2) -- (l1-p3-3) -- (l1-p3-4) -- (l1-p3-5) -- (l1-p3-6) -- (l1-p3-7) -- (l1-p3-8) -- (l1-p3-9) -- (l1-p3-10) -- (l1-p3-11);
+\end{scope}
+\begin{scope}[Black,line width=0.8pt]
+\draw[-latex] (7.1239835,0.7498929999999999) -- node[midway,sloped,above] (l1-p1-label) {\phantom{$X_m$}} (11.248394999999999,0.7498929999999999);
+\node at (l1-p1-label) {};
+\coordinate (l1-p2) at (11.248394999999999,0.7498929999999999);
+\node[above left] at (l1-p2) {$x$};
+\draw[-latex] (7.49893,0.37494649999999996) -- node[midway,sloped,above] (l1-p3-label) {\phantom{$X_m$}} (7.49893,4.499357999999999);
+\node at (l1-p3-label) {};
+\coordinate (l1-p4) at (7.49893,4.499357999999999);
+\node[below right] at (l1-p4) {$y$};
+\end{scope}
+\end{tikzpicture}
+

@@ -1,0 +1,35 @@
+---
+# https://ctan.org/tex-archive/macros/latex/contrib/extsizes
+# scrbook v. scrreprt vs. scrartcl
+# documentclasses: scrreprt, scrbook, scrartcl
+#   extreport
+documentclass: report # 2019-05-10 
+# documentclass: book
+# pagestyle: scrplain
+papersize: a5
+geometry: left=1cm, right=1cm, top=1.3cm, bottom=2cm
+# mainfont: sans
+#mathfont: Nimbus Sans L
+#monofont: DejaVu Sans Mono
+fontsize: 11pt
+monofont: Latin Modern Mono
+monofontoptions: Scale=0.97
+# monofontoptions: Scale=0.95,WordSpace=0.95
+# title: Haskell-ohjelmointikieli
+# title-image: title-image.pdf
+# author: Jarmo Hietala
+#author: TeX Gyre Heros
+#fontfamily: sans
+#mainfont: TeX Gyre Heros
+#mathfont: TeX Gyre Heros
+lang: finnish
+#lang: english
+# header-includes:
+#   - \renewcommand{\familydefault}{\sfdefault}
+# otherlang: greek
+# latex-engine: xelatex
+top-level-division: chapter
+secnumdepth: 1
+---
+
+

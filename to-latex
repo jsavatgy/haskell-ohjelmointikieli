@@ -1,0 +1,42 @@
+#!/bin/bash
+
+fileprefix="book.fi" 
+
+cat 01-standardikirjasto.md 02-listat.md 03-funktiomaarittely.md 04-funktiorakenteita.md 05-tyypit.md 06-tyyppiluokat.md > $fileprefix.md
+
+# pandoc $fileprefix.md --from markdown_github+tex_math_dollars+latex_macros --latex-engine=xelatex --no-highlight --number-sections --template=my.latex -V geometry:margin=2.0cm -V fontsize=12pt -o $fileprefix.pdf
+
+
+
+pandoc $fileprefix.md $fileprefix.yaml \
+  --template=preamble.sty \
+  -f markdown+implicit_figures+link_attributes+latex_macros+tex_math_dollars+yaml_metadata_block+grid_tables  \
+  --no-highlight \
+  --number-sections \
+  --top-level-division=chapter \
+  -V date="`date "+%Y"`" \
+  --latex-engine=xelatex \
+  -o $fileprefix.tex
+
+if [ $? -eq 0 ]; then
+    echo "PDF valmis."
+else
+    echo ERROR
+fi
+
+
+# Just use
+
+# :!chmod +x %
+
+
+# --latex-engine=xelatex
+# --toc
+# --number-sections
+# --no-highlight
+#  -V date="`date "+%Y-%m-%d"`" \
+# --template=my.latex
+# -V geometry:margin=2.0cm
+# --from markdown_github
+# -V fontsize=12pt 
+# --no-tex-ligatures

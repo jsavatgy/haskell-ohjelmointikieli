@@ -1,0 +1,17 @@
+-- | Extract the first element of a list, 
+-- which must be non-empty.
+head                    :: [a] -> a
+head (x:_)              =  x
+head []                 =  badHead
+
+badHead :: a
+badHead = errorEmptyList "head"
+
+-- | Extract the elements after the head of a list, 
+-- which must be non-empty.
+tail                    :: [a] -> [a]
+tail (_:xs)             =  xs
+tail []                 =  errorEmptyList "tail"
+
+
+

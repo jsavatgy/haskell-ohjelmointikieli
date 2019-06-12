@@ -1,0 +1,7 @@
+speak-book/
+*.html
+*.swp
+.*
+Eemian.hs
+!/.gitignore
+
