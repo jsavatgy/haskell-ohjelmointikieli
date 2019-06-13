@@ -101,8 +101,8 @@ fecunditatis3 = Polygon fc3
 fc3 = concat [new io1 io2 p1 p2 
   | ((io1,io2),(p1,p2)) <- zip io ia]
   where
-    (s1,s2) = zip g1 (tail g1) !! 1
-    g1 = gridGreatCircles !! 0
+    (s1,s2) = zip square1 (tail square1) !! 1
+    square1 = gridGreatCircles !! 0
     io = around (insideOutside fecunditatis !! 1)
     ia = around pg
     Polygon pg = fecunditatis
