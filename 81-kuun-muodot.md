@@ -354,8 +354,8 @@ equirectangular (Spheric3D lambda delta) = Point l d
 Mittakaavakertoimena on seuraavassa $\dfrac{2 \pi \cdot r}{360}$, missä $r$ = 1737.1 km on kuun säde.
 
 ```haskell
-mare d pos = [Polygon [ pt0 `addCoords`
-  pointFromPolar (DEG l) r2 | l <- lambdaRim]]
+marePts d pos = [ pt0 `addCoords`
+  pointFromPolar (DEG l) r2 | l <- lambdaRim ]
   where
     r2 = (d/2) / (twopi * r / 360)
     pt0 = equirectangular (Spheric3D lambda delta)
@@ -363,7 +363,7 @@ mare d pos = [Polygon [ pt0 `addCoords`
     lambdaRim = [-180,-140..140]
 ```
 
-Muunnamme polaarikoordinaatit pisteeksi funktiolla `pointFromPolar`.
+Muunnamme polaarikoordinaatit pisteeksi `Point` funktiolla `pointFromPolar`.
 
 ```haskell
 pointFromPolar t s = Point x y
@@ -383,7 +383,7 @@ Olemme kuvassa \ref{fig:fecunditatis-1} esittäneet suorakulmaisessa koordinaati
 \end{figure}
 
 ```haskell
-fecunditatis = mare d pos
+fecunditatis = marePts d pos
   where
     d = 909 
     pos = GeographicNE (DEG (-7.8)) (DEG 51.3)
@@ -403,18 +403,11 @@ data InOut = In | Out
 sign x = if x < 0 then (-1) else 1
 around xs = zip xs ((tail . cycle) xs)
 
-inOut1 p1 p2 pg = [
+inOut1 p1 p2 pts = [
   (inOut . sign . area . Polygon) [p1,p2,p3] | p3 <- pts]
   where
-    Polygon pts  = pg
     inOut   1  = In
     inOut (-1) = Out
-
-inOut2 ct pg = [ inOut1 p1 p2 pg 
-   | (p1,p2) <- zip ct (tail ct)]
-
-insideOutside pg = 
-  inOut2 (head gridGreatCircles) pg 
 
 gridGreatCircles = concat [[[
   xpt l1 d1, xpt l2 d1, xpt l2 d2, xpt l1 d2]
@@ -448,7 +441,12 @@ half = (0.5 *)
 det [[a,b],[c,d]] = a * d - b * c
 ```
 
-Aloitamme kuvion paloittelun neliöstä alueen vasemmassa alanurkassa (kuva \ref{fig:fecunditatis-2}).
+Aloitamme kuvion paloittelun neliöstä $(s_1 s_2 s_3 s_4)$ alueen vasemmassa alanurkassa (kuva \ref{fig:fecunditatis-2}).
+
+```haskell
+[s1,s2,s3,s4] = gridGreatCircles !! 0
+fc0 = fecunditatis
+```
 
 \begin{figure}[htbp]
 \begin{center}
@@ -458,34 +456,12 @@ Aloitamme kuvion paloittelun neliöstä alueen vasemmassa alanurkassa (kuva \ref
 \end{center}
 \end{figure}
 
-Ensimmäinen rajaava suora on neliön alareuna $s_1 s_2$. Alareuna säilyttää kaikki monikulmion pisteet.
-
-```haskell
-> insideOutside !! 0
-[In,In,In,In,In,In,In,In,In]
-```
-
-Toinen rajaava suora on neliön oikea reuna $s_2 s_3$. Nyt rajaavan suoran vasemmalle puolelle eli alueen sisäpuolelle jäävät monikulmion pisteet $(p_1, p_2, p_9)$. Alueen ulkopuolelle jäävät monikulmion pisteet $(p_{3..8})$.
-
-```haskell
-> insideOutside !! 1
-[In,In,Out,Out,Out,Out,Out,Out,In]
-```
-
-Paloiteltavan monikulmion sivut jakautuvat neljään ryhmään:
+Rajattavan monikulmion sivut jakautuvat neljään ryhmään suhteessa rajaavaan monikulmioon:
 
 - `(In,In)`: sivu alkaa sisäpuolelta ja päättyy sisäpuolelle.
 - `(In,Out)`: sivu alkaa sisäpuolelta ja päättyy ulkopuolelle.
 - `(Out,Out)`: sivu alkaa ulkopuolelta ja päättyy ulkopuolelle.
 - `(Out,In)`: sivu alkaa ulkopuolelta ja päättyy sisäpuolelle.
-
-Monikulmion kaikki sivut suhteessa rajaavan neliön oikeaan reunaan $s_2 s_3$ muodostavat listan
-
-```haskell
-> around (insideOutside !! 1)
-[ (In,In),(In,Out),(Out,Out),(Out,Out),(Out,Out),
-  (Out,Out),(Out,Out),(Out,In),(In,In) ]
-```
 
 Sutherland-Hodgmanin algoritmin mukaiset toimenpiteet sivutyypeille ovat 
 
@@ -494,45 +470,131 @@ Sutherland-Hodgmanin algoritmin mukaiset toimenpiteet sivutyypeille ovat
 - `(Out,Out)`: poistamme kärkipisteet.
 - `(Out,In)`: siirrämme alkupisteen ja säilytämme loppupisteen.
 
-Kuvan \ref{fig:fecunditatis-4} merkinnöillä suoran $s_2 s_3$ suhteen leikattu toinen monikulmio koostuu kärkipisteistä $(p_1, p_2, i_1, i_2, p_9)$.
+Haskell-kielelle muunnettuna saamme uudet kärkipisteet monikulmiosta `fc` suoran `(s1,s2)` suhteen funktiokutsulla `nextGen fc s1 s2`.
+
+```haskell
+nextGen fc s1 s2 = concat [new i1 i2 p1 p2 
+  | ((i1,i2),(p1,p2)) <- zip io2 pts2]
+  where
+    io1 = inOut1 s1 s2 fc
+    io2 = around io1
+    Polygon pts1 = fc
+    pts2 = around pts1
+    new In In p1 p2 = [p1]
+    new In Out p1 p2 = [p1,
+      fromJust (intersection s1 s2 p1 p2)]
+    new Out Out p1 p2 = []
+    new Out In p1 p2 = [
+      fromJust (intersection s1 s2 p1 p2)]
+```
+
+Ensimmäinen rajaava suora on neliön alareuna $s_1 s_2$. Monikulmion `fc0` kaikki kärkipisteet kuuluvat alueen sisäpuolelle.
+
+```haskell
+> io1 = inOut1 s1 s2 fc0
+> io1
+[In,In,In,In,In,In,In,In,In]
+```
+
+Monikulmion kaikki pisteet kuuluvat luokkaan `(In,In)`, joten alareuna säilyttää kaikki monikulmion pisteet $(p_1 \cdots p_9)$.
+
+```haskell
+> around io1
+[ (In,In),(In,In),(In,In),(In,In),(In,In),
+  (In,In),(In,In),(In,In),(In,In) ]
+```
+
+Saamme uuden pistejoukon `fc1` funktiokutsulla `nextGen fc0 s1 s2`.
+
+```haskell
+fc1 = nextGen fc0 s1 s2
+```
+
+Toinen rajaava suora on neliön oikea reuna $s_2 s_3$. Nyt rajaavan suoran vasemmalle puolelle eli alueen sisäpuolelle jäävät monikulmion pisteet $(p_1\, p_2\, p_9)$. Alueen ulkopuolelle jäävät monikulmion pisteet $(p_3 \cdots p_8)$.
+
+```haskell
+> io2 = inOut1 s2 s3 fc1
+> io2
+[In,In,Out,Out,Out,Out,Out,Out,In]
+```
+
+Monikulmion sivut suhteessa rajaavan neliön oikeaan reunaan $s_2 s_3$ kuuluvat nyt seuraaviin luokkiin: 
+
+```haskell
+> around io2
+[ (In,In),(In,Out),(Out,Out),(Out,Out),(Out,Out),
+  (Out,Out),(Out,Out),(Out,In),(In,In) ]
+```
+
+Luokat `(In,Out)` ja `(Out,In)` tuottavat uuden kärkipisteen $i_1$ suorien $s_2 s_3$ ja $p_2\, p_3$ leikkauspisteeseen sekä pisteen $i_4$ suorien $s_2 s_3$ ja $p_8\, p_9$ leikkauspisteeseen.
+
+
+```haskell
+i1 = intersection s2 s3 p2 p3
+i2 = intersection s2 s3 p8 p9
+```
+
+Kuvan \ref{fig:fecunditatis-4} merkinnöillä suoran $s_2 s_3$ suhteen leikattu toinen monikulmio koostuu kärkipisteistä $(p_1\, p_2\, i_1\, i_2\, p_9)$.
 
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics{fecunditatis-4.pdf}
-\caption{Toinen leikkaus antaa monikulmion kärkipisteet $(p_1, p_2, i_1, i_2, p_9)$.}
+\caption{Toinen leikkaus antaa monikulmion kärkipisteet $(p_1\, p_2\, i_1\, i_2\, p_9)$.}
 \label{fig:fecunditatis-4}
 \end{center}
 \end{figure}
 
-```haskell
-fecunditatis3 = Polygon fc3
+Saamme nyt uuden pistejoukon `fc2` funktiokutsulla `nextGen fc1 s2 s3`.
 
-fc3 = concat [new io1 io2 p1 p2 
-  | ((io1,io2),(p1,p2)) <- zip io ia]
-  where
-    (s1,s2) = zip g1 (tail g1) !! 1
-    g1 = gridGreatCircles !! 0
-    io = around (insideOutside !! 1)
-    ia = around pg
-    Polygon pg = fecunditatis
-    new In  In  p1 p2 = [p1]
-    new In  Out p1 p2 = [p1,
-      fromJust (intersection s1 s2 p1 p2)]
-    new Out Out p1 p2 = []
-    new Out In  p1 p2 = [
-      fromJust (intersection s1 s2 p1 p2)]
+```haskell
+fc2 = nextGen fc1 s2 s3
 ```
 
-Kolmas leikkaus tapahtuu suoran $s_3 s_4$ suhteen edellä saadulle kärkipistejoukolle $(i_1, p_2, p_3, p_4, i_2)$. Leikattu monikulmio koostuu kärkipisteistä $(i_3, p_2, i_1, i_4)$ (kuva \ref{fig:fecunditatis-5}).
+Kolmas leikkaus tapahtuu suoran $s_3 s_4$ suhteen edellä saadulle kärkipistejoukolle $(i_1\, p_2\, p_3\, p_4\, i_2)$. 
 
-\begin{figure}[htbp]
+```haskell
+fc3 = nextGen fc2 s3 s4
+```
+
+Saamme pisteväleille uudet luokat
+
+```
+> io3 = inOut1 s3 s4 fc2
+> io3
+[Out,In,In,Out,Out]
+> around io3
+[(Out,In),(In,In),(In,Out),(Out,Out),(Out,Out)]
+```
+
+Tässä luokat `(Out,In)` ja `(In,Out)` tuottavat uuden kärkipisteen $i_3$ suorien $s_3 s_4$ ja $p_1\, p_2$ leikkauspisteeseen sekä pisteen $i_4$ suorien $s_3 s_4$ ja $i_1\, i_2$  leikkauspisteeseen.
+
+```haskell
+i3 = intersection s3 s4 p1 p2
+i4 = intersection s3 s4 i1 i2
+```
+
+Leikattu monikulmio koostuu nyt kärkipisteistä $(i_3\, p_2\, i_1\, i_4)$ (kuva \ref{fig:fecunditatis-6}).
+
+\begin{figure}[H]
 \begin{center}
-\includegraphics{fecunditatis-5.pdf}
-\caption{Kolmas leikkaus antaa monikulmion kärkipisteet $(i_3, p_2, i_1, i_4)$.}
-\label{fig:fecunditatis-5}
+\includegraphics{fecunditatis-6.pdf}
+\caption{Kolmas leikkaus antaa monikulmion kärkipisteet $(i_3\, p_2\, i_1\, i_4)$.}
+\label{fig:fecunditatis-6}
 \end{center}
 \end{figure}
 
-Viimeinen leikkaus tapahtuu suoran $s_4 s_1$ suhteen. Leikkaus säilyttää kärkipistejoukon $(i_3, p_2, i_1, i_4)$ sellaisenaan.
+Viimeinen leikkaus tapahtuu suoran $s_4 s_1$ suhteen. Leikkaus säilyttää kärkipistejoukon $(i_3\, p_2\, i_1\, i_4)$ sellaisenaan (kuva \ref{fig:fecunditatis-7}).
 
+
+```haskell
+fc3 = nextGen fc2 s3 s4
+```
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics{fecunditatis-7.pdf}
+\caption{Viimeinen leikkaus säilyttää kärkipistejoukon $(i_3\, p_2\, i_1\, i_4)$ sellaisenaan.}
+\label{fig:fecunditatis-7}
+\end{center}
+\end{figure}
 

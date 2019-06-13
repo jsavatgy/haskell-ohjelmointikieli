@@ -104,14 +104,6 @@ inOut1 p1 p2 pts = [
   where
     inOut   1  = In
     inOut (-1) = Out
-{-
-inOut2 ct pg = [ inOut1 p1 p2 pg 
-   | (p1,p2) <- zip ct (tail ct)]
-
-insideOutside pg = inOut2 ct pg 
-  where 
-    ct = head gridGreatCircles
--}
 
 gridGreatCircles = concat [[[
   xpt l1 d1, xpt l2 d1, xpt l2 d2, xpt l1 d2]
@@ -196,7 +188,7 @@ ptLegends =
   where
     pg2 = takeIndex fecunditatis150
     pg1 = takeIndex fc0
-    idx = [1,2,9]
+    idx = [2]
     takeIndex xs = [x | (n,x) <- zip [1..] xs, n `elem` idx]
 
 
@@ -212,7 +204,7 @@ ptLegends2 = [
 
 iPts1 = [ 
   NamedSymbPos "$i_{1}$" "$\\bullet$" SE n1,
-  NamedSymbPos "$i_{2}$" "$\\bullet$" NE n2,
+  --NamedSymbPos "$i_{2}$" "$\\bullet$" NE n2,
   NamedSymbPos "$i_{3}$" "$\\bullet$" NE n3,
   NamedSymbPos "$i_{4}$" "$\\bullet$" NE n4
   ]
@@ -237,7 +229,7 @@ layers1 = [
   Phantom (Point (-sx) (-sx)) (Point sx sx),
   --Layer "1" Red [Line p1 p2] "[line width=0.8pt]",
   Layer "2" Gray20 (map Filled [Polygon fc3]) "[line width=0.8pt]",
-  Layer "2" Black [Polygon fc2] "[line width=0.8pt]",
+  Layer "2" Black [Polygon fc3] "[line width=0.8pt]",
   --Layer "3" Black latitudes "[line width=0.8pt]",
   --Layer "4" Black meridians "[line width=0.8pt]",
   Layer "4" Black [grid1] "[line width=0.8pt,dashed]",
