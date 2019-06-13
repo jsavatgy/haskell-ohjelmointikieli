@@ -5086,7 +5086,7 @@ fecunditatis = mare d pos
 ## Pisteet monikulmion sisä- ja ulkopuolella
 
 Käytämme monikulmion paloitteluun *Sutherland-Hodgmanin algoritmia*
-(<https://en.wikipedia.org/wiki/Sutherland-Hodgman_algorithm>). Paloittelualgoritmia varten tarvitsemme tiedon siitä, sijaitseeko paloiteltavan monikulmion tietty kärkipiste rajaavan monikulmion sisä- vai ulkopuolella.
+(<https://en.wikipedia.org/wiki/Sutherland-Hodgman_algorithm>). Paloittelussa muokkaamme monikulmion kärkipistejoukkoa vertaamalla sitä leikkaavan monikulmion sivuihin sivu kerrallaan. Leikkauksen lähtöjoukkona toimii aina edellisessä vaiheessa saatu kärkipistejoukko. Kukin sivu leikkaa osan kärkipisteistä pois sekä muodostaa uusia kärkipisteitä paloiteltavan ja leikkaavan monikulmion sivujen leikkauspisteisiin.  Paloittelualgoritmia varten tarvitsemme tiedon siitä, kummalla puolella annettua sivua tietty kärkipiste sijaitsee.
 
 Saamme selville kummalla puolella sivua piste sijaitsee muodostamalla kolmion, jonka kärkipisteet ovat sivun alkupiste, sivun loppupiste ja vertailtava piste. Kun piste sijaitsee sivun oikealla puolella, muodostuneen kolmion kiertosuunta on myötäpäivään, jolloin sen ala determinanttisäännön mukaan on negatiivinen. Kun piste sijaitsee sivun vasemmalla puolella, kiertosuunta on vastapäivään ja muodostuneen kolmion ala positiivinen.
 
@@ -5097,13 +5097,18 @@ data InOut = In | Out
 sign x = if x < 0 then (-1) else 1
 around xs = zip xs ((tail . cycle) xs)
 
-insideOutside = [[(inOut . sign . area . Polygon) [a,b,c]
-   | c <- f] | (a,b) <- zip g1 (tail g1)]
+inOut1 p1 p2 pg = [
+  (inOut . sign . area . Polygon) [p1,p2,p3] | p3 <- pts]
   where
-    g1 = head gridGreatCircles
-    Polygon f = fecunditatis
+    Polygon pts  = pg
     inOut   1  = In
     inOut (-1) = Out
+
+inOut2 ct pg = [ inOut1 p1 p2 pg 
+   | (p1,p2) <- zip ct (tail ct)]
+
+insideOutside pg = 
+  inOut2 (head gridGreatCircles) pg 
 
 gridGreatCircles = concat [[[
   xpt l1 d1, xpt l2 d1, xpt l2 d2, xpt l1 d2]
@@ -5116,11 +5121,15 @@ gridGreatCircles = concat [[[
     delta = [-90,-75..90]
     lambda = [-90,-75..90]
 
-visible2 = filter (\l -> l >= 29 && l <= 76)
-visible3 = filter (\d -> d >= -31 && d <= 16)
+visible2 = filter (\l -> l > 29 && l < 76)
+visible3 = filter (\d -> d > -31 && d < 16)
 ```
 
-Determinanttisääntöä käytämme, kun määrittelemme funktion `area` monikulmiolle `Polygon`.
+Determinanttisääntöä käytämme, kun määrittelemme funktion `area` monikulmiolle `Polygon`. Determinantin saamme matematiikasta tutulla kaavalla
+$$\det \begin{pmatrix}
+  a & b \\
+  c & d
+\end{pmatrix} = a \cdot d - b \cdot c$$
 
 ```haskell
 -- | http://mathworld.wolfram.com/PolygonArea.html
@@ -5184,7 +5193,7 @@ Kuvan \ref{fig:fecunditatis-4} merkinnöillä suoran $s_2 s_3$ suhteen leikattu 
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics{fecunditatis-4.pdf}
-\caption{Toinen leikkaus antaa monikulmion kärkipisteet $(i_1, p_2, p_3, p_4, i_2)$.}
+\caption{Toinen leikkaus antaa monikulmion kärkipisteet $(p_1, p_2, i_1, i_2, p_9)$.}
 \label{fig:fecunditatis-4}
 \end{center}
 \end{figure}

@@ -4,24 +4,19 @@
 \definecolor{Black}{rgb}{0.000,0.000,0.000}
 
 \begin{scope}[Gray20,line width=0.8pt]
+\coordinate (l2-p1-1) at (10.742596160228135,6.249108333333332);
+\coordinate (l2-p1-2) at (10.816473195063196,6.04613284830774);
+\coordinate (l2-p1-3) at (11.248394999999999,5.796762677958608);
+\coordinate (l2-p1-4) at (11.248394999999999,6.249108333333332);
+\fill (l2-p1-1) -- (l2-p1-2) -- (l2-p1-3) -- (l2-p1-4) -- cycle;
+\end{scope}
+\begin{scope}[Black,line width=0.8pt]
 \coordinate (l2-p1-1) at (10.524245175520466,6.8490227333333324);
 \coordinate (l2-p1-2) at (10.816473195063196,6.04613284830774);
 \coordinate (l2-p1-3) at (11.248394999999999,5.796762677958608);
 \coordinate (l2-p1-4) at (11.248394999999999,7.901282788708057);
 \coordinate (l2-p1-5) at (10.816473195063196,7.651912618358925);
-\fill (l2-p1-1) -- (l2-p1-2) -- (l2-p1-3) -- (l2-p1-4) -- (l2-p1-5) -- cycle;
-\end{scope}
-\begin{scope}[Black,line width=0.8pt]
-\coordinate (l2-p1-1) at (10.524245175520466,6.8490227333333324);
-\coordinate (l2-p1-2) at (10.816473195063196,6.04613284830774);
-\coordinate (l2-p1-3) at (11.556420515594668,5.618924063612752);
-\coordinate (l2-p1-4) at (12.397857562239764,5.767292117503929);
-\coordinate (l2-p1-5) at (12.94706658934213,6.421813948638345);
-\coordinate (l2-p1-6) at (12.94706658934213,7.276231518028321);
-\coordinate (l2-p1-7) at (12.397857562239764,7.930753349162736);
-\coordinate (l2-p1-8) at (11.556420515594668,8.079121403053913);
-\coordinate (l2-p1-9) at (10.816473195063196,7.651912618358925);
-\draw (l2-p1-1) -- (l2-p1-2) -- (l2-p1-3) -- (l2-p1-4) -- (l2-p1-5) -- (l2-p1-6) -- (l2-p1-7) -- (l2-p1-8) -- (l2-p1-9) -- cycle;
+\draw (l2-p1-1) -- (l2-p1-2) -- (l2-p1-3) -- (l2-p1-4) -- (l2-p1-5) -- cycle;
 \end{scope}
 \begin{scope}[Black,line width=0.8pt,dashed]
 \coordinate (l4-p1-1) at (9.998573333333333,4.999286666666666);
@@ -35,54 +30,32 @@
 \node at (l1-p1) {$p_{1}$};
 \coordinate (l1-p2) at (10.562787712016146,5.833265453047929);
 \node at (l1-p2) {$p_{2}$};
-\coordinate (l1-p3) at (11.498914685185774,5.2927922930927735);
+\coordinate (l1-p3) at (10.562787712016146,7.864780013618736);
 \node at (l1-p3) {$p_{3}$};
-\coordinate (l1-p4) at (12.563439001623465,5.480496651700973);
-\node at (l1-p4) {$p_{4}$};
-\coordinate (l1-p5) at (13.258257902798075,6.308549573378177);
-\node at (l1-p5) {$p_{5}$};
-\coordinate (l1-p6) at (13.258257902798075,7.389495893288489);
-\node at (l1-p6) {$p_{6}$};
-\coordinate (l1-p7) at (12.563439001623465,8.21754881496569);
-\node at (l1-p7) {$p_{7}$};
-\coordinate (l1-p8) at (11.498914685185774,8.405253173573891);
-\node at (l1-p8) {$p_{8}$};
-\coordinate (l1-p9) at (10.562787712016146,7.864780013618736);
-\node at (l1-p9) {$p_{9}$};
-\coordinate (l1-p10) at (10.524245175520466,6.8490227333333324);
-\node at (l1-p10) {$\bullet$};
-\coordinate (l1-p11) at (10.816473195063196,6.04613284830774);
-\node at (l1-p11) {$\bullet$};
-\coordinate (l1-p12) at (11.556420515594668,5.618924063612752);
-\node at (l1-p12) {$\bullet$};
-\coordinate (l1-p13) at (12.397857562239764,5.767292117503929);
-\node at (l1-p13) {$\bullet$};
-\coordinate (l1-p14) at (12.94706658934213,6.421813948638345);
-\node at (l1-p14) {$\bullet$};
-\coordinate (l1-p15) at (12.94706658934213,7.276231518028321);
-\node at (l1-p15) {$\bullet$};
-\coordinate (l1-p16) at (12.397857562239764,7.930753349162736);
-\node at (l1-p16) {$\bullet$};
-\coordinate (l1-p17) at (11.556420515594668,8.079121403053913);
-\node at (l1-p17) {$\bullet$};
-\coordinate (l1-p18) at (10.816473195063196,7.651912618358925);
-\node at (l1-p18) {$\bullet$};
+\coordinate (l1-p4) at (10.524245175520466,6.8490227333333324);
+\node at (l1-p4) {$\bullet$};
+\coordinate (l1-p5) at (10.816473195063196,6.04613284830774);
+\node at (l1-p5) {$\bullet$};
+\coordinate (l1-p6) at (10.816473195063196,7.651912618358925);
+\node at (l1-p6) {$\bullet$};
 \end{scope}
 \begin{scope}[Black,line width=0.8pt]
 \node (l1-p1) at (9.998573333333333,4.999286666666666) {$\bullet$};
 \node[below left] at (l1-p1) {$s_{1}$};
 \node (l1-p2) at (11.248394999999999,4.999286666666666) {$\bullet$};
 \node[below right] at (l1-p2) {$s_{2}$};
-\node (l1-p3) at (11.248394999999999,6.249108333333332) {$\bullet$};
-\node[above right] at (l1-p3) {$s_{3}$};
-\node (l1-p4) at (9.998573333333333,6.249108333333332) {$\bullet$};
-\node[above left] at (l1-p4) {$s_{4}$};
+\node (l1-p3) at (9.998573333333333,6.249108333333332) {$\bullet$};
+\node[above left] at (l1-p3) {$s_{4}$};
 \end{scope}
 \begin{scope}[Black,line width=0.8pt]
 \node (l1-p1) at (11.248394999999999,5.796762677958608) {$\bullet$};
-\node[below left] at (l1-p1) {$i_{1}$};
+\node[below right] at (l1-p1) {$i_{1}$};
 \node (l1-p2) at (11.248394999999999,7.901282788708057) {$\bullet$};
-\node[above left] at (l1-p2) {$i_{2}$};
+\node[above right] at (l1-p2) {$i_{2}$};
+\node (l1-p3) at (10.742596160228135,6.249108333333332) {$\bullet$};
+\node[above right] at (l1-p3) {$i_{3}$};
+\node (l1-p4) at (11.248394999999999,6.249108333333332) {$\bullet$};
+\node[above right] at (l1-p4) {$i_{4}$};
 \end{scope}
 \end{tikzpicture}
 

@@ -94,8 +94,6 @@ fc4 = concat [new io1 io2 p1 p2
     new Out In p1 p2 = [
       fromJust (intersection s1 s2 p1 p2)]
 
-
-
 fecunditatis3 = Polygon fc3
 
 fc3 = concat [new io1 io2 p1 p2 
@@ -113,20 +111,24 @@ fc3 = concat [new io1 io2 p1 p2
     new Out In p1 p2 = [
       fromJust (intersection s1 s2 p1 p2)]
 
-
 data InOut = In | Out
   deriving Show
 
 sign x = if x < 0 then (-1) else 1
 around xs = zip xs ((tail . cycle) xs)
 
-insideOutside pg = [[(inOut . sign . area . Polygon) [a,b,c]
-   | c <- f] | (a,b) <- zip g1 (tail g1)]
+inOut1 p1 p2 pg = [
+  (inOut . sign . area . Polygon) [p1,p2,p3] | p3 <- pts]
   where
-    g1 = head gridGreatCircles
-    Polygon f = pg
+    Polygon pts  = pg
     inOut   1  = In
     inOut (-1) = Out
+
+inOut2 ct pg = [ inOut1 p1 p2 pg 
+   | (p1,p2) <- zip ct (tail ct)]
+
+insideOutside pg = 
+  inOut2 (head gridGreatCircles) pg 
 
 gridGreatCircles = concat [[[
   xpt l1 d1, xpt l2 d1, xpt l2 d2, xpt l1 d2]
@@ -138,10 +140,6 @@ gridGreatCircles = concat [[[
     vb2 = visible2 lambda
     delta = [-90,-75..90]
     lambda = [-90,-75..90]
-
-grid2 = PolyLine [pg !! 2, pg !! 3]
-  where
-    pg = head gridGreatCircles
 
 grid1 = Polygon pg
   where
@@ -163,10 +161,10 @@ latitudes = [PolyLine [equirectangular
     delta = [-90,-75..90]
     lambda = [-90,-75..90]
 
-visible2 = filter (\l -> l >= 29 && l <= 76)
-visible3 = filter (\d -> d >= -31 && d <= 16)
+visible2 = filter (\l -> l > 29 && l < 76)
+visible3 = filter (\d -> d > -31 && d < 16)
 
-fecunditatis = mare d pos
+fecunditatis = marePg d pos
   where
     d = 909 
     pos = GeographicNE (DEG (-7.8)) (DEG 51.3)
@@ -192,7 +190,7 @@ p1 = Point (-r) (-r)
 p2 = Point r r
 s = 4 * r
 
-mare d pos = Polygon [ pt0 `addCoords`
+marePg d pos = Polygon [ pt0 `addCoords`
   pointFromPolar (DEG l) r2 | l <- lambdaRim]
   where
     r2 = (d/2) / (twopi * r / 360)
@@ -244,7 +242,7 @@ ptLegends3 = [
     Polygon pg = fecunditatis4
 
 
-fecunditatis2 = mare d pos
+fecunditatis2 = marePg d pos
   where
     d = 1150 
     pos = GeographicNE (DEG (-7.8)) (DEG 51.3)
