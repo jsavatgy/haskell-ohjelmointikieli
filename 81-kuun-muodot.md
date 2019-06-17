@@ -293,10 +293,10 @@ Yleisessä muodossaan määrittelemme kuun meren piirtoalgoritmin funktiossa `ma
 ```haskell
 data GeographicNE = GeographicNE Angle Angle
 
-mare d pos = [ Filled $ Polygon [
-  (perspective .  rotYZ delta lambda . cartesian) 
-    (Spheric3D (DEG l) phi)
-  | l <- lambdaRim]]
+marePg1 d pos = Filled $ Polygon $ marePts d pos
+
+marePts d pos = [ perspective $ rotYZ delta lambda $ 
+  cartesian $ Spheric3D (DEG l) phi | l <- lambdaRim ]
   where
     GeographicNE delta lambda = pos
     phi = DEG 90 `subAngles` (RAD theta)
@@ -307,7 +307,7 @@ mare d pos = [ Filled $ Polygon [
 Hiljaisuuden meri saa nyt muodon
 
 ```haskell
-serenitatis = mare d pos
+serenitatis = marePg1 d pos
   where
     d = 707 
     pos = GeographicNE (DEG 28) (DEG 17.5)
@@ -326,7 +326,7 @@ ja jonka keskipiste sijaitsee pisteessä ($18.4^{\circ}$ N, $57.4^{\circ}$ W).
 \end{figure}
 
 ```haskell
-procellarum = mare d pos
+procellarum = marePg1 d pos
   where
     d = 2568 
     pos = GeographicNE (DEG 18.4) (DEG (-57.4))
@@ -335,7 +335,7 @@ procellarum = mare d pos
 Merkitsemme myös koordinaatiston nollapisteen funktiolla `proto0`.
 
 ```haskell
-proto0 = mare 160 (GeographicNE (DEG 0) (DEG 0))
+proto0 = marePg1 160 (GeographicNE (DEG 0) (DEG 0))
 ```
 
 ## Monikulmion paloittelu
@@ -345,7 +345,7 @@ Olemme koordinaattimuunnoksissa huomioineet ainoastaan täytetyn monikulmion reu
 Parempaan tulokseen päädymme paloittelemalla monikulmiot asteverkon mukaisesti. Käytämme aluksi tasavälistä lieriöprojektiota (*equirectangular projection*), jossa pituus- ja leveysasteet kuvautuvat sellaisenaan koordinaattipisteiksi.
 
 ```haskell
-equirectangular (Spheric3D lambda delta) = Point l d
+equirect (Spheric3D lambda delta) = Point l d
   where
     DEG l = degrees lambda
     DEG d = degrees delta
@@ -354,11 +354,13 @@ equirectangular (Spheric3D lambda delta) = Point l d
 Mittakaavakertoimena on seuraavassa $\dfrac{2 \pi \cdot r}{360}$, missä $r$ = 1737.1 km on kuun säde.
 
 ```haskell
-marePts d pos = [ pt0 `addCoords`
+marePg2 d pos = Polygon (marePts2 d pos)
+
+marePts2 d pos = [ pt0 `addCoords`
   pointFromPolar (DEG l) r2 | l <- lambdaRim ]
   where
     r2 = (d/2) / (twopi * r / 360)
-    pt0 = equirectangular (Spheric3D lambda delta)
+    pt0 = equirect (Spheric3D lambda delta)
     GeographicNE delta lambda = pos
     lambdaRim = [-180,-140..140]
 ```
@@ -383,7 +385,7 @@ Olemme kuvassa \ref{fig:fecunditatis-1} esittäneet suorakulmaisessa koordinaati
 \end{figure}
 
 ```haskell
-fecunditatis = marePts d pos
+fecunditatis = marePts2 d pos
   where
     d = 909 
     pos = GeographicNE (DEG (-7.8)) (DEG 51.3)
@@ -414,7 +416,7 @@ gridGreatCircles = concat [[[
   | (d1,d2) <- zip vb3 (tail vb3)]
     | (l1,l2) <- zip vb2 (tail vb2)]
   where
-    xpt l d = equirectangular (Spheric3D (DEG l) (DEG d))
+    xpt l d = equirect (Spheric3D (DEG l) (DEG d))
     vb3 = visible3 delta
     vb2 = visible2 lambda
     delta = [-90,-75..90]
@@ -444,7 +446,8 @@ det [[a,b],[c,d]] = a * d - b * c
 Aloitamme kuvion paloittelun neliöstä $(s_1 s_2 s_3 s_4)$ alueen vasemmassa alanurkassa (kuva \ref{fig:fecunditatis-2}).
 
 ```haskell
-[s1,s2,s3,s4] = gridGreatCircles !! 0
+parte = 0
+[s1,s2,s3,s4] = gridGreatCircles !! parte
 fc0 = fecunditatis
 ```
 
@@ -470,25 +473,24 @@ Sutherland-Hodgmanin algoritmin mukaiset toimenpiteet sivutyypeille ovat
 - `(Out,Out)`: poistamme kärkipisteet.
 - `(Out,In)`: siirrämme alkupisteen ja säilytämme loppupisteen.
 
-Haskell-kielelle muunnettuna saamme uudet kärkipisteet monikulmiosta `fc` suoran `(s1,s2)` suhteen funktiokutsulla `nextGen fc s1 s2`.
+Haskell-kielelle muunnettuna saamme uudet kärkipisteet monikulmion pistejoukosta `fc` suoran `(s1,s2)` suhteen funktiokutsulla `nextGen fc s1 s2`.
 
 ```haskell
 nextGen fc s1 s2 = concat [new i1 i2 p1 p2 
-  | ((i1,i2),(p1,p2)) <- zip io2 pts2]
+  | ((i1,i2),(p1,p2)) <- zip io2 pts]
   where
     io1 = inOut1 s1 s2 fc
     io2 = around io1
-    Polygon pts1 = fc
-    pts2 = around pts1
-    new In In p1 p2 = [p1]
+    pts = around fc
+    new In In  p1 p2 = [p1]
     new In Out p1 p2 = [p1,
       fromJust (intersection s1 s2 p1 p2)]
     new Out Out p1 p2 = []
-    new Out In p1 p2 = [
+    new Out In  p1 p2 = [
       fromJust (intersection s1 s2 p1 p2)]
 ```
 
-Ensimmäinen rajaava suora on neliön alareuna $s_1 s_2$. Monikulmion `fc0` kaikki kärkipisteet kuuluvat alueen sisäpuolelle.
+Ensimmäinen rajaava suora on neliön alareuna $s_1 s_2$. Monikulmion pistejoukon `fc0` kaikki kärkipisteet kuuluvat alueen sisäpuolelle.
 
 ```haskell
 > io1 = inOut1 s1 s2 fc0
@@ -496,7 +498,7 @@ Ensimmäinen rajaava suora on neliön alareuna $s_1 s_2$. Monikulmion `fc0` kaik
 [In,In,In,In,In,In,In,In,In]
 ```
 
-Monikulmion kaikki pisteet kuuluvat luokkaan `(In,In)`, joten alareuna säilyttää kaikki monikulmion pisteet $(p_1 \cdots p_9)$.
+Pistejoukon kaikki pisteet kuuluvat luokkaan `(In,In)`, joten alareuna säilyttää kaikki monikulmion pisteet $(p_1 \cdots p_9)$.
 
 ```haskell
 > around io1
@@ -593,8 +595,251 @@ fc3 = nextGen fc2 s3 s4
 \begin{figure}[H]
 \begin{center}
 \includegraphics{fecunditatis-7.pdf}
-\caption{Viimeinen leikkaus säilyttää kärkipistejoukon $(i_3\, p_2\, i_1\, i_4)$ sellaisenaan.}
+\caption{Ensimmäisen alueen valmis kärkipistejoukko $(i_3\, p_2\, i_1\, i_4)$.}
 \label{fig:fecunditatis-7}
 \end{center}
 \end{figure}
+
+Kun kokoamme yhteen funktiokutsut
+
+```haskell
+fc0 = fecunditatis
+fc1 = nextGen fc0 s1 s2
+fc2 = nextGen fc1 s2 s3
+fc3 = nextGen fc2 s3 s4
+fc4 = nextGen fc3 s4 s1
+```
+
+saamme seuraavan rekursiivisen määrittelyn funktiolle `fc`: 
+
+```haskell
+fc 0 = fecunditatis
+fc n = nextGen1 (fc (n - 1)) ((around square1) !! (n - 1))
+  where
+    nextGen1 f (a,b) = nextGen f a b
+
+block1 = fc 4
+```
+
+Neljästä suunnasta leikattu valmis pistejoukko on nyt muuttujassa `block1`.
+
+Voimme nyt esittää Hedelmällisyyden meren kokonaisuudessaan paloiteltuna (kuva \ref{fig:fecunditatis-10}). 
+
+```haskell
+blocksA = c
+  where
+    c = [map (`addCoords` Point x y) bl
+      | (bl,(x,y)) <- b]
+    b = zip blocks [(x,y) | x <- [-1..1], y <-[-1..1]]
+```
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics{fecunditatis-10.pdf}
+\caption{Hedelmällisyyden meri paloiteltuna.}
+\label{fig:fecunditatis-10}
+\end{center}
+\end{figure}
+
+Paloittelemme monikulmiot asteviivojen mukaan, joten joudumme palaamaan karteesisesta koordinaatistosta takaisin maantieteelliseen koordinaatistoon. Määrittelemme tätä varten funktion `geog`. Maantieteellisen koordinaatin saamme kahdella erillisellä suuntakulman laskennalla, joista ensimmäinen on kulma $\lambda$ $xy$-tasossa ja toinen kulma $delta$ edellisen ja $z$-akselin muodostamassa tasossa.
+
+```haskell
+geog (Point3D x y z) = GeographicNE delta lambda
+  where
+    delta = directionAngle vect2
+    vect2 = Vector rProjXy z
+    rProjXy = sqrt (sqr x + sqr y)
+    lambda = theta
+    theta = directionAngle vect1 
+    vect1 = Vector x y
+    r = sqrt (sqr x + sqr y + sqr z)
+    sqr x = x * x
+```
+
+Olemme luetteloineet merien pintabasaltin iät ja piirrämme ne harmaan eri sävyinä. Monikulmion muunnoskaavat olemme keränneet funktioon `marePg`.
+
+```haskell
+marePg d pos = pg 
+  where
+    pg = map Polygon blocks2
+    blocks2 = [map (perspective . cartesian . 
+      ptToSpheric3D) pts | pts <- blocks1]
+    blocks1 = cutEqui pts3
+    pts3 = map (equirect . geog) pts2
+    pts2 = [ (rotYZ delta lambda . cartesian) 
+      (Spheric3D (DEG th) phi)
+      | th <- lambdaRim]
+    GeographicNE delta lambda = pos
+    phi = RAD ((d/2) / r)
+    lambdaRim = [-180,-160..160]
+
+mare2 t = map (FilledWith rgb) (marePg d pos)
+  where
+    rgb = RGB v v v
+    v = 1.0 - (0.05 + 0.8 * ((g - 3100) / 1000))
+    (name,n,e,d,g) = t
+    pos = GeographicNE (DEG n) (DEG e)
+
+maria ts = ts2
+  where
+    ts2 = concatMap mare2 (filter visible ts)
+    visible (name,n,e,d,g) = e >= -90 && e <= 90 
+```
+
+Teemme funktiosta `cartesian` monimuotoisen, jolloin se muuntaa sekä tyypin `Spheric3D` että tyypin `GeographicNE` muuttujan karteesiseen koordinaatistoon. Muunnokset tasaväliseen lieriöprojektioon säilyvät sellaisenaan.
+
+```haskell
+data SphericP = Spheric3D Angle Angle 
+  | GeographicNE Angle Angle
+
+ptToSpheric3D (Point x y) = Spheric3D theta phi
+  where
+    theta = lambda
+    phi = (DEG 90) `subAngles` delta
+    delta = DEG y
+    lambda = DEG x
+
+cartesian (GeographicNE delta lambda) = 
+  cartesian (Spheric3D theta phi)  
+  where
+    theta = lambda
+    phi = (DEG 90) `subAngles` delta
+
+cartesian (Spheric3D theta phi) = Point3D x y z
+  where
+    x = r * cos1 theta * sin1 phi
+    y = r * sin1 theta * sin1 phi
+    z = r * cos1 phi
+```
+
+Myös varsinainen paloittelualgoritmi on hyvin samankaltainen aiemman kanssa, mutta olemme parametrisoineet siinä monikulmiot.
+
+```haskell
+fc mre sq 0 = mre
+fc mre sq n = nextGen1 (fc mre sq nm) ((around sq) !! nm)
+  where
+    nm = n - 1
+    nextGen1 f (a,b) = nextGen f a b
+
+blocksEqui mre = b2
+  where
+    b2 = filter (not . null) b1
+    b1 = map (blockE mre) squares
+    blockE mre sq = fc mre sq 4
+    squares =  gridGreatCircles 
+
+cutEqui mre = blocksEqui mre
+```
+
+## Paikannimet
+
+Luemme paikannimet ja pintabasaltin iät kahdesta eri tiedostosta pääohjelmassa.
+
+```haskell
+main = do
+  content <- readFile "../moon-random/moon-list.txt"
+  content2 <- readFile "../moon-random/surface-basalt-age.txt"
+  let 
+    moon = filter (not . null) (lines content)
+    ageText = filter (not . null) (lines content2)
+    c1 = map tabulated moon
+    aged1 = map aged ageText
+    c2 = map (lookup1 aged1) c1
+    c3 = filter valid1 c2
+    c4 = map aged2 c3
+  putStrLn (tpict c4)
+```
+
+Kentät on tiedostoissa erotettu tabulaattorimerkein (`"\t"`), joten pilkomme tekstin niiden mukaan. Luemme numerot standardikirjaston funktiolla `read`. Funktio `read` on monimuotoinen funktio, ja vaatii siksi kohdetyypin tyyppimäärittelyn.
+
+```haskell
+tabulated str = map trim (splitOn "\t" str)
+
+aged2 xs = (a,b1,c1,d1,e1)
+  where
+    [a,b,c,d,e] = xs
+    [b1,c1,d1,e1] = map readd [b,c,d,e] 
+    readd x = read x :: Double
+```
+
+Voimme käyttää listoja kuin ne olisivat tietokannan tauluja, mutta helpommin. Funktio `lookup` palauttaa arvon `Just x`, jos haku onnistui, muutoin se palauttaa arvon `Nothing`.
+
+```haskell
+lookup1 table2 table1 = [a,c1,d1,e,f]
+  where
+    [c1,d1] = map brt [c,d]
+    [a,b,c,d,e] = table1
+    f = case lookup a table2 of
+      Just x -> x
+      Nothing -> ""
+    brt s = addMinus s ++ takeWhile (/= ' ') s
+    addMinus s = if last s `elem` "SW" then "-" else ""
+```
+
+Asettelemme vielä paikannimet kartan oikealle ja vasemmalle puolelle. Olemme esittäneet syntyneen kartan kuvassa \ref{fig:maria-5}. 
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics{maria-4.pdf}
+\caption{Valmis kartta selitteineen.}
+\label{fig:maria-5}
+\end{center}
+\end{figure}
+
+
+```haskell
+data LeftRight = L | R
+  deriving Eq
+
+getSide (Point x1 y1) (Point x2 y2)
+  | x1 <= x2  = L
+  | otherwise = R
+
+name2 t = (name,side,posXY)
+  where
+    side = getSide posXY pt1
+    pt1 = Point (-70) (-70)
+    posXY = (perspective . cartesian) 
+      (GeographicNE (DEG n) (DEG e))
+    (name,n,e,d,g) = t
+
+sortOnY = sortOn (\(n,s,Point x y) -> -y) 
+
+names ts = concat (lx ++ rx)
+  where
+    lx = map (\(n,s,p,pt) -> [Texttt pt n "left",
+      Arrow "" pt p]) l3
+    rx = map (\(n,s,p,pt) -> [Texttt pt n "right",
+      Arrow "" pt p]) r3
+    l3 = map f3 l2
+    r3 = map f3 r2
+    f3 = \(y,(n,s,p)) -> (n,s,p,crc s y)
+    l2 = zip [dy*sL-d,dy*(sL-1)-d..] l1
+    r2 = zip [dy*sR-d,dy*(sR-1)-d..] r1
+    d = 70
+    sL = intToDouble (length l1) / 2
+    sR = intToDouble (length r1) / 2
+    dy = 2 * r / max ln rn
+    [ln,rn] = map (intToDouble . length) [left,right]
+    l1= refineOrder L l0
+    r1= refineOrder R r0
+    [l0,r0] = map sortOnY [left,right]
+    right = filter (\(n,s,p) -> s == R) n1
+    left  = filter (\(n,s,p) -> s == L) n1
+    n1 = map name2 (filter visible ts)
+    visible (name,n,e,d,g) = e > -90 && e < 90 
+
+crc s y = p4
+  where
+    p4 = if d1 < d2 then p1 else p2
+    [d1,d2] = map (dist (p3 s)) [p1,p2]
+    [p1,p2] = intersect1 circle1 pt1 pt2
+    pt1 = Point (-r) y
+    p0 = Point (-70) (-70)
+    circle1 = Circle (r+300) p0
+    pt2 = Point r y
+    p3 L = pt1
+    p3 R = pt2
+```
+
 

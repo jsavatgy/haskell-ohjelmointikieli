@@ -85,13 +85,12 @@ nextGen fc s1 s2 = concat [new i1 i2 p1 p2
     io1 = inOut1 s1 s2 fc
     io2 = around io1
     pts = around fc
-    new In In p1 p2 = [p1]
+    new In In  p1 p2 = [p1]
     new In Out p1 p2 = [p1,
       fromJust (intersection s1 s2 p1 p2)]
     new Out Out p1 p2 = []
-    new Out In p1 p2 = [
+    new Out In  p1 p2 = [
       fromJust (intersection s1 s2 p1 p2)]
-
 
 data InOut = In | Out
   deriving Show

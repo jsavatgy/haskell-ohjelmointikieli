@@ -101,7 +101,7 @@ latitudes = [PolyLine [mercator
 visible2 = filter (\l -> l >= 29 && l <= 76)
 visible3 = filter (\d -> d >= -31 && d <= 16)
 
-fecunditatis = mare d pos
+fecunditatis = marePg2 d pos
   where
     d = 909 
     pos = GeographicNE (DEG (-7.8)) (DEG 51.3)
@@ -193,12 +193,18 @@ lookup1 table2 table1 = [a,c1,d1,e,f]
     brt s = addMinus s ++ takeWhile (/= ' ') s
     addMinus s = if last s `elem` "SW" then "-" else ""
 
+equirectangular (Spheric3D lambda delta) = Point l d
+  where
+    DEG l = degrees lambda
+    DEG d = degrees delta
 
-mare d pos = [Polygon [ pt0 `addCoords`
-  pointFromPolar (DEG l) r2 | l <- lambdaRim]]
+marePg2 d pos = Polygon (marePts2 d pos)
+
+marePts2 d pos = [ pt0 `addCoords`
+  pointFromPolar (DEG l) r2 | l <- lambdaRim ]
   where
     r2 = (d/2) / (twopi * r / 360)
-    pt0 = mercator (Spheric3D lambda delta)
+    pt0 = equirectangular (Spheric3D lambda delta)
     GeographicNE delta lambda = pos
     lambdaRim = [-180,-140..140]
 
@@ -241,8 +247,8 @@ layers1 = [
   Phantom (Point (-sx) (-sx)) (Point sx sx),
   --Layer "1" Red [Line p1 p2] "[line width=0.8pt]",
   --Layer "1" Black axes "[line width=0.8pt]",
-  Layer "2" Gray20 (map Filled fecunditatis) "[line width=0.8pt]",
-  Layer "2" Black fecunditatis "[line width=0.8pt]",
+  Layer "2" Gray20 ([Filled fecunditatis]) "[line width=0.8pt]",
+  Layer "2" Black [fecunditatis] "[line width=0.8pt]",
   Layer "3" Black latitudes "[line width=0.8pt]",
   Layer "4" Black meridians "[line width=0.8pt]",
   Empty

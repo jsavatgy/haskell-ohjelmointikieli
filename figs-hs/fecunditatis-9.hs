@@ -1,7 +1,5 @@
-import Data.List.Split
 import Data.List
 import Data.Maybe
-import Data.Char
 import Eemian
 
 -- | Point3D x y z, RH cartesian coordinates
@@ -64,7 +62,7 @@ matrixTimes3 a b =
 
 r = 1737.1 
 
-equirectangular (Spheric3D lambda delta) = Point l d
+equirect (GeographicNE delta lambda)  = Point l d
   where
     DEG l = degrees lambda
     DEG d = degrees delta
@@ -77,20 +75,18 @@ cartesian (Spheric3D lambda delta) = Point3D x y z
     theta = lambda
     phi = (DEG 90) `subAngles` delta
 
-
-
 nextGen fc s1 s2 = concat [new i1 i2 p1 p2 
   | ((i1,i2),(p1,p2)) <- zip io2 pts]
   where
     io1 = inOut1 s1 s2 fc
     io2 = around io1
     pts = around fc
-    new In  In  p1 p2 = [p1]
-    new In  Out p1 p2 = [p1,ix]
+    new In In p1 p2 = [p1]
+    new In Out p1 p2 = [p1,
+      fromJust (intersection s1 s2 p1 p2)]
     new Out Out p1 p2 = []
-    new Out In  p1 p2 = [ix]
-    ix = fromJust (intersection s1 s2 p1 p2)
-
+    new Out In p1 p2 = [
+      fromJust (intersection s1 s2 p1 p2)]
 
 data InOut = In | Out
   deriving Show
@@ -103,55 +99,49 @@ inOut1 p1 p2 pts = [
   where
     inOut   1  = In
     inOut (-1) = Out
-{-
-inOut2 ct pg = [ inOut1 p1 p2 pg 
-   | (p1,p2) <- zip ct (tail ct)]
-
-insideOutside pg = inOut2 ct pg 
-  where 
-    ct = head gridGreatCircles
--}
 
 gridGreatCircles = concat [[[
   xpt l1 d1, xpt l2 d1, xpt l2 d2, xpt l1 d2]
   | (d1,d2) <- zip vb3 (tail vb3)]
     | (l1,l2) <- zip vb2 (tail vb2)]
   where
-    xpt l d = equirectangular (Spheric3D (DEG l) (DEG d))
+    xpt l d = equirect (GeographicNE (DEG d) (DEG l))
     vb3 = visible3 delta
     vb2 = visible2 lambda
     delta = [-90,-75..90]
     lambda = [-90,-75..90]
 
-[s1,s2,s3,s4] = gridGreatCircles !! 0
-fc0 = fecunditatis
-fc1 = nextGen fc0 s1 s2
-fc2 = nextGen fc1 s2 s3
-fc3 = nextGen fc2 s3 s4
-fc4 = nextGen fc3 s4 s1
-
-grid1 = Polygon pg
+fc sq 0 = fecunditatis
+fc sq n = nextGen1 (fc sq nm) ((around sq) !! nm)
   where
-    pg = head gridGreatCircles
+    nm = n - 1
+    nextGen1 f (a,b) = nextGen f a b
 
-meridians = [PolyLine [equirectangular
-  (Spheric3D (DEG l) (DEG d))
+blocks = b2
+  where
+    b2 = filter (not . null) b1
+    b1 = map block1 squares
+    block1 sq = fc sq 4
+    squares =  gridGreatCircles 
+
+meridians = [PolyLine [equirect
+  (GeographicNE (DEG d) (DEG l))
   | d <- visible3 delta]
     | l <- visible2 lambda]
   where
     delta = [-90,-75..90]
     lambda = [-90,-75..90]
 
-latitudes = [PolyLine [equirectangular
-  (Spheric3D (DEG l) (DEG d))
+latitudes = [PolyLine [equirect
+  (GeographicNE (DEG d) (DEG l))
   | l <- visible2 lambda]
     | d <- visible3 delta]
   where
     delta = [-90,-75..90]
     lambda = [-90,-75..90]
 
-visible2 = filter (\l -> l > 29 && l < 76)
-visible3 = filter (\d -> d > -31 && d < 16)
+visible2 = filter (\l -> l > 14 && l < 76)
+visible3 = filter (\d -> d > -31 && d < 31)
 
 fecunditatis = marePts d pos
   where
@@ -183,67 +173,18 @@ marePts d pos = [ pt0 `addCoords`
   pointFromPolar (DEG l) r2 | l <- lambdaRim ]
   where
     r2 = (d/2) / (twopi * r / 360)
-    pt0 = equirectangular (Spheric3D lambda delta)
+    pt0 = equirect (GeographicNE delta lambda)
     GeographicNE delta lambda = pos
     lambdaRim = [-180,-140..140]
 
 sx = 90
 
-ptLegends = 
-  [Text pt ("$p_{" ++ show n ++ "}$") | (n,pt) <- zip idx pg2] ++
-  [Text pt ("$\\bullet$") | pt <- pg1]
-  where
-    pg2 = takeIndex fecunditatis150
-    pg1 = takeIndex fc0
-    idx = [1,2,9]
-    takeIndex xs = [x | (n,x) <- zip [1..] xs, n `elem` idx]
-
-
-ptLegends2 = [ 
-  NamedSymbPos "$s_{1}$" "$\\bullet$" SW n1,
-  NamedSymbPos "$s_{2}$" "$\\bullet$" SE n2,
-  --NamedSymbPos "$s_{3}$" "$\\bullet$" NE n3,
-  NamedSymbPos "$s_{4}$" "$\\bullet$" NW n4
-  ]
-  where
-    [n1,n2,n3,n4] = map Node pg
-    Polygon pg = grid1
-
-iPts1 = [ 
-  NamedSymbPos "$i_{1}$" "$\\bullet$" SE n1,
-  NamedSymbPos "$i_{2}$" "$\\bullet$" NE n2,
-  NamedSymbPos "$i_{3}$" "$\\bullet$" NE n3,
-  NamedSymbPos "$i_{4}$" "$\\bullet$" NE n4
-  ]
-  where
-    [n1,n2] = map Node [pg1 !! 2, pg1 !! 3]
-    [n3,n4] = map Node [pg2 !! 0, pg2 !! 3]
-    pg1 = fc2
-    pg2 = fc3
-
-ptLegends3 = [ 
-  NamedSymbPos (show n) "$\\bullet$" E p | (n,p) <- zip [1..] ps
-  ]
-  where
-    ps = map Node fc3
-
-fecunditatis150 = marePts d pos
-  where
-    d = 1150 
-    pos = GeographicNE (DEG (-7.8)) (DEG 51.3)
-
 layers1 = [
   Phantom (Point (-sx) (-sx)) (Point sx sx),
-  --Layer "1" Red [Line p1 p2] "[line width=0.8pt]",
-  Layer "2" Gray20 (map Filled [Polygon fc3]) "[line width=0.8pt]",
-  Layer "2" Black [Polygon fc2] "[line width=0.8pt]",
-  --Layer "3" Black latitudes "[line width=0.8pt]",
-  --Layer "4" Black meridians "[line width=0.8pt]",
-  Layer "4" Black [grid1] "[line width=0.8pt,dashed]",
-  Layer "1" Black ptLegends "[line width=0.8pt]",
-  Layer "1" Black ptLegends2 "[line width=0.8pt]",
-  Layer "1" Black iPts1 "[line width=0.8pt]",
-  --Layer "1" Red ptLegends3 "[line width=0.8pt]",
+  Layer "2" Gray20 (map (Filled . Polygon) blocks) "[line width=0.8pt]",
+  Layer "2" Black (map Polygon blocks) "[line width=0.8pt]",
+  Layer "3" Black latitudes "[line width=0.8pt]",
+  Layer "4" Black meridians "[line width=0.8pt]",
   Empty
   ]
 

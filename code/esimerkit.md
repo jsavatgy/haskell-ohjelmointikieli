@@ -356,7 +356,6 @@ show False = "False"
 :}
 map show [True,False]
 
-
 f ((:) x y) = "head = " ++ show x ++ ", tail = " ++ show y
 putStrLn (f "Marginis")
 

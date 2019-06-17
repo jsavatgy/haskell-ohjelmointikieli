@@ -1,7 +1,5 @@
-import Data.List.Split
 import Data.List
 import Data.Maybe
-import Data.Char
 import Eemian
 
 -- | Point3D x y z, RH cartesian coordinates
@@ -77,20 +75,18 @@ cartesian (Spheric3D lambda delta) = Point3D x y z
     theta = lambda
     phi = (DEG 90) `subAngles` delta
 
-
-
 nextGen fc s1 s2 = concat [new i1 i2 p1 p2 
   | ((i1,i2),(p1,p2)) <- zip io2 pts]
   where
     io1 = inOut1 s1 s2 fc
     io2 = around io1
     pts = around fc
-    new In  In  p1 p2 = [p1]
-    new In  Out p1 p2 = [p1,ix]
+    new In In p1 p2 = [p1]
+    new In Out p1 p2 = [p1,
+      fromJust (intersection s1 s2 p1 p2)]
     new Out Out p1 p2 = []
-    new Out In  p1 p2 = [ix]
-    ix = fromJust (intersection s1 s2 p1 p2)
-
+    new Out In p1 p2 = [
+      fromJust (intersection s1 s2 p1 p2)]
 
 data InOut = In | Out
   deriving Show
@@ -103,14 +99,6 @@ inOut1 p1 p2 pts = [
   where
     inOut   1  = In
     inOut (-1) = Out
-{-
-inOut2 ct pg = [ inOut1 p1 p2 pg 
-   | (p1,p2) <- zip ct (tail ct)]
-
-insideOutside pg = inOut2 ct pg 
-  where 
-    ct = head gridGreatCircles
--}
 
 gridGreatCircles = concat [[[
   xpt l1 d1, xpt l2 d1, xpt l2 d2, xpt l1 d2]
@@ -123,16 +111,29 @@ gridGreatCircles = concat [[[
     delta = [-90,-75..90]
     lambda = [-90,-75..90]
 
-[s1,s2,s3,s4] = gridGreatCircles !! 0
+fc 0 = fecunditatis
+fc n = nextGen1 (fc (n - 1)) ((around square1) !! (n - 1))
+  where
+    nextGen1 f (a,b) = nextGen f a b
+
+parte = 3
+[s1,s2,s3,s4] = square1
+square1 = gridGreatCircles !! parte
+ 
+
+block1 = fc 4
+
+{-
 fc0 = fecunditatis
 fc1 = nextGen fc0 s1 s2
 fc2 = nextGen fc1 s2 s3
 fc3 = nextGen fc2 s3 s4
 fc4 = nextGen fc3 s4 s1
+-}
 
 grid1 = Polygon pg
   where
-    pg = head gridGreatCircles
+    pg = square1
 
 meridians = [PolyLine [equirectangular
   (Spheric3D (DEG l) (DEG d))
@@ -187,29 +188,26 @@ marePts d pos = [ pt0 `addCoords`
     GeographicNE delta lambda = pos
     lambdaRim = [-180,-140..140]
 
-sx = 90
-
-ptLegends = 
+pLegends = 
   [Text pt ("$p_{" ++ show n ++ "}$") | (n,pt) <- zip idx pg2] ++
   [Text pt ("$\\bullet$") | pt <- pg1]
   where
     pg2 = takeIndex fecunditatis150
-    pg1 = takeIndex fc0
-    idx = [1,2,9]
+    pg1 = takeIndex (fc 0)
+    idx = [1..9]
     takeIndex xs = [x | (n,x) <- zip [1..] xs, n `elem` idx]
 
-
-ptLegends2 = [ 
+sLegends = [ 
   NamedSymbPos "$s_{1}$" "$\\bullet$" SW n1,
   NamedSymbPos "$s_{2}$" "$\\bullet$" SE n2,
-  --NamedSymbPos "$s_{3}$" "$\\bullet$" NE n3,
+  NamedSymbPos "$s_{3}$" "$\\bullet$" NE n3,
   NamedSymbPos "$s_{4}$" "$\\bullet$" NW n4
   ]
   where
     [n1,n2,n3,n4] = map Node pg
     Polygon pg = grid1
 
-iPts1 = [ 
+iLegends = [ 
   NamedSymbPos "$i_{1}$" "$\\bullet$" SE n1,
   NamedSymbPos "$i_{2}$" "$\\bullet$" NE n2,
   NamedSymbPos "$i_{3}$" "$\\bullet$" NE n3,
@@ -218,31 +216,33 @@ iPts1 = [
   where
     [n1,n2] = map Node [pg1 !! 2, pg1 !! 3]
     [n3,n4] = map Node [pg2 !! 0, pg2 !! 3]
-    pg1 = fc2
-    pg2 = fc3
+    pg1 = fc 2
+    pg2 = fc 3
 
 ptLegends3 = [ 
   NamedSymbPos (show n) "$\\bullet$" E p | (n,p) <- zip [1..] ps
   ]
   where
-    ps = map Node fc3
+    ps = map Node (fc 3)
 
 fecunditatis150 = marePts d pos
   where
     d = 1150 
     pos = GeographicNE (DEG (-7.8)) (DEG 51.3)
 
+sx = 90
+
 layers1 = [
   Phantom (Point (-sx) (-sx)) (Point sx sx),
   --Layer "1" Red [Line p1 p2] "[line width=0.8pt]",
-  Layer "2" Gray20 (map Filled [Polygon fc3]) "[line width=0.8pt]",
-  Layer "2" Black [Polygon fc2] "[line width=0.8pt]",
+  Layer "2" Gray20 (map Filled [Polygon block1]) "[line width=0.8pt]",
+  Layer "2" Black [Polygon block1] "[line width=0.8pt]",
   --Layer "3" Black latitudes "[line width=0.8pt]",
   --Layer "4" Black meridians "[line width=0.8pt]",
   Layer "4" Black [grid1] "[line width=0.8pt,dashed]",
-  Layer "1" Black ptLegends "[line width=0.8pt]",
-  Layer "1" Black ptLegends2 "[line width=0.8pt]",
-  Layer "1" Black iPts1 "[line width=0.8pt]",
+  Layer "1" Black pLegends "[line width=0.8pt]",
+  Layer "1" Black sLegends "[line width=0.8pt]",
+  --Layer "1" Black iLegends "[line width=0.8pt]",
   --Layer "1" Red ptLegends3 "[line width=0.8pt]",
   Empty
   ]

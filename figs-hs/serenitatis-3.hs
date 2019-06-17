@@ -92,34 +92,40 @@ latitudes = [PolyLine [(perspective . cartesian)
     delta = [-90,-75..90]
     lambda = [-90,-75..90]
 
-mare d pos = [ Filled $ Polygon [
-  (perspective .  rotYZ delta lambda . cartesian) 
-    (Spheric3D (DEG l) phi)
-  | l <- lambdaRim]]
+marePg1 d pos = Filled $ Polygon $ marePts d pos
+
+marePts d pos = [ perspective $ rotYZ delta lambda $ 
+  cartesian $ Spheric3D (DEG l) phi | l <- lambdaRim ]
   where
     GeographicNE delta lambda = pos
     phi = DEG 90 `subAngles` (RAD theta)
     theta = (d/2) / r
     lambdaRim = [-180,-160..160]
 
-serenitatis = mare d pos
+data Mare = Mare {d :: Double, pos :: GeographicNE}
+
+serenitatisF = Mare {
+  d = 707, 
+  pos = GeographicNE (DEG 28) (DEG 17.5) }
+
+serenitatis = marePg1 d pos
   where
     d = 707 
     pos = GeographicNE (DEG 28) (DEG 17.5)
 
-procellarum = mare d pos
+procellarum = marePg1 d pos
   where
     d = 2568 
     pos = GeographicNE (DEG 18.4) (DEG (-57.4))
 
-proto1 = mare d pos
+proto1 = marePg1 d pos
   where
     d = 100 
     pos = GeographicNE (DEG 0) (DEG (-90))
 
-proto0 = mare 160 (GeographicNE (DEG 0) (DEG 0))
+proto0 = marePg1 160 (GeographicNE (DEG 0) (DEG 0))
 
-proto2 = mare d pos
+proto2 = marePg1 d pos
   where
     d = 100
     pos = GeographicNE (DEG 0) (DEG 90)
@@ -180,11 +186,11 @@ layers1 = [
   Phantom (Point (-s) (-s)) (Point s s),
   --Layer "1" Red [Line p1 p2] "[line width=0.8pt]",
   Layer "1" Black axes "[line width=0.8pt]",
-  Layer "2" Gray20 procellarum "[line width=0.8pt]",
-  Layer "2" Gray30 serenitatis "[line width=0.8pt]",
+  Layer "2" Gray20 [procellarum] "[line width=0.8pt]",
+  Layer "2" Gray30 [serenitatis] "[line width=0.8pt]",
   Layer "3" Black latitudes "[line width=0.8pt]",
   Layer "4" Black meridians "[line width=0.8pt]",
-  Layer "2" Gray50 proto0 "[line width=0.8pt]"
+  Layer "2" Red [proto0] "[line width=0.8pt]"
   ]
 
 tpict = tikzPicture layers1
