@@ -42,40 +42,49 @@ Maantieteellisessä koordinaatistossa merkitsemme leveysastetta (*latitudi*) sym
 
 Koordinaattilyhenteissä kirjain N (*north*) merkitsee pohjoista leveyttä, S (*south*) eteläistä leveyttä, E (*east*) itäistä pituutta ja W (*west*) läntistä pituutta. Maapallolla leveysaste $\delta$ kasvaa päiväntasaajalta pohjoiseen kuljettaessa ja pituusaste $\lambda$ Greenwichin nollameridiaanilta itään kuljettaessa. Nimitykset leveys ja pituus juontuvat Välimeren alueen kulttuureista: Välimeri on "pitkä" itä-länsi-suunnassa ja "leveä" pohjois-etelä-suunnassa. Pituuspiirejä sanotaan myös meridiaaneiksi. Termi meridiaani johtuu latinan puolipäivää tai etelää merkitsevästä sanasta *meridies*.
 
-Määrittelemme tietotyypin `Point3D` pisteelle kolmiulotteisessa karteesisessa $xyz$-koordinaatistossa. Pallokoordinaatistossa määrittelemme pisteen `Spheric3D` kulmien $\theta$ ja $\phi$ avulla.
+Määrittelemme tietotyypin `Point3D` pisteelle kolmiulotteisessa karteesisessa $xyz$-koordinaatistossa. Pallokoordinaatistossa määrittelemme pisteen `Spheric3D` kulmien $\theta$ ja $\phi$ avulla. Maantieteellisen koordinaatin `GeographicNE` määrittelemme kulmien $\delta$ ja $\lambda$ avulla. Pallokoordinaatisto on vasenkätinen koordinaatisto ja maantieteellinen koordinaatisto oikeakätinen koordinaatisto, joten konstruktorien parametrit tulevat päinvastaisessa järjestyksessä.
 
 ```haskell
 -- | Point3D x y z, RH cartesian coordinates
 data Point3D = Point3D Double Double Double
 
 -- |  Spheric3D theta phi, where phi = 
--- polar angle measured from a fixed zenith direction
-data Spheric3D = Spheric3D Angle Angle
+-- polar angle measured from a fixed zenith direction,
+-- GeographicNE delta lambda =
+-- geographic coordinates, delta=North, lambda=East
+data SphericP = Spheric3D Angle Angle 
+  | GeographicNE Angle Angle
 ```
 
-Asetamme kuun säteeksi $r$ = 1737.1 km. Yksinkertaisimman muunnoksen kolmiulotteisesta koordinaatistosta kaksiulotteiseen koordinaatistoon saamme pudottamalla $x$-koordinaatin pois.
+## Ortografinen projektio
+
+Asetamme kuun säteeksi $r$ = 1737.1 km. Yksinkertaisimman muunnoksen kolmiulotteisesta koordinaatistosta kaksiulotteiseen koordinaatistoon saamme pudottamalla $x$-koordinaatin pois. Funktio `cartesian` on monimuotoinen funktio, joka muuntaa pallokoordinaatiston pisteen `Spheric` ja maantieteellisen koordinaatin `GeographicNE` karteesiseksi $xyz$-koordinaatiksi.
 
 ```haskell
 r = 1737.1 
 
-dropX (Point3D x y z) = Point y z
+orthoYZ (Point3D x y z) = Point y z
 
-perspective = dropX
+perspective = orthoYZ
 
-cartesian (Spheric3D lambda delta) = Point3D x y z
+cartesian (GeographicNE delta lambda) = 
+  cartesian (Spheric3D theta phi)  
+  where
+    theta = lambda
+    phi = (DEG 90) `subAngles` delta
+
+cartesian (Spheric3D theta phi) = Point3D x y z
   where
     x = r * cos1 theta * sin1 phi
     y = r * sin1 theta * sin1 phi
     z = r * cos1 phi
-    theta = lambda
-    phi = (DEG 90) `subAngles` delta
 ```
 
 Saamme hahmotelman leveyspiireistä pallon etupuoliskolla algoritmilla
 
 ```haskell
 latitudes = [PolyLine [(perspective . cartesian)
-  (Spheric3D (DEG l) (DEG d))
+  (GeographicNE (DEG d) (DEG l))
   | l <- lambda]
     | d <- delta]
   where
@@ -87,7 +96,7 @@ Etupuoliskon pituuspiirit eli meridiaanit saamme algoritmilla
 
 ```haskell
 meridians = [PolyLine [(perspective . cartesian)
-  (Spheric3D (DEG l) (DEG d))
+  (GeographicNE (DEG d) (DEG l))
   | d <- delta]
     | l <- lambda]
   where
@@ -184,11 +193,9 @@ matr1 pv pAlpha (Point3D x1 y1 z1) = Point x y
 
 r = 1737.1 
 
-dropX (Point3D x y z) = Point y z
-
 perspective = matr1 pv pAlpha
   where
-    pv = 8
+    pv = 8   -- matrix M8
     pAlpha = 35
 ```
 
@@ -212,18 +219,18 @@ Aiemmin esitellyn perusteella osaamme jo sijoittaa pohjoisnavalle ympyrän, jonk
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics{mare-serenitatis-2.pdf}
-\caption{Hiljaisuuden meri pohjoisnavalle sijoitettuna.}
+\caption{Hiljaisuuden meri pohjoisnavalle siirrettynä.}
 \label{fig:mare-serenitatis-2}
 \end{center}
 \end{figure}
 
 ```haskell
 serenitatis = [ Filled $ Polygon [
-  (perspective . cartesian) (Spheric3D (DEG l) t)
-  | l <- lambda]]
+  (perspective . cartesian) (Spheric3D (DEG th) phi)
+  | th <- theta]]
   where
-    t = RAD (halfpi - 0.2035)
-    lambda = [-180,-160..160]
+    phi = RAD (halfpi - 0.2035)
+    theta = [-180,-160..160]
 ```
 
 ## Kiertomatriisit kolmessa ulottuvuudessa
@@ -284,7 +291,7 @@ Valitsemme perspektiivimatriisin $M_{10}$.
 ```haskell
 perspective = matr1 pv pAlpha
   where
-    pv = 10
+    pv = 10  -- matrix M10
     pAlpha = 35
 ```
 
@@ -443,6 +450,8 @@ half = (0.5 *)
 det [[a,b],[c,d]] = a * d - b * c
 ```
 
+## Paloittelun ensimmäinen vaihe
+
 Aloitamme kuvion paloittelun neliöstä $(s_1 s_2 s_3 s_4)$ alueen vasemmassa alanurkassa (kuva \ref{fig:fecunditatis-2}).
 
 ```haskell
@@ -512,6 +521,8 @@ Saamme uuden pistejoukon `fc1` funktiokutsulla `nextGen fc0 s1 s2`.
 fc1 = nextGen fc0 s1 s2
 ```
 
+## Paloittelun toinen vaihe
+
 Toinen rajaava suora on neliön oikea reuna $s_2 s_3$. Nyt rajaavan suoran vasemmalle puolelle eli alueen sisäpuolelle jäävät monikulmion pisteet $(p_1\, p_2\, p_9)$. Alueen ulkopuolelle jäävät monikulmion pisteet $(p_3 \cdots p_8)$.
 
 ```haskell
@@ -529,7 +540,6 @@ Monikulmion sivut suhteessa rajaavan neliön oikeaan reunaan $s_2 s_3$ kuuluvat 
 ```
 
 Luokat `(In,Out)` ja `(Out,In)` tuottavat uuden kärkipisteen $i_1$ suorien $s_2 s_3$ ja $p_2\, p_3$ leikkauspisteeseen sekä pisteen $i_4$ suorien $s_2 s_3$ ja $p_8\, p_9$ leikkauspisteeseen.
-
 
 ```haskell
 i1 = intersection s2 s3 p2 p3
@@ -551,6 +561,8 @@ Saamme nyt uuden pistejoukon `fc2` funktiokutsulla `nextGen fc1 s2 s3`.
 ```haskell
 fc2 = nextGen fc1 s2 s3
 ```
+
+## Paloittelun kolmas vaihe
 
 Kolmas leikkaus tapahtuu suoran $s_3 s_4$ suhteen edellä saadulle kärkipistejoukolle $(i_1\, p_2\, p_3\, p_4\, i_2)$. 
 
@@ -585,8 +597,9 @@ Leikattu monikulmio koostuu nyt kärkipisteistä $(i_3\, p_2\, i_1\, i_4)$ (kuva
 \end{center}
 \end{figure}
 
-Viimeinen leikkaus tapahtuu suoran $s_4 s_1$ suhteen. Leikkaus säilyttää kärkipistejoukon $(i_3\, p_2\, i_1\, i_4)$ sellaisenaan (kuva \ref{fig:fecunditatis-7}).
+## Paloittelun neljäs vaihe
 
+Viimeinen leikkaus tapahtuu suoran $s_4 s_1$ suhteen. Leikkaus säilyttää kärkipistejoukon $(i_3\, p_2\, i_1\, i_4)$ sellaisenaan (kuva \ref{fig:fecunditatis-7}).
 
 ```haskell
 fc3 = nextGen fc2 s3 s4
@@ -641,6 +654,8 @@ blocksA = c
 \end{center}
 \end{figure}
 
+## Muunnos takaisin pallokoordinaatistoon
+
 Paloittelemme monikulmiot asteviivojen mukaan, joten joudumme palaamaan karteesisesta koordinaatistosta takaisin maantieteelliseen koordinaatistoon. Määrittelemme tätä varten funktion `geog`. Maantieteellisen koordinaatin saamme kahdella erillisellä suuntakulman laskennalla, joista ensimmäinen on kulma $\lambda$ $xy$-tasossa ja toinen kulma $\delta$ edellisen ja $z$-akselin muodostamassa tasossa.
 
 ```haskell
@@ -686,30 +701,15 @@ maria ts = ts2
     visible (name,n,e,d,g) = e >= -90 && e <= 90 
 ```
 
-Teemme funktiosta `cartesian` monimuotoisen, jolloin se muuntaa sekä tyypin `Spheric3D` että tyypin `GeographicNE` muuttujan karteesiseen koordinaatistoon. Muunnokset tasaväliseen lieriöprojektioon säilyvät sellaisenaan.
+Funktio `ptToSpheric3D` muuntaa tasopisteen `Point` pallokoordinaatiksi `Spheric3D`.
 
 ```haskell
-data SphericP = Spheric3D Angle Angle 
-  | GeographicNE Angle Angle
-
 ptToSpheric3D (Point x y) = Spheric3D theta phi
   where
     theta = lambda
     phi = (DEG 90) `subAngles` delta
     delta = DEG y
     lambda = DEG x
-
-cartesian (GeographicNE delta lambda) = 
-  cartesian (Spheric3D theta phi)  
-  where
-    theta = lambda
-    phi = (DEG 90) `subAngles` delta
-
-cartesian (Spheric3D theta phi) = Point3D x y z
-  where
-    x = r * cos1 theta * sin1 phi
-    y = r * sin1 theta * sin1 phi
-    z = r * cos1 phi
 ```
 
 Myös varsinainen paloittelualgoritmi on hyvin samankaltainen aiemman kanssa, mutta olemme parametrisoineet siinä monikulmiot.

@@ -4,8 +4,11 @@ import Eemian
 data Point3D = Point3D Double Double Double
 
 -- |  Spheric3D theta phi, where phi = 
--- polar angle measured from a fixed zenith direction
-data Spheric3D = Spheric3D Angle Angle
+-- polar angle measured from a fixed zenith direction,
+-- GeographicNE delta lambda =
+-- geographic coordinates, delta=North, lambda=East
+data SphericP = Spheric3D Angle Angle 
+  | GeographicNE Angle Angle
 
 matrix1 alpha = [
   [1,0,0.5 * cos1 alpha],
@@ -32,22 +35,26 @@ matr2 (Point3D x1 y1 z1) = Point y z
 
 r = 1737.1 
 
-dropX (Point3D x y z) = Point y z
+orthoYZ (Point3D x y z) = Point y z
 
-perspective = matr2
+perspective = orthoYZ
 
-cartesian (Spheric3D lambda delta) = Point3D x y z
+cartesian (GeographicNE delta lambda) = 
+  cartesian (Spheric3D theta phi)  
+  where
+    theta = lambda
+    phi = (DEG 90) `subAngles` delta
+
+cartesian (Spheric3D theta phi) = Point3D x y z
   where
     x = r * cos1 theta * sin1 phi
     y = r * sin1 theta * sin1 phi
     z = r * cos1 phi
-    theta = lambda
-    phi = (DEG 90) `subAngles` delta
 
 -- $$\begin{aligned}x&=r\sin \theta \cos \phi \\y&=r\sin \theta \sin \phi \\z&=r\cos \theta \end{aligned}$$
 
 meridians = [PolyLine [(perspective . cartesian)
-  (Spheric3D (DEG l) (DEG d))
+  (GeographicNE (DEG d) (DEG l))
   | d <- delta]
     | l <- lambda]
   where
@@ -55,7 +62,7 @@ meridians = [PolyLine [(perspective . cartesian)
     lambda = [-90,-75..90]
 
 latitudes = [PolyLine [(perspective . cartesian)
-  (Spheric3D (DEG l) (DEG d))
+  (GeographicNE (DEG d) (DEG l))
   | l <- lambda]
     | d <- delta]
   where

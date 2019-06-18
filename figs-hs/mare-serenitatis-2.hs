@@ -36,7 +36,7 @@ matrixTimes3 a b =
 
 r = 1737.1 
 
-dropX (Point3D x y z) = Point y z
+orthoYZ (Point3D x y z) = Point y z
 
 perspective = matr1 pv pAlpha
   where
@@ -68,11 +68,11 @@ latitudes = [PolyLine [(perspective . cartesian)
     lambda = [-180,-160..180]
 
 serenitatis = [ Filled $ Polygon [
-  (perspective . cartesian) (Spheric3D (DEG l) t)
-  | l <- lambda]]
+  (perspective . cartesian) (Spheric3D (DEG th) phi)
+  | th <- theta]]
   where
-    t = RAD (halfpi - 0.2035000863508146)
-    lambda = [-180,-160..160]
+    phi = RAD (halfpi - 0.2035)
+    theta = [-180,-160..160]
 
 p1 = Point (-r) (-r)
 p2 = Point r r

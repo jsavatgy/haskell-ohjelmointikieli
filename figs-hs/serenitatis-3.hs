@@ -77,7 +77,7 @@ cartesian (Spheric3D lambda delta) = Point3D x y z
     phi = (DEG 90) `subAngles` delta
 
 meridians = [PolyLine [(perspective . cartesian)
-  (Spheric3D (DEG l) (DEG d))
+  (GeographicNE (DEG d) (DEG l))
   | d <- delta]
     | l <- lambda]
   where
@@ -85,9 +85,9 @@ meridians = [PolyLine [(perspective . cartesian)
     lambda = [-90,-75..90]
 
 latitudes = [PolyLine [(perspective . cartesian)
-  (Spheric3D (DEG l) (DEG d))
-  | l <- lambda]
-    | d <- delta]
+  (GeographicNE (DEG d) (DEG l))
+  | d <- delta]
+    | l <- lambda]
   where
     delta = [-90,-75..90]
     lambda = [-90,-75..90]
@@ -101,12 +101,6 @@ marePts d pos = [ perspective $ rotYZ delta lambda $
     phi = DEG 90 `subAngles` (RAD theta)
     theta = (d/2) / r
     lambdaRim = [-180,-160..160]
-
-data Mare = Mare {d :: Double, pos :: GeographicNE}
-
-serenitatisF = Mare {
-  d = 707, 
-  pos = GeographicNE (DEG 28) (DEG 17.5) }
 
 serenitatis = marePg1 d pos
   where
