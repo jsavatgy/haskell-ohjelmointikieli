@@ -144,8 +144,7 @@
   - `withPDFSurface`, 
 `pdfSurfaceSetSize`.
 - PostScript-pinnat:
-  - `withPSSurface`,  
-`psSurfaceSetSize`.
+  - `withPSSurface`, `psSurfaceSetSize`.
 - Svg-vektorikuvat:
   - `withSVGSurface`.
 - Alueet:

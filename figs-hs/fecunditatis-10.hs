@@ -188,7 +188,7 @@ blocksA = c
 layers1 = [
   Phantom (Point (-sx) (-sx)) (Point sx sx),
   Layer "2" Gray20 (map (Filled . Polygon) blocksA) "[line width=0.8pt]",
-  Layer "2" Black (map Polygon blocksA) "[line width=0.8pt]",
+  Layer "2" Black (map Polygon blocksA) "[line width=0.8pt,line join=round,line cap=round]",
   --Layer "3" Black latitudes "[line width=0.8pt]",
   --Layer "4" Black meridians "[line width=0.8pt]",
   Empty

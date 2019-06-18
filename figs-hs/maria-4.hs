@@ -319,7 +319,7 @@ lookup1 table2 table1 = [a,c1,d1,e,f]
     brt s = addMinus s ++ takeWhile (/= ' ') s
     addMinus s = if last s `elem` "SW" then "-" else ""
 
-legendByr = [Texttt (Point (-1700) (-1800)) 
+legendByr = [Texttt (Point (-1850) (-1800)) 
   "Surface basalt (Byr)" "left"]
 
 legendA = concat [[(FilledWith (rgb a)) r,r,
