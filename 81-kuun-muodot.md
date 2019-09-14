@@ -450,7 +450,7 @@ half = (0.5 *)
 det [[a,b],[c,d]] = a * d - b * c
 ```
 
-## Paloittelun ensimmäinen vaihe
+## Rajauksen ensimmäinen vaihe
 
 Aloitamme kuvion paloittelun neliöstä $(s_1 s_2 s_3 s_4)$ alueen vasemmassa alanurkassa (kuva \ref{fig:fecunditatis-2}).
 
@@ -521,7 +521,7 @@ Saamme uuden pistejoukon `fc1` funktiokutsulla `nextGen fc0 s1 s2`.
 fc1 = nextGen fc0 s1 s2
 ```
 
-## Paloittelun toinen vaihe
+## Rajauksen toinen vaihe
 
 Toinen rajaava suora on neliön oikea reuna $s_2 s_3$. Nyt rajaavan suoran vasemmalle puolelle eli alueen sisäpuolelle jäävät monikulmion pisteet $(p_1\, p_2\, p_9)$. Alueen ulkopuolelle jäävät monikulmion pisteet $(p_3 \cdots p_8)$.
 
@@ -562,7 +562,7 @@ Saamme nyt uuden pistejoukon `fc2` funktiokutsulla `nextGen fc1 s2 s3`.
 fc2 = nextGen fc1 s2 s3
 ```
 
-## Paloittelun kolmas vaihe
+## Rajauksen kolmas vaihe
 
 Kolmas leikkaus tapahtuu suoran $s_3 s_4$ suhteen edellä saadulle kärkipistejoukolle $(i_1\, p_2\, p_3\, p_4\, i_2)$. 
 
@@ -597,7 +597,7 @@ Leikattu monikulmio koostuu nyt kärkipisteistä $(i_3\, p_2\, i_1\, i_4)$ (kuva
 \end{center}
 \end{figure}
 
-## Paloittelun neljäs vaihe
+## Rajauksen neljäs vaihe
 
 Viimeinen leikkaus tapahtuu suoran $s_4 s_1$ suhteen. Leikkaus säilyttää kärkipistejoukon $(i_3\, p_2\, i_1\, i_4)$ sellaisenaan (kuva \ref{fig:fecunditatis-7}).
 
@@ -750,7 +750,7 @@ main = do
   putStrLn (tpict c4)
 ```
 
-Kentät on tiedostoissa erotettu tabulaattorimerkein (`"\t"`), joten pilkomme tekstin niiden mukaan. Luemme numerot standardikirjaston funktiolla `read`. Funktio `read` on monimuotoinen funktio, ja vaatii siksi kohdetyypin tyyppimäärittelyn.
+Kentät on tiedostoissa erotettu tabulaattorimerkein (`'\t'`), joten pilkomme tekstin niiden mukaan. Luemme numerot standardikirjaston funktiolla `read`. Funktio `read` on monimuotoinen funktio, ja vaatii siksi kohdetyypin tyyppimäärittelyn.
 
 ```haskell
 tabulated str = map trim (splitOn "\t" str)
@@ -787,8 +787,7 @@ Asettelemme vielä paikannimet kartan vasemmalle ja oikealle puolelle. Olemme es
 \end{figure}
 
 ```haskell
-data LeftRight = L | R
-  deriving Eq
+data LeftRight = L | R  deriving Eq
 
 getSide (Point x1 y1) (Point x2 y2)
   | x1 <= x2  = L
@@ -841,80 +840,104 @@ crc s y = p4
     p3 R = pt2
 ```
 
-## Coastlines
+## Maan ääriviivat
 
-The header structure: GSHHG C-structure used to read and write the data.
-
+Lataamme verkosta tiedoston `gshhg-bin-2.3.7.zip` ja puramme sen kansioon `coastline/`. Tiedosto `gshhs_c.b` sisältää nyt mantereiden ääriviivat binäärimuodossa. Kutsumalla ohjelmaa `gmt` voimme muuntaa binääritiedoston tekstimuotoon.
+ 
 ```
-struct GSHHG { /* Global Self-consistent Hierarchical 
-                  High-resolution Shorelines */
- int id;   /* Unique polygon id number, starting at 0 */
- int n;    /* Number of points in this polygon */
- int flag; /* = level + version << 8 + greenwich << 16 
-              + source << 24 + river << 25 */
- /* flag contains 5 items, as follows:
-  * low byte: level = flag & 255: Values: 1 land, 2 lake, 
-              3 island_in_lake, 4 pond_in_island_in_lake
-  * 2nd byte: version = (flag >> 8) & 255: Values: 
-    Should be 12 for GSHHG release 12 (i.e., version 2.2)
-  * 3rd byte: greenwich = (flag >> 16) & 1: Values: 
-    Greenwich is 1 if Greenwich is crossed
-  * 4th byte: source = (flag >> 24) & 1: Values: 
-    0 = CIA WDBII, 1 = WVS
-  * 4th byte: river = (flag >> 25) & 1: Values: 
-    0 = not set, 1 = river-lake and level = 2 */
- int west, east, south, north; /* min/max extent in micro-degrees */
- int area;      /* Area of polygon in 1/10 km^2 */
- int area_full; /* Area of original full-resolution polygon 
-                   in 1/10 km^2 */
- int container; /* Id of container polygon that encloses 
-                   this polygon (-1 if none) */
- int ancestor; /* Id of ancestor polygon in the full resolution set 
-               that was the source of this polygon (-1 if none) */ 
-};
+gmt gshhg gshhs_c.b  > gshhs_c.txt
 ```
 
-Following each header structure is n structures of coordinates:
+Tiedosto `gshhs_c.txt` sisältää nyt monikulmion kärkipisteiden koordinaatit longitudi-latitude-pareina tabulaattorimerkillä `'\t'` erotettuina seuraavasti:
 
 ```
-struct GSHHG_POINT {
- /* Each lon, lat pair is stored in micro-degrees in 4-byte 
-    signed integer format */
- int32_t x;
- int32_t y;
-};
+180	68.993778
+176.081639	69.883722
+173.223194	69.765361
+170.549917	70.119556
+170.162361	69.5975
+...
 ```
 
-Some useful information:
+Käytämme funktiota `splitWhen` tiedoston jakamiseen monikulmioihin kommenttimerkillä `'#'` tai otsikkomerkillä `'>'` alkavien rivien kohdalta. Määrittelemme katkaisuehdon funktiossa `isCommentEtc`. Kun olemme jakaneet tiedoston monikulmioihin, erotamme longitudin ja latitudin tabulaattorimerkin `'\t'` kohdalta funktiolla `splitOn`. Tämän jälkeen voimme lukea liukulukuarvot funktiolla `read`.
 
-A) To avoid headaches the binary files were written to be big-endian.
-   If you use the GMT supplement gshhg it will check for endian-ness and if needed will
-   byte swab the data automatically. If not then you will need to deal with this yourself.
+```haskell
+coastFile = "coastline/gshhs_c.txt"
 
-B) In addition to GSHHS we also distribute the files with political boundaries and
-   river lines.  These derive from the WDBII data set.
+untab str = splitOn "\t" str
 
-C) As to the best of our knowledge, the GSHHG data are geodetic longitude, latitude
-   locations on the WGS-84 ellipsoid.  This is certainly true of the WVS data (the coastlines).
-   Lakes, riverlakes (and river lines and political borders) came from the WDBII data set
-   which may have been on WGS072.  The difference in ellipsoid is way less then the data
-   uncertainties.  Offsets have been noted between GSHHG and modern GPS positions.
+untabPts str = Point x2 y
+  where
+    x2 = if x > 180 then 180 else x
+    [x,y] = map readd [a,b]
+    [a,b] = untab str
+    readd x = read x :: Double
 
-D) Originally, the gshhs_dp tool was used on the full resolution data to produce the lower
-   resolution versions.  However, the Douglas-Peucker algorithm often produce polygons with
-   self-intersections as well as create segments that intersect other polygons.  These problems
-   have been corrected in the GSHHG lower resolutions over the years.  If you use gshhs_dp to
-   generate your own lower-resolution data set you should expect these problems.
+pgPts xs = map untabPts xs
 
-E) The shapefiles release was made by formatting the GSHHG data using the extended GMT/GIS
-   metadata understood by OGR, then using ogr2ogr to build the shapefiles.  Each resolution
-   is stored in its own subdirectory (e.g., f, h, i, l, c) and each level (1-4) appears in
-   its own shapefile.  Thus, GSHHS_h_L3.shp contains islands in lakes for the high res
-   data. Because of GIS limitations some polygons that straddle the Dateline (including
-   Antarctica) have been split into two parts (east and west).
+isCommentEtc str =
+  "#" `isPrefixOf` str || ">" `isPrefixOf` str
 
-F) The netcdf-formatted coastlines distributed with GMT derives directly from GSHHG; however
-   the polygons have been broken into segments within tiles.  These files are not meant
-   to be used by users other than via GMT tools (pscoast, grdlandmask, etc).
+main = do
+  content <- readFile coastFile
+  let 
+    x1 = splitWhen isCommentEtc (lines content)
+    x2 = filter (not . null) x1
+    x3 = map pgPts x2
+    x4 = map simplify x3
+    x5 = map PolyLine x4
+```
 
+Päättelemme, että karttamme on tarkoituksiimme liian yksityiskohtainen ja yksinkertaistamme siksi kärkipisteluettelon määrittelemällä rekursion avulla funktion `simplify`.
+
+```haskell
+simplify (x:y:zs)
+  | dist x y < 1.2 = simplify (x:zs)
+  | otherwise    = x : y : simplify zs
+simplify xs = xs
+```
+
+Olemme esittäneet piirroksen kuvassa \ref{fig:mondo-1}. Havaitsemme, että osa monikulmioista ulottuu päivämäärärajan ylitse ja piirtyy siksi häiritsevinä poikkiviivoina.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics{mondo-1.pdf}
+\caption{Mantereet suorakulmaisessa koordinaatistossa.}
+\label{fig:mondo-1}
+\end{center}
+\end{figure}
+
+Kärkipistekoordinaatit muuntuvat maantieteellisiksi koordinaateiksi konstruktorilla `GeographicNE` ja koordinaatit asteiksi konstruktorilla `DEG`.
+
+```haskell
+untabPts str = GeographicNE (DEG y) (DEG x)
+  where
+    [x,y] = map readd [a,b]
+    [a,b] = untab str
+    readd x = read x :: Double
+```
+
+Pääohjelmassa kuvaamme maantieteelliset koordinaatit tuttuun tapaan funktioille `cartesian` ja `perspective`.
+
+```haskell
+main = do
+  content <- readFile coastFile
+  let 
+    x1 = splitWhen isCommentEtc (lines content)
+    x2 = filter (not . null) x1
+    x3 = map pgPts x2
+    x4 = [map (perspective . cartesian) pts | pts <- x3]
+    x5 = map simplify x4
+    x6 = map PolyLine x5
+```
+
+Syntynyt kuvio on kuvassa \ref{fig:mondo-2}.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics{mondo-2.pdf}
+\caption{Mantereiden ääriviivat pallokoordinaatistossa.}
+\label{fig:mondo-2}
+\end{center}
+\end{figure}
 

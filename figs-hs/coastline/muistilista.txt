@@ -1,0 +1,12 @@
+
+
+# gmt gshhg gshhs_c.b  --IO_SEGMENT_MARKER=N > gshhs_c.txt
+
+# gmt gshhg gshhs_c.b  > gshhs_c.txt
+
+# man gshhg
+
+# man -t gshhg | ps2pdf - gshhg.pdf
+
+
+

@@ -279,21 +279,21 @@ sheepM1 (Layer name color s attr) =
 
 layers1 = [
   --Phantom (Point (-8) (-1)) (Point 14 5),
-  Layer "2" RedBlueDiv10 [rect1] "[line width=0.1pt]",
-  Layer "3" Sonne1 [sonne1] "[line width=0.1pt]",
-  Layer "1" RedBlueDiv9 vege4 "[line width=0.1pt]",
-  Layer "1" RedBlueDiv8 vege3 "[line width=0.1pt]",
-  Layer "1" RedBlueDiv7 vege2 "[line width=0.1pt]",
-  Layer "1" RedBlueDiv6 vege1 "[line width=0.1pt]",
-  Layer "1" RedBlueDiv5 sandy1 "[line width=0.1pt]",
-  Layer "S" White legs2 "[line width=1.1pt]",
-  Layer "S" White arcs1 "[line width=0.1pt]",
-  Layer "S" Gray40 sheepEars2 "[line width=0.1pt]",
-  Layer "S" Gray40 sheepHead2 "[line width=0.1pt]",
-  Layer "S" Black eyesBorder "[line width=0.1pt]",
-  Layer "S" White eyesWhite "[line width=0.1pt]",
-  Layer "S" Black nose1 "[line width=0.1pt]",
-  Layer "S" Black pupils1 "[line width=0.1pt]"
+  Layer "2" SheepGogh6 [rect1] "[line width=0.1pt]",
+  Layer "3" SheepGogh7 [sonne1] "[line width=0.1pt]",
+  Layer "1" SheepGogh5 vege4 "[line width=0.1pt]",
+  Layer "1" SheepGogh4 vege3 "[line width=0.1pt]",
+  Layer "1" SheepGogh3 vege2 "[line width=0.1pt]",
+  Layer "1" SheepGogh2 vege1 "[line width=0.1pt]",
+  Layer "1" SheepGogh1 sandy1 "[line width=0.1pt]",
+  Layer "S" SheepGogh9 legs2 "[line width=1.1pt]",
+  Layer "S" SheepGogh9 arcs1 "[line width=0.1pt]",
+  Layer "S" SheepGogh8 sheepEars2 "[line width=0.1pt]",
+  Layer "S" SheepGogh8 sheepHead2 "[line width=0.1pt]",
+  Layer "S" SheepGogh10 eyesBorder "[line width=0.1pt]",
+  Layer "S" SheepGogh9 eyesWhite "[line width=0.1pt]",
+  Layer "S" SheepGogh10 nose1 "[line width=0.1pt]",
+  Layer "S" SheepGogh10 pupils1 "[line width=0.1pt]"
 
   --Layer "1" Gray50 sandy2 "[line width=5.0pt]",
   ]

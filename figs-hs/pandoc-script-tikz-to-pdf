@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# date "+%Y-%m-%d" > current.date
+# date "+%-d.%-m.%Y" > current.date
+
+cp $1 latest.tikz
+
+pandoc minimal.md book.fi.yaml\
+  --template=minimal.sty \
+  -f markdown+implicit_figures+link_attributes+latex_macros+tex_math_dollars+yaml_metadata_block+grid_tables  \
+  --pdf-engine=xelatex \
+  --quiet \
+  -o "$1".pdf
+
+if [ $? -eq 0 ]; then
+    echo "PDF valmis."
+else
+    echo ERROR
+fi
+
+
+# Just use
+
+# :!chmod +x %
+

@@ -4,7 +4,7 @@ date "+%Y-%m-%d" > current.date
 
 fileprefix="book.fi" 
 
-cat 01-standardikirjasto.md 02-listat.md 03-funktiomaarittely.md 04-funktiorakenteita.md 05-tyypit.md 06-tyyppiluokat.md 07-kuviot.md 08-teksti.md musket-table.md 81-kuun-muodot.md 30-gtk.md 31-cairo.md 51-prelude.md > $fileprefix.md
+cat 01-standardikirjasto.md 02-listat.md 03-funktiomaarittely.md 04-funktiorakenteita.md 05-tyypit.md 06-tyyppiluokat.md 07-kuviot.md 08-teksti.md musket-table.md 81-kuun-muodot.md 82-perspektiivi.md 30-gtk.md 31-cairo.md 51-prelude.md > $fileprefix.md
 
 # pandoc $fileprefix.md --from markdown_github+tex_math_dollars+latex_macros --latex-engine=xelatex --no-highlight --number-sections --template=my.latex -V geometry:margin=2.0cm -V fontsize=12pt -o $fileprefix.pdf
 
