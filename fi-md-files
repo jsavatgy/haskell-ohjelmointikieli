@@ -2,7 +2,7 @@
 
 date "+%Y-%m-%d" > current.date
 
-fileprefix="book.fi" 
+fileprefix="haskell-ohjelmointikieli" 
 
 cat 01-standardikirjasto.md 02-listat.md 03-funktiomaarittely.md 04-funktiorakenteita.md 05-tyypit.md 06-tyyppiluokat.md 07-kuviot.md 08-teksti.md musket-table.md 81-kuun-muodot.md 82-perspektiivi.md 30-gtk.md 31-cairo.md 51-prelude.md > $fileprefix.md
 
