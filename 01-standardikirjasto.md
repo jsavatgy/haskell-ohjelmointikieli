@@ -82,14 +82,14 @@ Voimme kirjoittaa saman myös infix-muodossa
 
 ## Funktiot `abs`, `even` ja `odd`
 
-Funktiokutsu `abs x` palauttaa luvun $x$ itseisarvon $|x|$. 
+Funktiokutsu `abs` $x$ palauttaa luvun $x$ itseisarvon $|x|$. 
 
 ```haskell
 > abs (-3)
 3
 ```
 
-Funktio `even` palauttaa totuusarvon `True` annetun argumentin ollessa parillinen, muutoin se palauttaa arvon `False`. Funktio `odd` palauttaa totuusarvon `True` annetun argumentin ollessa pariton, muutoin se palauttaa arvon `False`.
+Funktiokutsu `even` $x$ palauttaa totuusarvon `True` luvun $x$ ollessa parillinen, muutoin se palauttaa arvon `False`. Funktiokutsu `odd` $x$ palauttaa totuusarvon `True` luvun $x$ ollessa pariton, muutoin se palauttaa arvon `False`.
 
 ```haskell
 > odd 2
@@ -280,9 +280,9 @@ Havaitsemme, että funktiot `head` ja `tail` eivät sovellu tyhjien listojen kä
 
 Funktiot `and` ja `or` ovat kahden parametrin funktioiden `(&&)` ja `(||)` vastineet listojen käsittelyyn.
 
-Funktio `and` palauttaa totuusarvon `True`, mikäli listan kaikki alkiot ovat arvoltaan `True`, muutoin se palauttaa arvon `False`. 
+Funktiokutsu `and` $s$ palauttaa totuusarvon `True`, mikäli listan $s$ kaikki alkiot ovat arvoltaan `True`, muutoin se palauttaa arvon `False`. 
 
-Funktio `or` palauttaa totuusarvon `True`, mikäli yksikin listan alkioista on arvoltaan `True`, muutoin se palauttaa arvon `False`.
+Funktiokutsu `or` $s$ palauttaa totuusarvon `True`, mikäli yksikin listan $s$ alkioista on arvoltaan `True`, muutoin se palauttaa arvon `False`.
 
 ```haskell
 > and [True,False,True]
@@ -293,7 +293,7 @@ True
 
 ## Funktiot `any` ja `all`
 
-Funktiokutsu `any p` palauttaa totuusarvon `True`, mikäli jokin listan alkioista täyttää ehdon `p`, muutoin se palauttaa arvon `False`. Funktiokutsu `all p` palauttaa arvon `True`, mikäli kaikki listan alkiot täyttävät ehdon `p`, muutoin se palauttaa arvon `False`.
+Funktiokutsu `any` $p$ $s$ palauttaa totuusarvon `True`, mikäli jokin listan $s$ alkioista täyttää ehdon $p$, muutoin se palauttaa arvon `False`. Funktiokutsu `all` $p$ $s$ palauttaa arvon `True`, mikäli kaikki listan $s$ alkiot täyttävät ehdon $p$, muutoin se palauttaa arvon `False`.
 
 ```haskell
 > ts = [2,3,5,7,11]
@@ -331,7 +331,7 @@ Funktiot `minimum` ja `maximum` palauttavat järjestyvän listan pienimmän ja s
 
 ## Funktiot `take`, `drop` ja `(!!)`
 
-Funktiokutsu `take n` palauttaa `n` ensimmäistä alkiota listasta. Funktiokutsu `drop n` pudottaa pois `n` ensimmäistä alkiota. 
+Funktiokutsu `take` $n$ $s$ palauttaa $n$ ensimmäistä alkiota listasta $s$. Funktiokutsu `drop` $n$ $s$ pudottaa pois $n$ ensimmäistä alkiota listasta $s$. 
 
 ```haskell
 > ts = [2,3,5,7,11]
@@ -398,7 +398,7 @@ True
 
 ## Kuvausfunktio `map`
 
-Funktiokutsu `map f` kuvaa funktion `f` listalle. 
+Funktiokutsu `map` $f$ $s$ kuvaa funktion $f$ listalle $s$. 
 
 ```haskell
 > ts = [2,3,5,7,11]
@@ -412,7 +412,7 @@ Funktiokutsu `map f` kuvaa funktion `f` listalle.
 
 ## Funktio `filter`
 
-Funktiokutsu `filter p` suodattaa listan ja jättää jäljelle ehdon `p` täyttävät alkiot.
+Funktiokutsu `filter` $p$ $s$ suodattaa listan $s$ ja jättää jäljelle ehdon $p$ täyttävät alkiot.
 
 ```haskell
 > filter (< 10) ts
@@ -425,7 +425,7 @@ Funktiokutsu `filter p` suodattaa listan ja jättää jäljelle ehdon `p` täytt
 
 ## Funktio `splitAt`
 
-Funktio `splitAt` jakaa listan kahden alkion tietueeksi annetusta katkaisukohdasta. Alkioiden numerointi alkaa luvusta 0. 
+Funktiokutsu `splitAt` $n$ $s$ jakaa listan $s$ kahden alkion tietueeksi annetusta katkaisukohdasta $n$. Alkioiden numerointi alkaa luvusta 0. 
 
 ```haskell
 > ts = [2,3,5,7,11]
@@ -435,7 +435,7 @@ Funktio `splitAt` jakaa listan kahden alkion tietueeksi annetusta katkaisukohdas
 
 ## Tietueet
 
-Nimitämme *tietueeksi* alkioiden jonoa, jossa alkiot eivät välttämättä ole toistensa kanssa samaa tyyppiä. Tietueen merkintätapa Haskell-kielessä on ympäröivät kaarisulkeet `()`. Esimerkkinä määrittelemme kahden alkion lukuparin `p = (2,3)`.
+Nimitämme *tietueeksi* alkioiden jonoa, jossa alkiot eivät välttämättä ole toistensa kanssa samaa tyyppiä. Tietueen merkintätapa Haskell-kielessä on ympäröivät kaarisulkeet `()`. Esimerkkinä määrittelemme kahden alkion lukuparin $p = (2,3)$.
  
 ```haskell
 > p = (2,3)
@@ -479,7 +479,7 @@ u = ((1,'a'),(1,2,'b'),1)
 ```
 ## Funktiot `fst` ja `snd`
 
-Funktio  `fst` palauttaa kahden alkion tietueesta ensimmäisen alkion. Funktio `snd` palauttaa tietueen toisen alkion.
+Funktiokutsu `fst` $(a,b)$ palauttaa kahden alkion tietueesta $(a,b)$ ensimmäisen alkion $a$. Funktiokutsu `snd` $(a,b)$ palauttaa tietueen $(a,b)$ toisen alkion $b$.
 
 ```haskell
 > p = (2,3)
@@ -492,13 +492,15 @@ Funktio  `fst` palauttaa kahden alkion tietueesta ensimmäisen alkion. Funktio `
 Funktioiden `fst` ja `snd` määrittelyt ovat seuraavan kaltaiset:
 
 ```haskell
-fst (x,y) = x
-snd (x,y) = y
+fst (a,b) = a
+snd (a,b) = b
 ```
 
 ## Lukujonot listoina
 
-Haskell-kielessä voimme määritellä listat aritmeettisina lukujonoina antamalla jonon ensimmäisen ja viimeisen alkion. Oletuksena lista kasvaa yhden yksikön verran jokaista alkiota kohden. Ykkösestä eroavan kasvun ilmaisemme antamalla kaksi ensimmäistä alkiota listan alusta.
+Haskell-kielessä voimme määritellä listat aritmeettisina lukujonoina antamalla jonon ensimmäisen ja viimeisen alkion. Oletuksena lista kasvaa yhden yksikön verran jokaista alkiota kohden. 
+
+Voimme myös antaa lukujonon ensimmäisen, toisen ja viimeisen alkion $x_1$, $x_2$ ja $x_k$ muodossa `[`$x_1$, $x_2$`..`$x_k$`]`, jolloin ohjelma laskee puuttuvat alkiot kaavalla $$x_n = x_{(n-1)} + (x_2 - x_1)$$
 
 ```haskell
 > [3..7]
@@ -531,7 +533,7 @@ Tässä lista `xs` sisältää kaikki kokonaisluvut alkaen luvusta 1. Lista `zs`
 
 ## Funktiot `takeWhile` ja `dropWhile`
 
-Funktiokutsu `takeWhile p` palauttaa listan alkioita alusta niin pitkälle kuin ehto `p` on voimassa. Funktiokutsu `dropWhile p` pudottaa listan alkioita pois alusta niin pitkälle kuin ehto `p` on voimassa.
+Funktiokutsu `takeWhile` $p$ $s$ palauttaa listan $s$ alkioita alusta niin pitkälle kuin ehto $p$ on voimassa. Funktiokutsu `dropWhile` $p$ $s$ pudottaa listan $s$ alkioita pois alusta niin pitkälle kuin ehto $p$ on voimassa.
 
 ```haskell
 > takeWhile (< 10) [1,3..]
@@ -613,7 +615,7 @@ Kuten funktiot `take` ja `head`, myös funktio `zip` soveltuu päättymättömie
 
 ## Funktio `zipWith`
 
-Funktio `zipWith` on funktion `zip` yleistetty versio. Funktiokutsun `zipWith f` parametri `f` on funktio, joka kertoo säännön kuinka tulosalkio muodostetaan, kun lähtöalkiot saadaan annetuista listoista. 
+Funktio `zipWith` on funktion `zip` yleistetty versio. Funktiokutsun `zipWith` $f$ $s_1$ $s_2$ parametri $f$ on funktio, joka kertoo säännön kuinka tulosalkio muodostetaan, kun lähtöalkiot saadaan annetuista listoista $s_1$ ja $s_2$. 
 
 ```haskell
 > zipWith (+) [1..7] [1..]
@@ -651,7 +653,7 @@ b :: Bool
 b = True
 ```
 
-Tyyppimäärittelyn `x :: y` luemme: "$x$ on tyyppiä $y$". Esimerkiksi edellä määrittelemämme muuttuja `c` on tyyppiä `Char`.
+Tyyppimäärittelyn `x :: y` luemme: "muuttuja $x$ on tyyppiä $y$". Esimerkiksi edellä määrittelemämme muuttuja `c` on tyyppiä `Char`.
 
 ## Funktiotyyppi
 
