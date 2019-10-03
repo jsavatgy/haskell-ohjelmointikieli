@@ -10,7 +10,7 @@ clear
 
 runhaskell "$1".hs > latest.tikz
 
-pandoc minimal.md book.fi.yaml\
+pandoc minimal.md metadata.yaml\
   --template=minimal.sty \
   -f markdown+implicit_figures+link_attributes+latex_macros+tex_math_dollars+yaml_metadata_block+grid_tables  \
   -V date="`date "+%-d.%-m.%Y"`" \

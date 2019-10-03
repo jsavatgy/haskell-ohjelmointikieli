@@ -2,5 +2,5 @@
 
 Haskell-ohjelmointikieli -kirja (Finnish)
 
- - book.fi.pdf
+ - haskell-ohjelmointikieli.pdf
 

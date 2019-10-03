@@ -332,19 +332,26 @@ Haskell-kielessä esitämme matriisit listoina. Esimerkiksi voimme määritellä
 rotationMatrix t = [[cos1 t,-sin1 t],[sin1 t,cos1 t]]
 ```
 
-Matriisien välinen kertolasku yleistyy kaiken kokoisille matriiseille.
+Matriisin ja paikkavektorin välinen kertolasku yleistyy kaiken kokoisille matriiseille.
 
 ```haskell
-matrixTimes a b = 
+matrixTimes1 a b = 
   [sum [x * y | (x,y) <- zip a1 b] | a1 <- a]
 ```
 
-Nyt määrittelemme pisteen $(x1,y1)$ kierron origon ympäri kulman $t$ verran funktiossa `rot1`.
+Määrittelemämme funktion `matrixTimes1` tyyppi on `[[a]] -> [a] -> [a]`, missä tyypin `a` tulee olla tyyppiluokan `Num` jäsen.
+
+```
+> :t matrixTimes1
+matrixTimes1 :: Num a => [[a]] -> [a] -> [a]
+```
+
+Nyt määrittelemme pisteen $(x_1,y_1)$ kierron origon ympäri kulman $t$ verran funktiossa `rot1`.
 
 ```haskell
 rot1 t (Point x1 y1) = Point x y
   where
-    [x,y] = matrixTimes (rotationMatrix t) [x1,y1]
+    [x,y] = matrixTimes1 (rotationMatrix t) [x1,y1]
 ```
 
 Kun jaamme täysympyrän kolmeen osaan, kierrämme annetut pisteet origon ympäri ja lisäämme muutaman apuviivan, saamme tutun kuvion (kuva \ref{fig:wind-mill}).
