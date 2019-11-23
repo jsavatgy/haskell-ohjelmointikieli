@@ -161,7 +161,7 @@ Esitämme seuraavassa ohjelmakoodin kokonaisuudessaan.
 
 ## Ohjelma Png-kuvan näyttämiseen
 
-Viimeisessä esimerkkiohjelmassamme emme käytä moniakaan Gtk-kirjaston visuaalisia komponentteja vaan kirjoitamme lyhyen yleiskäyttöisen ohjelman Png-muotoisen kuvan esittämiseksi ruudulla.
+Seuraavassa esimerkkiohjelmassa emme käytä moniakaan Gtk-kirjaston visuaalisia komponentteja vaan kirjoitamme lyhyen yleiskäyttöisen ohjelman Png-muotoisen kuvan esittämiseksi ruudulla.
 
 \verbatiminput{code/png-view.hs}
 
@@ -188,14 +188,14 @@ widgetAddEvents canvas [Button1MotionMask]
 Annamme ohjelmalle nimeksi png-view ja käynnistämme ohjelman komentotulkissa. Ohjelma saa argumenttinaan kuvatiedoston nimen.
 
 ```
-$ runhaskell png-view foci-4.png
+$ runhaskell png-view foci-5.png
 ```
 
 Avautuvassa ikkunassa näemme valitsemamme kuvan (kuva \ref{png-view-1}). Voimme suurentaa ja pienentää näkymää hiiren rullalla.
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \begin{center}
-\includegraphics{png-view-foci-4-bw.png}
+\includegraphics{png-view-foci-5-bw.png}
 \caption{Ohjelmaikkuna.}
 \label{png-view-1}
 \end{center}
@@ -212,6 +212,21 @@ Käyttämämme muuttujaviittaukset ovat `var`, joka sisältää kuvan suurennoks
 
 Muuttujaviittausten sisältämän tiedon avulla ohjelma kykenee laskemaan esitettävälle kuvalle uudet koordinaatit ja suurennoksen aina tapahtumankäsittelijän sitä pyytäessä.
 
+## Tekstinäkymä- ja tekstipuskurikomponentti
+
+Gtk-kirjaston tekstinäkymä- (`textView`) ja tekstipuskurikomponentti (`textBuffer`) sisältävät hyvin monipuoliset välineet yksinkertaisen tekstimuokkainikkunan luomiseen.
+
+Kirjoitamme lyhyen ohjelman, joka avaa tekstitiedoston muokattavaksemme (kuva \ref{text-view-1}).
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics{text-view-puulajit-bw.png}
+\caption{Tekstitiedosto tekstinäkymäkomponentissa.}
+\label{text-view-1}
+\end{center}
+\end{figure}
+
+\verbatiminput{code/text-view.hs}
 
 ## Gtk-käyttöliittymäkirjastojen hierarkia
 

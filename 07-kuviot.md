@@ -1141,15 +1141,6 @@ earL = [
 
 Muunnamme viivajonon täytetyksi monikulmioksi. Pienennämme ja siirrämme monikulmion pistejoukon kuvaamalla sen funktioilla `scaleCoords` ja `addCoords`.
 
-Kuvamme on nyt valmis (kuva \ref{fig:foci-5}).
-
-\begin{figure}[htbp]
-\begin{center}
-\includegraphics{foci-5.pdf}
-\caption{Valmis kuva: Foci-lammas.}
-\label{fig:foci-5}
-\end{center}
-\end{figure}
 
 ```haskell
 sheepEars2 = map (Filled . Polygon) [right,left]
@@ -1161,3 +1152,12 @@ sheepEars2 = map (Filled . Polygon) [right,left]
     [right0,left0] = map sheepEar [earR,earL]
 ```
 
+Kuvamme on nyt valmis (kuva \ref{fig:foci-5}).
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics{foci-5.pdf}
+\caption{Valmis kuva: Foci-lammas.}
+\label{fig:foci-5}
+\end{center}
+\end{figure}

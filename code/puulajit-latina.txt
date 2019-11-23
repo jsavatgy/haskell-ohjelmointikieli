@@ -1,0 +1,8 @@
+rauduskoivu (Betula pendula) 
+metsävaahtera (Acer platanoides)
+tervaleppä (Alnus glutinosa)
+tammi (Quercus robur)
+vuorijalava (Ulmus glabra)
+metsälehmus (Tilia cordata)
+saarni (Fraxinus excelsior)
+haapa (Populus tremula)

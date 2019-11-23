@@ -1,0 +1,4 @@
+Muunna
+  - kuvan tila: harmaasävy
+  - tulostustarkkuus: 96 dpi
+
