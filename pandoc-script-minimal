@@ -18,7 +18,7 @@ pandoc minimal.md metadata.yaml\
   --pdf-engine=xelatex \
   -o "$1".pdf
 
-cp "$1".pdf ../figs/
+# cp "$1".pdf ../figs/
 
 
 if [ $? -eq 0 ]; then

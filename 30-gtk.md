@@ -212,11 +212,11 @@ Käyttämämme muuttujaviittaukset ovat `var`, joka sisältää kuvan suurennoks
 
 Muuttujaviittausten sisältämän tiedon avulla ohjelma kykenee laskemaan esitettävälle kuvalle uudet koordinaatit ja suurennoksen aina tapahtumankäsittelijän sitä pyytäessä.
 
-## Tekstinäkymä- ja tekstipuskurikomponentti
+## Tekstinäkymä ja tekstipuskuri
 
-Gtk-kirjaston tekstinäkymä- (`textView`) ja tekstipuskurikomponentti (`textBuffer`) sisältävät hyvin monipuoliset välineet yksinkertaisen tekstimuokkainikkunan luomiseen.
+Gtk-kirjaston tekstinäkymä (`textView`) ja tekstipuskuri (`textBuffer`) sisältävät hyvin monipuoliset välineet yksinkertaisen tekstimuokkaimen luomiseen.
 
-Kirjoitamme lyhyen ohjelman, joka avaa tekstitiedoston muokattavaksemme (kuva \ref{text-view-1}).
+Kirjoitamme lyhyen ohjelman tekstitiedoston muokkaamiseen (kuva \ref{text-view-1}).
 
 \begin{figure}[htbp]
 \begin{center}
@@ -300,269 +300,103 @@ Kirjoitamme lyhyen ohjelman, joka avaa tekstitiedoston muokattavaksemme (kuva \r
 
 Useimpien komponenttien (kuten `Button`) perustyyppi on `Widget`. Kun etsimme esimerkiksi painikkeelle tapahtumankäsittelijöitä, on meidän etsittävä niitä komponentin perustyypin dokumentaatiosta.
 
-Luettelemme seuraavassa tyypin `Widget` tarjoamat metodit, attribuutit ja tapahtumat.
+Luettelemme seuraavassa kirjaston `Graphics.UI.Gtk.Abstract.Widget` tarjoamat tyypit, metodit, attribuutit ja tapahtumat.
 
-- Metodit: 
-  - `widgetShow`, 
-`widgetShowNow`, 
-`widgetHide`, 
-`widgetShowAll`, 
-`widgetHideAll`, 
-`widgetDestroy`, 
-`widgetQueueDraw`, 
-`widgetQueueResize`, 
-`widgetQueueResizeNoRedraw`, 
-`widgetSizeRequest`, 
-`widgetGetChildRequisition`, 
-`widgetSizeAllocate`, 
-`widgetAddAccelerator`, 
-`widgetRemoveAccelerator`, 
-`widgetSetAccelPath`, 
-`widgetCanActivateAccel`, 
-`widgetActivate`, 
-`widgetIntersect`, 
-`widgetHasIntersection`, 
-`widgetGetIsFocus`, 
-`widgetGrabFocus`, 
-`widgetGrabDefault`, 
-`widgetSetName`, 
-`widgetGetName`, 
-`widgetSetSensitive`, 
-`widgetSetSensitivity`, 
-`widgetGetParentWindow`, 
-`widgetGetDrawWindow`, 
-`widgetDelEvents`, 
-`widgetAddEvents`, 
-`widgetGetEvents`, 
-`widgetSetEvents`, 
-`widgetSetExtensionEvents`, 
-`widgetGetExtensionEvents`, 
-`widgetGetToplevel`, 
-`widgetGetAncestor`, 
-`widgetGetColormap`, 
-`widgetSetColormap`, 
-`widgetGetPointer`, 
-`widgetIsAncestor`, 
-`widgetTranslateCoordinates`, 
-`widgetSetStyle`, 
-`widgetGetStyle`, 
-`widgetPushColormap`, 
-`widgetPopColormap`, 
-`widgetSetDefaultColormap`, 
-`widgetGetDefaultColormap`, 
-`widgetGetDefaultStyle`, 
-`widgetSetDirection`, 
-`widgetGetDirection`, 
-`widgetSetDefaultDirection`, 
-`widgetGetDefaultDirection`, 
-`widgetShapeCombineMask`, 
-`widgetInputShapeCombineMask`, 
-`widgetGetSnapshot`, 
-`widgetPath`, 
-`widgetClassPath`, 
-`widgetGetCompositeName`, 
-`widgetModifyStyle`, 
-`widgetGetModifierStyle`, 
-`widgetModifyFg`, 
-`widgetModifyBg`, 
-`widgetModifyText`, 
-`widgetModifyBase`, 
-`widgetModifyFont`, 
-`widgetRestoreFg`, 
-`widgetRestoreBg`, 
-`widgetRestoreText`, 
-`widgetRestoreBase`, 
-`widgetCreatePangoContext`, 
-`widgetGetPangoContext`, 
-`widgetCreateLayout`, 
-`widgetRenderIcon`, 
-`widgetQueueDrawArea`, 
-`widgetResetShapes`, 
-`widgetSetAppPaintable`, 
-`widgetSetDoubleBuffered`, 
-`widgetSetRedrawOnAllocate`, 
-`widgetSetCompositeName`, 
-`widgetMnemonicActivate`, 
-`widgetSetScrollAdjustments`, 
-`widgetRegionIntersect`, 
-`widgetGetAccessible`, 
-`widgetChildFocus`, 
-`widgetGetChildVisible`, 
-`widgetGetParent`, 
-`widgetGetSettings`, 
-`widgetGetClipboard`, 
-`widgetGetDisplay`, 
-`widgetGetRootWindow`, 
-`widgetGetScreen`, 
-`widgetHasScreen`, 
-`widgetGetSizeRequest`, 
-`widgetSetChildVisible`, 
-`widgetSetSizeRequest`, 
-`widgetSetNoShowAll`, 
-`widgetGetNoShowAll`, 
-`widgetListMnemonicLabels`, 
-`widgetAddMnemonicLabel`, 
-`widgetRemoveMnemonicLabel`, 
-`widgetGetAction`, 
-`widgetIsComposited`, 
-`widgetErrorBell`, 
-`widgetKeynavFailed`, 
-`widgetGetTooltipMarkup`, 
-`widgetSetTooltipMarkup`, 
-`widgetGetTooltipText`, 
-`widgetSetTooltipText`, 
-`widgetGetTooltipWindow`, 
-`widgetSetTooltipWindow`, 
-`widgetGetHasTooltip`, 
-`widgetSetHasTooltip`, 
-`widgetTriggerTooltipQuery`, 
-`widgetGetWindow`, 
-`widgetReparent`, 
-`widgetGetCanFocus`, 
-`widgetSetCanFocus`, 
-`widgetGetAllocation`, 
-`widgetGetAppPaintable`, 
-`widgetGetCanDefault`, 
-`widgetSetCanDefault`, 
-`widgetGetHasWindow`, 
-`widgetSetHasWindow`, 
-`widgetGetSensitive`, 
-`widgetIsSensitive`, 
-`widgetGetState`, 
-`widgetGetVisible`, 
-`widgetGetHasDefault`, 
-`widgetGetHasFocus`, 
-`widgetHasGrab`, 
-`widgetIsDrawable`, 
-`widgetIsToplevel`, 
-`widgetSetWindow`, 
-`widgetSetReceivesDefault`, 
-`widgetGetReceivesDefault`, 
-`widgetSetState`, 
-`widgetGetSavedState`, 
-`widgetGetSize`.
-- Attribuutit: 
-  - `widgetName`, 
-`widgetParent`, 
-`widgetWidthRequest`, 
-`widgetHeightRequest`, 
-`widgetMarginLeft`, 
-`widgetMarginRight`, 
-`widgetMarginTop`, 
-`widgetMarginBottom`, 
-`widgetVisible`, 
-`widgetOpacity`, 
-`widgetSensitive`, 
-`widgetAppPaintable`, 
-`widgetCanFocus`, 
-`widgetHasFocus`, 
-`widgetIsFocus`, 
-`widgetCanDefault`, 
-`widgetHasDefault`, 
-`widgetReceivesDefault`, 
-`widgetCompositeChild`, 
-`widgetStyle`, 
-`widgetState`, 
-`widgetEvents`, 
-`widgetExtensionEvents`, 
-`widgetExpand`, 
-`widgetHExpand`, 
-`widgetHExpandSet`, 
-`widgetVExpand`, 
-`widgetVExpandSet`, 
-`widgetNoShowAll`, 
-`widgetChildVisible`, 
-`widgetColormap`, 
-`widgetCompositeName`, 
-`widgetDirection`, 
-`widgetTooltipMarkup`, 
-`widgetTooltipText`, 
-`widgetHasTooltip`, 
-`widgetHasRcStyle`, 
-`widgetGetRealized`, 
-`widgetGetMapped`, 
-`widgetSetRealized`, 
-`widgetSetMapped`, 
-`realize`, 
-`unrealize`, 
-`mapSignal`, 
-`unmapSignal`, 
-`sizeRequest`, 
-`sizeAllocate`, 
-`showSignal`, 
-`hideSignal`, 
-`focus`, 
-`stateChanged`, 
-`parentSet`, 
-`hierarchyChanged`, 
-`styleSet`, 
-`directionChanged`, 
-`grabNotify`, 
-`popupMenuSignal`, 
-`showHelp`, 
-`accelClosuresChanged`, 
-`screenChanged`, 
-`queryTooltip`. 
-- Tapahtumat:
-  - `buttonPressEvent`, 
-`buttonReleaseEvent`, 
-`configureEvent`, 
-`deleteEvent`, 
-`destroyEvent`, 
-`enterNotifyEvent`, 
-`exposeEvent`, 
-`focusInEvent`, 
-`focusOutEvent`, 
-`grabBrokenEvent`, 
-`keyPressEvent`, 
-`keyReleaseEvent`, 
-`leaveNotifyEvent`, 
-`mapEvent`, 
-`motionNotifyEvent`, 
-`noExposeEvent`, 
-`proximityInEvent`, 
-`proximityOutEvent`, 
-`scrollEvent`, 
-`unmapEvent`, 
-`visibilityNotifyEvent`, 
-`windowStateEvent`. 
+\begin{Verbatim}[baselinestretch=0.85,commandchars=\\\{\}]
+\textrm{Tyypit: }
+GType  KeyVal StockId   AccelFlags Requisition  WidgetHelpType
+Color  Region EventMask Allocation ExtensionMode DirectionType
+Widget Bitmap Rectangle  StateType TextDirection              
+
+\textrm{Etuliite: }widget-
+\textrm{Metodit: }
+~Show     ~SizeAllocate ~SetDirection ~InputShapeCombineMask
+~Hide     ~SetAccelPath ~GetDirection  ~TranslateCoordinates
+~Path     ~SetSensitive ~CreateLayout  ~SetScrollAdjustments
+~ShowNow  ~PushColormap ~GetClipboard   ~GetChildRequisition
+~ShowAll   ~QueueResize ~SetNoShowAll   ~QueueResizeNoRedraw
+~HideAll   ~GrabDefault ~GetNoShowAll   ~SetDefaultDirection
+~Destroy   ~GetToplevel ~IsComposited   ~GetDefaultDirection
+~SetName   ~GetAncestor ~KeynavFailed   ~SetRedrawOnAllocate
+~GetName   ~GetColormap ~GetHasWindow   ~RemoveMnemonicLabel
+~HasGrab   ~SetColormap ~SetHasWindow   ~TriggerTooltipQuery
+~GetSize   ~SizeRequest ~GetSensitive    ~SetExtensionEvents
+~Activate  ~PopColormap ~GetDrawWindow   ~GetExtensionEvents
+~SetStyle  ~GetSnapshot ~QueueDrawArea   ~SetDefaultColormap
+~GetStyle  ~ModifyStyle ~GetAccessible   ~GetDefaultColormap
+~ModifyFg  ~RestoreText ~GetRootWindow   ~CreatePangoContext
+~ModifyBg  ~RestoreBase ~GetHasTooltip   ~ListMnemonicLabels
+~Reparent  ~ResetShapes ~SetHasTooltip   ~SetReceivesDefault
+~GetState  ~GetSettings ~GetAllocation   ~GetReceivesDefault
+~SetState  ~GetCanFocus ~GetCanDefault    ~RemoveAccelerator
+~QueueDraw ~SetCanFocus ~SetCanDefault    ~SetDoubleBuffered
+~Intersect ~IsSensitive ~GetHasDefault     ~CanActivateAccel
+~GrabFocus ~GetHasFocus ~GetSavedState     ~ShapeCombineMask
+~DelEvents  ~GetIsFocus ~AddAccelerator    ~GetCompositeName
+~AddEvents  ~GetPointer ~SetSensitivity    ~GetModifierStyle
+~GetEvents  ~IsAncestor ~GetSizeRequest    ~SetCompositeName
+~SetEvents  ~ModifyText ~SetSizeRequest    ~MnemonicActivate
+~ClassPath  ~ModifyBase ~GetTooltipText    ~AddMnemonicLabel
+~RestoreFg  ~ModifyFont ~SetTooltipText    ~GetTooltipMarkup
+~RestoreBg  ~RenderIcon ~HasIntersection   ~SetTooltipMarkup
+~GetParent  ~ChildFocus ~GetParentWindow   ~GetTooltipWindow
+~GetScreen  ~GetDisplay ~GetDefaultStyle   ~SetTooltipWindow
+~HasScreen  ~GetVisible ~GetPangoContext    ~SetChildVisible
+~GetAction  ~IsDrawable ~SetAppPaintable    ~GetAppPaintable
+~ErrorBell  ~IsToplevel ~RegionIntersect                    
+~GetWindow   ~SetWindow ~GetChildVisible                    
+
+\textrm{Attribuutit: }
+~Name   ~MarginLeft ~HasDefault ~ReceivesDefault
+~Style  ~CanDefault ~HExpandSet ~ExtensionEvents
+~State   ~MarginTop ~VExpandSet  ~CompositeChild
+~Parent  ~Sensitive ~HasTooltip   ~HeightRequest
+~Events  ~NoShowAll ~HasRcStyle   ~CompositeName
+~Expand  ~Direction ~MarginRight  ~TooltipMarkup
+~Visible ~GetMapped ~TooltipText   ~AppPaintable
+~Opacity ~SetMapped ~GetRealized   ~ChildVisible
+~IsFocus  ~CanFocus ~SetRealized                
+~HExpand  ~HasFocus ~WidthRequest               
+~VExpand  ~Colormap ~MarginBottom               
+
+\textrm{Signaalit: }
+focus    showSignal unmapSignal accelClosuresChanged
+realize  hideSignal sizeRequest     hierarchyChanged
+styleSet grabNotify sizeAllocate    directionChanged
+showHelp  mapSignal stateChanged     popupMenuSignal
+unrealize parentSet queryTooltip       screenChanged
+
+\textrm{Tapahtumat: }
+mapEvent  grabBrokenEvent keyReleaseEvent visibilityNotifyEvent
+unmapEvent configureEvent buttonPressEvent   buttonReleaseEvent
+deleteEvent focusOutEvent enterNotifyEvent    motionNotifyEvent
+exposeEvent keyPressEvent leaveNotifyEvent    proximityOutEvent
+scrollEvent noExposeEvent proximityInEvent                     
+destroyEvent focusInEvent windowStateEvent                     
+\end{Verbatim}
 
 ## Kirjasto `Graphics.UI.Gtk.Gdk.EventM`
 
-- Funktioita: 
-  - `eventWindow`, 
-`eventSent`, 
-`eventCoordinates`, 
-`eventRootCoordinates`, 
-`eventModifier`, 
-`eventModifierAll`, 
-`eventTime`, 
-`eventKeyVal`, 
-`eventKeyName`, 
-`eventHardwareKeycode`, 
-`eventKeyboardGroup`, 
-`eventButton`, 
-`eventScrollDirection`, 
-`eventIsHint`, 
-`eventArea`, 
-`eventRegion`, 
-`eventVisibilityState`, 
-`eventCrossingMode`, 
-`eventNotifyType`, 
-`eventCrossingFocus`, 
-`eventFocusIn`, 
-`eventPosition`, 
-`eventSize`, 
-`eventWindowStateChanged`, 
-`eventWindowState`, 
-`eventChangeReason`, 
-`eventSelection`, 
-`eventSelectionTime`, 
-`eventKeyboardGrab`, 
-`eventImplicit`, 
-`eventGrabWindow`, 
-`currentTime`, 
-`tryEvent`, 
-`stopEvent`. 
+Komponentin vastaanottamat tapahtumat on määritelty kirjastossa `Graphics.UI.Gtk.Abstract.Widget`. Tapahtumien sisältämä muu informaatio on löydettävissä kirjaston `Graphics.UI.Gtk.Gdk.EventM` tarjoamien funktioiden avulla. Luettelemme osan kirjaston tarjoamista funktioista seuraavassa.
+
+\begin{Verbatim}[baselinestretch=0.85,commandchars=\\\{\}]
+\textrm{Tyypit: }
+EAny   EButton ECrossing EWindowState
+EKey   EScroll EProperty EOwnerChange
+EventM EMotion EConfigure EVisibility
+EFocus EExpose EProximity EGrabBroken
+
+\textrm{Etuliite: }event-
+\textrm{Funktiot: }
+~Sent ~NotifyType ~GrabWindow ~WindowStateChanged
+~Time  ~Selection currentTime    ~RootCoordinates
+~Area   ~Modifier ~Coordinates   ~HardwareKeycode
+~Size   ~Position ~ModifierAll   ~ScrollDirection
+~Window ~Implicit ~WindowState   ~VisibilityState
+~KeyVal stopEvent ~CrossingMode    ~CrossingFocus
+~Button  ~KeyName ~ChangeReason    ~SelectionTime
+~IsHint  ~FocusIn ~KeyboardGrab                  
+~Region  tryEvent ~KeyboardGroup                 
+\end{Verbatim}
 
 

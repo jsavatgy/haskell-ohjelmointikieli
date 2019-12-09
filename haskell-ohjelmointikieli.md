@@ -5881,11 +5881,11 @@ Käyttämämme muuttujaviittaukset ovat `var`, joka sisältää kuvan suurennoks
 
 Muuttujaviittausten sisältämän tiedon avulla ohjelma kykenee laskemaan esitettävälle kuvalle uudet koordinaatit ja suurennoksen aina tapahtumankäsittelijän sitä pyytäessä.
 
-## Tekstinäkymä- ja tekstipuskurikomponentti
+## Tekstinäkymä ja tekstipuskuri
 
-Gtk-kirjaston tekstinäkymä- (`textView`) ja tekstipuskurikomponentti (`textBuffer`) sisältävät hyvin monipuoliset välineet yksinkertaisen tekstimuokkainikkunan luomiseen.
+Gtk-kirjaston tekstinäkymä (`textView`) ja tekstipuskuri (`textBuffer`) sisältävät hyvin monipuoliset välineet yksinkertaisen tekstimuokkaimen luomiseen.
 
-Kirjoitamme lyhyen ohjelman, joka avaa tekstitiedoston muokattavaksemme (kuva \ref{text-view-1}).
+Kirjoitamme lyhyen ohjelman tekstitiedoston muokkaamiseen (kuva \ref{text-view-1}).
 
 \begin{figure}[htbp]
 \begin{center}
@@ -5969,270 +5969,104 @@ Kirjoitamme lyhyen ohjelman, joka avaa tekstitiedoston muokattavaksemme (kuva \r
 
 Useimpien komponenttien (kuten `Button`) perustyyppi on `Widget`. Kun etsimme esimerkiksi painikkeelle tapahtumankäsittelijöitä, on meidän etsittävä niitä komponentin perustyypin dokumentaatiosta.
 
-Luettelemme seuraavassa tyypin `Widget` tarjoamat metodit, attribuutit ja tapahtumat.
+Luettelemme seuraavassa kirjaston `Graphics.UI.Gtk.Abstract.Widget` tarjoamat tyypit, metodit, attribuutit ja tapahtumat.
 
-- Metodit: 
-  - `widgetShow`, 
-`widgetShowNow`, 
-`widgetHide`, 
-`widgetShowAll`, 
-`widgetHideAll`, 
-`widgetDestroy`, 
-`widgetQueueDraw`, 
-`widgetQueueResize`, 
-`widgetQueueResizeNoRedraw`, 
-`widgetSizeRequest`, 
-`widgetGetChildRequisition`, 
-`widgetSizeAllocate`, 
-`widgetAddAccelerator`, 
-`widgetRemoveAccelerator`, 
-`widgetSetAccelPath`, 
-`widgetCanActivateAccel`, 
-`widgetActivate`, 
-`widgetIntersect`, 
-`widgetHasIntersection`, 
-`widgetGetIsFocus`, 
-`widgetGrabFocus`, 
-`widgetGrabDefault`, 
-`widgetSetName`, 
-`widgetGetName`, 
-`widgetSetSensitive`, 
-`widgetSetSensitivity`, 
-`widgetGetParentWindow`, 
-`widgetGetDrawWindow`, 
-`widgetDelEvents`, 
-`widgetAddEvents`, 
-`widgetGetEvents`, 
-`widgetSetEvents`, 
-`widgetSetExtensionEvents`, 
-`widgetGetExtensionEvents`, 
-`widgetGetToplevel`, 
-`widgetGetAncestor`, 
-`widgetGetColormap`, 
-`widgetSetColormap`, 
-`widgetGetPointer`, 
-`widgetIsAncestor`, 
-`widgetTranslateCoordinates`, 
-`widgetSetStyle`, 
-`widgetGetStyle`, 
-`widgetPushColormap`, 
-`widgetPopColormap`, 
-`widgetSetDefaultColormap`, 
-`widgetGetDefaultColormap`, 
-`widgetGetDefaultStyle`, 
-`widgetSetDirection`, 
-`widgetGetDirection`, 
-`widgetSetDefaultDirection`, 
-`widgetGetDefaultDirection`, 
-`widgetShapeCombineMask`, 
-`widgetInputShapeCombineMask`, 
-`widgetGetSnapshot`, 
-`widgetPath`, 
-`widgetClassPath`, 
-`widgetGetCompositeName`, 
-`widgetModifyStyle`, 
-`widgetGetModifierStyle`, 
-`widgetModifyFg`, 
-`widgetModifyBg`, 
-`widgetModifyText`, 
-`widgetModifyBase`, 
-`widgetModifyFont`, 
-`widgetRestoreFg`, 
-`widgetRestoreBg`, 
-`widgetRestoreText`, 
-`widgetRestoreBase`, 
-`widgetCreatePangoContext`, 
-`widgetGetPangoContext`, 
-`widgetCreateLayout`, 
-`widgetRenderIcon`, 
-`widgetQueueDrawArea`, 
-`widgetResetShapes`, 
-`widgetSetAppPaintable`, 
-`widgetSetDoubleBuffered`, 
-`widgetSetRedrawOnAllocate`, 
-`widgetSetCompositeName`, 
-`widgetMnemonicActivate`, 
-`widgetSetScrollAdjustments`, 
-`widgetRegionIntersect`, 
-`widgetGetAccessible`, 
-`widgetChildFocus`, 
-`widgetGetChildVisible`, 
-`widgetGetParent`, 
-`widgetGetSettings`, 
-`widgetGetClipboard`, 
-`widgetGetDisplay`, 
-`widgetGetRootWindow`, 
-`widgetGetScreen`, 
-`widgetHasScreen`, 
-`widgetGetSizeRequest`, 
-`widgetSetChildVisible`, 
-`widgetSetSizeRequest`, 
-`widgetSetNoShowAll`, 
-`widgetGetNoShowAll`, 
-`widgetListMnemonicLabels`, 
-`widgetAddMnemonicLabel`, 
-`widgetRemoveMnemonicLabel`, 
-`widgetGetAction`, 
-`widgetIsComposited`, 
-`widgetErrorBell`, 
-`widgetKeynavFailed`, 
-`widgetGetTooltipMarkup`, 
-`widgetSetTooltipMarkup`, 
-`widgetGetTooltipText`, 
-`widgetSetTooltipText`, 
-`widgetGetTooltipWindow`, 
-`widgetSetTooltipWindow`, 
-`widgetGetHasTooltip`, 
-`widgetSetHasTooltip`, 
-`widgetTriggerTooltipQuery`, 
-`widgetGetWindow`, 
-`widgetReparent`, 
-`widgetGetCanFocus`, 
-`widgetSetCanFocus`, 
-`widgetGetAllocation`, 
-`widgetGetAppPaintable`, 
-`widgetGetCanDefault`, 
-`widgetSetCanDefault`, 
-`widgetGetHasWindow`, 
-`widgetSetHasWindow`, 
-`widgetGetSensitive`, 
-`widgetIsSensitive`, 
-`widgetGetState`, 
-`widgetGetVisible`, 
-`widgetGetHasDefault`, 
-`widgetGetHasFocus`, 
-`widgetHasGrab`, 
-`widgetIsDrawable`, 
-`widgetIsToplevel`, 
-`widgetSetWindow`, 
-`widgetSetReceivesDefault`, 
-`widgetGetReceivesDefault`, 
-`widgetSetState`, 
-`widgetGetSavedState`, 
-`widgetGetSize`.
-- Attribuutit: 
-  - `widgetName`, 
-`widgetParent`, 
-`widgetWidthRequest`, 
-`widgetHeightRequest`, 
-`widgetMarginLeft`, 
-`widgetMarginRight`, 
-`widgetMarginTop`, 
-`widgetMarginBottom`, 
-`widgetVisible`, 
-`widgetOpacity`, 
-`widgetSensitive`, 
-`widgetAppPaintable`, 
-`widgetCanFocus`, 
-`widgetHasFocus`, 
-`widgetIsFocus`, 
-`widgetCanDefault`, 
-`widgetHasDefault`, 
-`widgetReceivesDefault`, 
-`widgetCompositeChild`, 
-`widgetStyle`, 
-`widgetState`, 
-`widgetEvents`, 
-`widgetExtensionEvents`, 
-`widgetExpand`, 
-`widgetHExpand`, 
-`widgetHExpandSet`, 
-`widgetVExpand`, 
-`widgetVExpandSet`, 
-`widgetNoShowAll`, 
-`widgetChildVisible`, 
-`widgetColormap`, 
-`widgetCompositeName`, 
-`widgetDirection`, 
-`widgetTooltipMarkup`, 
-`widgetTooltipText`, 
-`widgetHasTooltip`, 
-`widgetHasRcStyle`, 
-`widgetGetRealized`, 
-`widgetGetMapped`, 
-`widgetSetRealized`, 
-`widgetSetMapped`, 
-`realize`, 
-`unrealize`, 
-`mapSignal`, 
-`unmapSignal`, 
-`sizeRequest`, 
-`sizeAllocate`, 
-`showSignal`, 
-`hideSignal`, 
-`focus`, 
-`stateChanged`, 
-`parentSet`, 
-`hierarchyChanged`, 
-`styleSet`, 
-`directionChanged`, 
-`grabNotify`, 
-`popupMenuSignal`, 
-`showHelp`, 
-`accelClosuresChanged`, 
-`screenChanged`, 
-`queryTooltip`. 
-- Tapahtumat:
-  - `buttonPressEvent`, 
-`buttonReleaseEvent`, 
-`configureEvent`, 
-`deleteEvent`, 
-`destroyEvent`, 
-`enterNotifyEvent`, 
-`exposeEvent`, 
-`focusInEvent`, 
-`focusOutEvent`, 
-`grabBrokenEvent`, 
-`keyPressEvent`, 
-`keyReleaseEvent`, 
-`leaveNotifyEvent`, 
-`mapEvent`, 
-`motionNotifyEvent`, 
-`noExposeEvent`, 
-`proximityInEvent`, 
-`proximityOutEvent`, 
-`scrollEvent`, 
-`unmapEvent`, 
-`visibilityNotifyEvent`, 
-`windowStateEvent`. 
+\begin{Verbatim}[baselinestretch=0.85,commandchars=\\\{\}]
+\textrm{Tyypit: }
+GType  KeyVal StockId   AccelFlags Requisition  WidgetHelpType
+Color  Region EventMask Allocation ExtensionMode DirectionType
+Widget Bitmap Rectangle  StateType TextDirection              
+
+\textrm{Etuliite: }widget-
+\textrm{Metodit: }
+~Show     ~SizeAllocate ~SetDirection ~InputShapeCombineMask
+~Hide     ~SetAccelPath ~GetDirection  ~TranslateCoordinates
+~Path     ~SetSensitive ~CreateLayout  ~SetScrollAdjustments
+~ShowNow  ~PushColormap ~GetClipboard   ~GetChildRequisition
+~ShowAll   ~QueueResize ~SetNoShowAll   ~QueueResizeNoRedraw
+~HideAll   ~GrabDefault ~GetNoShowAll   ~SetDefaultDirection
+~Destroy   ~GetToplevel ~IsComposited   ~GetDefaultDirection
+~SetName   ~GetAncestor ~KeynavFailed   ~SetRedrawOnAllocate
+~GetName   ~GetColormap ~GetHasWindow   ~RemoveMnemonicLabel
+~HasGrab   ~SetColormap ~SetHasWindow   ~TriggerTooltipQuery
+~GetSize   ~SizeRequest ~GetSensitive    ~SetExtensionEvents
+~Activate  ~PopColormap ~GetDrawWindow   ~GetExtensionEvents
+~SetStyle  ~GetSnapshot ~QueueDrawArea   ~SetDefaultColormap
+~GetStyle  ~ModifyStyle ~GetAccessible   ~GetDefaultColormap
+~ModifyFg  ~RestoreText ~GetRootWindow   ~CreatePangoContext
+~ModifyBg  ~RestoreBase ~GetHasTooltip   ~ListMnemonicLabels
+~Reparent  ~ResetShapes ~SetHasTooltip   ~SetReceivesDefault
+~GetState  ~GetSettings ~GetAllocation   ~GetReceivesDefault
+~SetState  ~GetCanFocus ~GetCanDefault    ~RemoveAccelerator
+~QueueDraw ~SetCanFocus ~SetCanDefault    ~SetDoubleBuffered
+~Intersect ~IsSensitive ~GetHasDefault     ~CanActivateAccel
+~GrabFocus ~GetHasFocus ~GetSavedState     ~ShapeCombineMask
+~DelEvents  ~GetIsFocus ~AddAccelerator    ~GetCompositeName
+~AddEvents  ~GetPointer ~SetSensitivity    ~GetModifierStyle
+~GetEvents  ~IsAncestor ~GetSizeRequest    ~SetCompositeName
+~SetEvents  ~ModifyText ~SetSizeRequest    ~MnemonicActivate
+~ClassPath  ~ModifyBase ~GetTooltipText    ~AddMnemonicLabel
+~RestoreFg  ~ModifyFont ~SetTooltipText    ~GetTooltipMarkup
+~RestoreBg  ~RenderIcon ~HasIntersection   ~SetTooltipMarkup
+~GetParent  ~ChildFocus ~GetParentWindow   ~GetTooltipWindow
+~GetScreen  ~GetDisplay ~GetDefaultStyle   ~SetTooltipWindow
+~HasScreen  ~GetVisible ~GetPangoContext    ~SetChildVisible
+~GetAction  ~IsDrawable ~SetAppPaintable    ~GetAppPaintable
+~ErrorBell  ~IsToplevel ~RegionIntersect                    
+~GetWindow   ~SetWindow ~GetChildVisible                    
+
+\textrm{Attribuutit: }
+~Name   ~MarginLeft ~HasDefault ~ReceivesDefault
+~Style  ~CanDefault ~HExpandSet ~ExtensionEvents
+~State   ~MarginTop ~VExpandSet  ~CompositeChild
+~Parent  ~Sensitive ~HasTooltip   ~HeightRequest
+~Events  ~NoShowAll ~HasRcStyle   ~CompositeName
+~Expand  ~Direction ~MarginRight  ~TooltipMarkup
+~Visible ~GetMapped ~TooltipText   ~AppPaintable
+~Opacity ~SetMapped ~GetRealized   ~ChildVisible
+~IsFocus  ~CanFocus ~SetRealized                
+~HExpand  ~HasFocus ~WidthRequest               
+~VExpand  ~Colormap ~MarginBottom               
+
+\textrm{Signaalit: }
+focus    showSignal unmapSignal accelClosuresChanged
+realize  hideSignal sizeRequest     hierarchyChanged
+styleSet grabNotify sizeAllocate    directionChanged
+showHelp  mapSignal stateChanged     popupMenuSignal
+unrealize parentSet queryTooltip       screenChanged
+
+\textrm{Tapahtumat: }
+mapEvent  grabBrokenEvent keyReleaseEvent visibilityNotifyEvent
+unmapEvent configureEvent buttonPressEvent   buttonReleaseEvent
+deleteEvent focusOutEvent enterNotifyEvent    motionNotifyEvent
+exposeEvent keyPressEvent leaveNotifyEvent    proximityOutEvent
+scrollEvent noExposeEvent proximityInEvent                     
+destroyEvent focusInEvent windowStateEvent                     
+\end{Verbatim}
 
 ## Kirjasto `Graphics.UI.Gtk.Gdk.EventM`
 
-- Funktioita: 
-  - `eventWindow`, 
-`eventSent`, 
-`eventCoordinates`, 
-`eventRootCoordinates`, 
-`eventModifier`, 
-`eventModifierAll`, 
-`eventTime`, 
-`eventKeyVal`, 
-`eventKeyName`, 
-`eventHardwareKeycode`, 
-`eventKeyboardGroup`, 
-`eventButton`, 
-`eventScrollDirection`, 
-`eventIsHint`, 
-`eventArea`, 
-`eventRegion`, 
-`eventVisibilityState`, 
-`eventCrossingMode`, 
-`eventNotifyType`, 
-`eventCrossingFocus`, 
-`eventFocusIn`, 
-`eventPosition`, 
-`eventSize`, 
-`eventWindowStateChanged`, 
-`eventWindowState`, 
-`eventChangeReason`, 
-`eventSelection`, 
-`eventSelectionTime`, 
-`eventKeyboardGrab`, 
-`eventImplicit`, 
-`eventGrabWindow`, 
-`currentTime`, 
-`tryEvent`, 
-`stopEvent`. 
+Komponentin vastaanottamat tapahtumat on määritelty kirjastossa `Graphics.UI.Gtk.Abstract.Widget`. Tapahtumien sisältämä muu informaatio on löydettävissä kirjaston `Graphics.UI.Gtk.Gdk.EventM` tarjoamien funktioiden avulla. Luettelemme osan kirjaston tarjoamista funktioista seuraavassa.
+
+\begin{Verbatim}[baselinestretch=0.85,commandchars=\\\{\}]
+\textrm{Tyypit: }
+EAny   EButton ECrossing EWindowState
+EKey   EScroll EProperty EOwnerChange
+EventM EMotion EConfigure EVisibility
+EFocus EExpose EProximity EGrabBroken
+
+\textrm{Etuliite: }event-
+\textrm{Funktiot: }
+~Sent ~NotifyType ~GrabWindow ~WindowStateChanged
+~Time  ~Selection currentTime    ~RootCoordinates
+~Area   ~Modifier ~Coordinates   ~HardwareKeycode
+~Size   ~Position ~ModifierAll   ~ScrollDirection
+~Window ~Implicit ~WindowState   ~VisibilityState
+~KeyVal stopEvent ~CrossingMode    ~CrossingFocus
+~Button  ~KeyName ~ChangeReason    ~SelectionTime
+~IsHint  ~FocusIn ~KeyboardGrab                  
+~Region  tryEvent ~KeyboardGroup                 
+\end{Verbatim}
 
 
 ## Piirtokirjasto `Graphics.Rendering.Cairo`
@@ -6301,21 +6135,21 @@ Luettelemme seuraavassa tyypin `Widget` tarjoamat metodit, attribuutit ja tapaht
 `relCurveTo`, 
 `relLineTo`, 
 `relMoveTo`.
-- Kuviointi:
-  - `withRGBPattern`, 
-`withRGBAPattern`, 
-`withPatternForSurface`, 
-`withGroupPattern`, 
-`withLinearPattern`, 
-`withRadialPattern`, 
-`patternAddColorStopRGB`, 
-`patternAddColorStopRGBA`, 
-`patternSetMatrix`, 
-`patternGetMatrix`, 
-`patternSetExtend`, 
-`patternGetExtend`, 
-`patternSetFilter`, 
-`patternGetFilter`.
+- Kuviointi (`~ = pattern-/-Pattern`):
+  - `withRGB~`, 
+`withRGBA~`, 
+`with~ForSurface`, 
+`withGroup~`, 
+`withLinear~`, 
+`withRadial~`, 
+`~AddColorStopRGB`, 
+`~AddColorStopRGBA`, 
+`~SetMatrix`, 
+`~GetMatrix`, 
+`~SetExtend`, 
+`~GetExtend`, 
+`~SetFilter`, 
+`~GetFilter`.
 - Koordinaattimuunnokset:
   - `translate`, 
 `scale`, 
@@ -6337,45 +6171,45 @@ Luettelemme seuraavassa tyypin `Widget` tarjoamat metodit, attribuutit ja tapaht
 `showText`, 
 `fontExtents`, 
 `textExtents`.
-- Kirjasin:
-  - `fontOptionsCreate`, 
-`fontOptionsCopy`, 
-`fontOptionsMerge`, 
-`fontOptionsHash`, 
-`fontOptionsEqual`, 
-`fontOptionsSetAntialias`, 
-`fontOptionsGetAntialias`, 
-`fontOptionsSetSubpixelOrder`, 
-`fontOptionsGetSubpixelOrder`, 
-`fontOptionsSetHintStyle`, 
-`fontOptionsGetHintStyle`, 
-`fontOptionsSetHintMetrics`, 
-`fontOptionsGetHintMetrics`.
-- Pinnat:
-  - `withSimilarSurface`, 
-`createSimilarSurface`, 
-`renderWithSimilarSurface`, 
-`surfaceGetFontOptions`, 
-`surfaceFinish`, 
-`surfaceFlush`, 
-`surfaceMarkDirty`, 
-`surfaceMarkDirtyRectangle`, 
-`surfaceSetDeviceOffset`.
-- Kuvapinnat:
-  - `withImageSurface`, 
-`withImageSurfaceForData`, 
+- Kirjasin (`~ = fontOptions-`):
+  - `~Create`, 
+`~Copy`, 
+`~Merge`, 
+`~Hash`, 
+`~Equal`, 
+`~SetAntialias`, 
+`~GetAntialias`, 
+`~SetSubpixelOrder`, 
+`~GetSubpixelOrder`, 
+`~SetHintStyle`, 
+`~GetHintStyle`, 
+`~SetHintMetrics`, 
+`~GetHintMetrics`.
+- Pinnat (`~ = surface-/-Surface`):
+  - `withSimilar~`, 
+`createSimilar~`, 
+`renderWithSimilar~`, 
+`~GetFontOptions`, 
+`~Finish`, 
+`~Flush`, 
+`~MarkDirty`, 
+`~MarkDirtyRectangle`, 
+`~SetDeviceOffset`.
+- Kuvapinnat (`~ = imageSurface-/-ImageSurface`)
+  - `with~`, 
+`with~ForData`, 
 `formatStrideForWidth`, 
-`createImageSurfaceForData`, 
-`createImageSurface`, 
-`imageSurfaceGetWidth`, 
-`imageSurfaceGetHeight`, 
-`imageSurfaceGetFormat`, 
-`imageSurfaceGetStride`, 
-`imageSurfaceGetData`, 
-`imageSurfaceGetPixels`.
+`create~ForData`, 
+`create~`, 
+`~GetWidth`, 
+`~GetHeight`, 
+`~GetFormat`, 
+`~GetStride`, 
+`~GetData`, 
+`~GetPixels`.
 - Png-kuvatiedostot:
-  - `withImageSurfaceFromPNG`, 
-`imageSurfaceCreateFromPNG`, 
+  - `with~FromPNG`, 
+`~CreateFromPNG`, 
 `surfaceWriteToPNG`.
 - Pdf-pinnat:
   - `withPDFSurface`, 
@@ -6384,93 +6218,41 @@ Luettelemme seuraavassa tyypin `Widget` tarjoamat metodit, attribuutit ja tapaht
   - `withPSSurface`, `psSurfaceSetSize`.
 - Svg-vektorikuvat:
   - `withSVGSurface`.
-- Alueet:
-  - `regionCreate`, 
-`regionCreateRectangle`, 
-`regionCreateRectangles`, 
-`regionCopy`, 
-`regionGetExtents`, 
-`regionNumRectangles`, 
-`regionGetRectangle`, 
-`regionIsEmpty`, 
-`regionContainsPoint`, 
-`regionContainsRectangle`, 
-`regionEqual`, 
-`regionTranslate`, 
-`regionIntersect`, 
-`regionIntersectRectangle`, 
-`regionSubtract`, 
-`regionSubtractRectangle`, 
-`regionUnion`, 
-`regionUnionRectangle`, 
-`regionXor`,  
-`regionXorRectangle`.
+- Alueet (`~ = region-`):
+  - `~Create`, 
+`~CreateRectangle`, 
+`~CreateRectangles`, 
+`~Copy`, 
+`~GetExtents`, 
+`~NumRectangles`, 
+`~GetRectangle`, 
+`~IsEmpty`, 
+`~ContainsPoint`, 
+`~ContainsRectangle`, 
+`~Equal`, 
+`~Translate`, 
+`~Intersect`, 
+`~IntersectRectangle`, 
+`~Subtract`, 
+`~SubtractRectangle`, 
+`~Union`, 
+`~UnionRectangle`, 
+`~Xor`,  
+`~XorRectangle`.
 - Muut komennot:
   - `liftIO`, 
 `version`, 
 `versionString`. 
 
-### Tietotyypit
+\begin{Verbatim}[baselinestretch=0.85,commandchars=\\\{\}]
+\textrm{Tyypit: }
+Path  Surface Pattern Antialias ScaledFont RegionOverlapPart
+Glyph  Region LineCap FontSlant FontWeight     SubpixelOrder
+Render Format Content HintStyle TextExtents    RegionOverlap
+Matrix Extend Operator LineJoin FontExtents     RectangleInt
+Status Filter FillRule FontFace HintMetrics      FontOptions
+\end{Verbatim}
 
-```haskell
-data Render m
-data Matrix
-data Surface
-data Pattern
-data Status
-data Operator = OperatorClear | OperatorSource 
-  | OperatorOver | OperatorIn | OperatorOut | OperatorAtop 
-  | OperatorDest | OperatorDestOver | OperatorDestIn 
-  | OperatorDestOut | OperatorDestAtop | OperatorXor 
-  | OperatorAdd | OperatorSaturate | OperatorMultiply 
-  | OperatorScreen | OperatorOverlay | OperatorDarken 
-  | OperatorLighten | OperatorColorDodge 
-  | OperatorColorBurn | OperatorHardLight 
-  | OperatorSoftLight | OperatorDifference 
-  | OperatorExclusion | OperatorHslHue 
-  | OperatorHslSaturation | OperatorHslColor 
-  | OperatorHslLuminosity
-data Antialias = AntialiasDefault | AntialiasNone 
-  | AntialiasGray | AntialiasSubpixel | AntialiasFast 
-  | AntialiasGood | AntialiasBest
-data FillRule = FillRuleWinding | FillRuleEvenOdd
-data LineCap = LineCapButt | LineCapRound | LineCapSquare
-data LineJoin = LineJoinMiter | LineJoinRound 
-  | LineJoinBevel
-data ScaledFont
-data FontFace
-data Glyph
-data TextExtents = TextExtents { 
-  textExtentsXbearing, textExtentsYbearing, 
-  textExtentsWidth, textExtentsHeight, 
-  textExtentsXadvance, textExtentsYadvance }
-data FontExtents = FontExtents { 
-  fontExtentsAscent, fontExtentsDescent, 
-  fontExtentsHeight, fontExtentsMaxXadvance, 
-  fontExtentsMaxYadvance }
-data FontSlant = FontSlantNormal | FontSlantItalic 
-  | FontSlantOblique
-data FontWeight = FontWeightNormal | FontWeightBold
-data SubpixelOrder 
-data HintStyle = HintStyleDefault | HintStyleNone 
-  | HintStyleSlight | HintStyleMedium | HintStyleFull
-data HintMetrics = HintMetricsDefault | HintMetricsOff 
-  | HintMetricsOn
-data FontOptions
-data Path
-data RectangleInt = RectangleInt { x, y, width, height }
-data RegionOverlap = RegionOverlapIn | RegionOverlapOut 
-  | RegionOverlapPart
-data Region
-data Content = ContentColor | ContentAlpha 
-  | ContentColorAlpha
-data Format = FormatARGB32 | FormatRGB24 | FormatA8 
-  | FormatA1
-data Extend = ExtendNone | ExtendRepeat | ExtendReflect 
-  | ExtendPad
-data Filter = FilterFast | FilterGood | FilterBest 
-  | FilterNearest | FilterBilinear | FilterGaussian
-```
 
 # Standardikirjasto `Prelude`
 

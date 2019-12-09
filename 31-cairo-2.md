@@ -173,13 +173,38 @@
 `version`, 
 `versionString`. 
 
-\begin{Verbatim}[baselinestretch=0.85,commandchars=\\\{\}]
-\textrm{Tyypit: }
-Path  Surface Pattern Antialias ScaledFont RegionOverlapPart
-Glyph  Region LineCap FontSlant FontWeight     SubpixelOrder
-Render Format Content HintStyle TextExtents    RegionOverlap
-Matrix Extend Operator LineJoin FontExtents     RectangleInt
-Status Filter FillRule FontFace HintMetrics      FontOptions
-\end{Verbatim}
+### Tietotyypit
 
+```haskell
+Render 
+Matrix
+Surface
+Pattern
+Status
+Operator 
+Antialias 
+FillRule
+LineCap
+LineJoin
+ScaledFont
+FontFace
+Glyph
+TextExtents 
+FontExtents 
+FontSlant
+FontWeight
+SubpixelOrder 
+HintStyle 
+HintMetrics 
+FontOptions
+Path
+RectangleInt 
+RegionOverlap
+egionOverlapPart
+Region
+Content
+Format
+Extend
+Filter 
+```
 
