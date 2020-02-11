@@ -1,7 +1,8 @@
 import Control.Concurrent.MVar 
+import System.IO.Unsafe
 import System.Environment (getArgs)
 import Graphics.UI.Gtk 
-import Graphics.Rendering.Cairo
+import qualified Graphics.Rendering.Cairo as C
 import qualified Graphics.UI.Gtk.Gdk.EventM as M
 import System.Glib.UTFString (glibToString)
 
@@ -19,64 +20,48 @@ main = do
   vPos <- newMVar (None,0.0,0.0)
   window <- windowNew
   canvas <- drawingAreaNew
-  surf <- surfaceFromPNG arg1
+  surf <- return $ unsafeLoadPNG arg1
   widgetAddEvents canvas [Button1MotionMask] 
-  widgetSetSizeRequest canvas 630 891
+  widgetSetSizeRequest canvas 300 200
   centerImg var surf canvas 
   canvas `on` motionNotifyEvent $ do
     (mouseX,mouseY) <- eventCoordinates
     t <- M.eventTime
-    liftIO $ 
+    C.liftIO $ 
       changePos vPos var surf canvas mouseX mouseY
-    liftIO $ logMsg 0 ("Motion Time: " ++ s t)
+    C.liftIO $ logMsg 0 ("Motion Time: " ++ s t)
     return False
   window `on` keyPressEvent $ tryEvent $ do
     key <- eventKeyName
     keyInput var surf canvas (glibToString key)
-    liftIO $ updateCanvas1 var canvas surf
+    C.liftIO $ updateCanvas1 var canvas surf
     return ()
   canvas `on` buttonPressEvent $ tryEvent $ do
     (mouseX,mouseY) <- printMouse
-    liftIO $ printPointer canvas
-    liftIO $ printMVar var mouseX mouseY
-    liftIO $ modifyMVar_ vPos (\_ -> 
+    C.liftIO $ printPointer canvas
+    C.liftIO $ printMVar var mouseX mouseY
+    C.liftIO $ modifyMVar_ vPos (\_ -> 
       return (Press,mouseX,mouseY)) 
   canvas `on` buttonReleaseEvent $ tryEvent $ do
     (mouseX,mouseY) <- M.eventCoordinates
     m <- M.eventModifier
     b <- M.eventButton
-    (cause,vPosX,vPosY) <- liftIO $ readMVar vPos
-    liftIO $ release cause b var vPosX vPosY
+    (cause,vPosX,vPosY) <- C.liftIO $ readMVar vPos
+    C.liftIO $ release cause b var vPosX vPosY
   canvas `on` scrollEvent $ tryEvent $ do
     (mouseX,mouseY) <- M.eventCoordinates
     m <- M.eventModifier
     d <- M.eventScrollDirection
     t <- M.eventTime
-    liftIO $ changeRef var d mouseX mouseY
-    liftIO $ updateCanvas1 var canvas surf
-    liftIO $ logMsg 0 ("Scroll: " ++ s t ++ s mouseX ++
+    C.liftIO $ changeRef var d mouseX mouseY
+    C.liftIO $ updateCanvas1 var canvas surf
+    C.liftIO $ logMsg 0 ("Scroll: " ++ s t ++ s mouseX ++
       s mouseY ++ s m ++ s d) 
   onDestroy window mainQuit
   onExpose canvas $ const (updateCanvas1 var canvas surf)
   set window [containerChild := canvas]
   widgetShowAll window
   mainGUI
-
-data RGB = RGB Double Double Double
-  deriving Show
-
-setColor (RGB red grn blu) = do
-  setSourceRGBA red grn blu 1.0
-
-black      = RGB 0.00 0.00 0.00 
-white      = RGB 1.00 1.00 1.00 
-pink       = RGB 0.96 0.57 0.70
-violet     = RGB 0.69 0.61 0.85
-orange     = RGB 0.98 0.63 0.15
-blue       = RGB 0.33 0.67 0.82
-sand       = RGB 0.90 0.80 0.55
-darkBrown  = RGB 0.67 0.45 0.27
-gray n = RGB n n n
 
 data EvtType = Press | Release | Move | Scroll | None
 
@@ -85,12 +70,12 @@ release Press button var mouseX mouseY = do
   let
     x = (mouseX - varX) / varS
     y = (mouseY - varY) / varS
-  liftIO $ logMsg 0 
+  C.liftIO $ logMsg 0 
     ("Add point: " ++ s x ++ s y ++ s button)
-  liftIO $ logMsg 1 (s x ++ s y)
+  C.liftIO $ logMsg 1 (s x ++ s y)
 
 release _ button var x y = do
-  liftIO $ logMsg 0 ("Release (other): " ++ s x ++ s y)
+  C.liftIO $ logMsg 0 ("Release (other): " ++ s x ++ s y)
 
 changePos vPos var surf canvas mouseX mouseY = do
   (cause,vPosX,vPosY) <- readMVar vPos
@@ -111,7 +96,7 @@ s x = show x ++ " "
 
 printMouse = do
   (mouseX,mouseY) <- M.eventCoordinates
-  liftIO $ logMsg 0 ("Mouse: " ++ s mouseX ++ s mouseY)
+  C.liftIO $ logMsg 0 ("Mouse: " ++ s mouseX ++ s mouseY)
   return  (mouseX,mouseY)
 
 printPointer canvas = do
@@ -127,8 +112,8 @@ printMVar var mouseX mouseY = do
   logMsg 0 ("Calc: " ++ s x ++ s y)
 
 centerImg var surf canvas = do
-  w1 <- imageSurfaceGetWidth surf
-  h1 <- imageSurfaceGetHeight surf
+  w1 <- C.imageSurfaceGetWidth surf
+  h1 <- C.imageSurfaceGetHeight surf
   (w2,h2) <- widgetGetSizeRequest canvas
   let
     dh = intToDouble (h2 - h1)
@@ -136,12 +121,12 @@ centerImg var surf canvas = do
   modifyMVar_ var (\_ -> return (1.0,dw / 2,dh / 2))
 
 keyInput var surf canvas key = do
-  liftIO $ print key
+  C.liftIO $ print key
   case key of
     "q" -> do
-      liftIO $ mainQuit
+      C.liftIO $ mainQuit
     "1" -> do
-      liftIO $ centerImg var surf canvas
+      C.liftIO $ centerImg var surf canvas
 
 changeRef var d mouseX mouseY = do
   (scaleOld,oldX,oldY) <- readMVar var
@@ -168,27 +153,31 @@ updateCanvas1 var canvas surf = do
     paintImage1 var surf
   return True
 
-surfaceFromPNG file =
-  withImageSurfaceFromPNG file $ \png -> do
-    liftIO $ logMsg 0 "Load Image"
-    w <- renderWith png $ imageSurfaceGetWidth png
-    h <- renderWith png $ imageSurfaceGetHeight png
-    surf <- createImageSurface FormatRGB24 w h
-    renderWith surf $ do
-      setSourceSurface png 0 0
-      paint
+imageSurfaceCreateFromPNG :: FilePath -> IO C.Surface
+imageSurfaceCreateFromPNG file =
+  C.withImageSurfaceFromPNG file $ \png -> do
+    C.liftIO $ logMsg 0 "Load Image"
+    w <- C.renderWith png $ C.imageSurfaceGetWidth png
+    h <- C.renderWith png $ C.imageSurfaceGetHeight png
+    surf <- C.createImageSurface C.FormatRGB24 w h
+    C.renderWith surf $ do
+      C.setSourceSurface png 0 0
+      C.paint
     return surf
 
+unsafeLoadPNG file = unsafePerformIO $ 
+  imageSurfaceCreateFromPNG file
+
 paintImage1 var surf = do
-  (sc,x,y) <- liftIO $ readMVar var
-  setColor white
-  paint
-  translate x y
-  scale sc sc
-  liftIO $ logMsg 0 ("Paint Image: " ++ 
+  (sc,x,y) <- C.liftIO $ readMVar var
+  C.setSourceRGB 1 1 1
+  C.paint
+  C.translate x y
+  C.scale sc sc
+  C.liftIO $ logMsg 0 ("Paint Image: " ++ 
     s sc ++ s x ++ s y)
-  setSourceSurface surf 0 0
-  paint
+  C.setSourceSurface surf 0 0
+  C.paint
 
 logMsg 0 s = do
   return ()
