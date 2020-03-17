@@ -98,7 +98,7 @@ sr1 = "$R_x = \\begin{pmatrix} \
   \ \\end{pmatrix}$"
 -}
 
-mStr n = "$M_{" ++ show n ++ "} = \\left(" ++
+mStr n = "$\\mathbf M_{" ++ show n ++ "} = \\left(" ++
   "\\bgroup\\begin{tabu}{ c c c }\n" ++
   ms !! (n-1) ++
   "\\\\ \n\\end{tabu}\\egroup\\right)$"

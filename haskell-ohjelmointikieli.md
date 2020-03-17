@@ -3015,14 +3015,14 @@ Tyyppiluokka `Fractional` määrittelee funktiot `(/)`, `recip` ja `fromRational
 
 ## Piste `Point`
 
-Määrittelemme tyypin `Point`, joka kuvaa pistettä $(x,y)$ kaksiulotteisessa avaruudessa.
+Määrittelemme tyypin `Point`, joka kuvaa pistettä $\mathbf p = (x,y)$ kaksiulotteisessa avaruudessa.
 
 ```haskell
 data Point = Point Double Double
   deriving Show
 ```
 
-Pisteet `p1` ja `p2` sijaitsevat koordinaateissa $p_1 = (1,1)$ ja $p_2 = (3,2)$ (kuva \ref{fig:points}).
+Pisteet `p1` ja `p2` sijaitsevat koordinaateissa $\mathbf p_1 = (1,1)$ ja $\mathbf p_2 = (3,2)$ (kuva \ref{fig:points}).
 
 ```haskell
 p1 = Point 1 1
@@ -3032,7 +3032,7 @@ p2 = Point 3 2
 \begin{figure}[ht]
 \begin{center}
 \includegraphics{points.pdf}
-\caption{Pisteet $p_1 = (1,1)$ ja $p_2 = (3,2)$.}
+\caption{Pisteet $\mathbf p_1 = (1,1)$ ja $\mathbf p_2 = (3,2)$.}
 \label{fig:points}
 \end{center}
 \end{figure}
@@ -3096,7 +3096,7 @@ shapes1 :: [Shape]
 
 ## Ympyröiden leikkauspisteet
 
-Piirrämme kaksi ympyrää $c_1$ ja $c_2$, joiden keskipisteinä ovat pisteet $p_1 = (1,1)$ ja $p_2 = (3,2)$. Molempien ympyröiden säde on $r = 2.5$. Etsimme ympyröiden leikkauspisteet $p_3$ ja $p_4$ (kuva \ref{fig:circles}).
+Piirrämme kaksi ympyrää $\mathbf c_1$ ja $\mathbf c_2$, joiden keskipisteinä ovat pisteet $\mathbf p_1 = (1,1)$ ja $\mathbf p_2 = (3,2)$. Molempien ympyröiden säde on $r = 2.5$. Etsimme ympyröiden leikkauspisteet $\mathbf p_3$ ja $\mathbf p_4$ (kuva \ref{fig:circles}).
 
 ```haskell
 p1 = Point 1 1
@@ -3109,7 +3109,7 @@ c2 = Circle 2.5 p2
 \begin{figure}[ht]
 \begin{center}
 \includegraphics{circles.pdf}
-\caption{Ympyröiden $c_1$ ja $c_2$ leikkauspisteet $p_3$ ja $p_4$.}
+\caption{Ympyröiden $\mathbf c_1$ ja $\mathbf c_2$ leikkauspisteet $\mathbf p_3$ ja $\mathbf p_4$.}
 \label{fig:circles}
 \end{center}
 \end{figure}
@@ -3170,7 +3170,7 @@ Kun ympyröillä on kaksi leikkauspistettä, algoritmi palauttaa listan
 
 Leikkauspisteiden yhtyessä pisteet `Point x3 y3` ja `Point x4 y4` ovat laskentatarkkuuden rajoissa samat.
 
-Leikkauspisteiden laskennassa käyttämämme pisteiden $p_1$ ja $p_2$ välinen etäisyys on
+Leikkauspisteiden laskennassa käyttämämme pisteiden $\mathbf p_1$ ja $\mathbf p_2$ välinen etäisyys on
 
 ```haskell
 d = dist p1 p2
@@ -3317,8 +3317,8 @@ Esimerkiksi kavuttuamme yksikköympyrän kaarta matkan $\theta = \dfrac{2\pi/4}{
 
 \begin{figure}[ht]
 \begin{center}
-\includegraphics{unit-quarter.pdf}
-\caption{Sinifunktio palauttaa korkeuden nollatasosta eli yksikköympyrän keskuskulmaa $\theta$ vastaavan pisteen $y$-koordinaatin.}
+\includegraphics{unit-quarter-2.pdf}
+\caption{Sinifunktio palauttaa korkeuden nollatasosta eli yksikköympyrän keskuskulmaa $\theta$ vastaavan pisteen $\mathbf p$ $y$-koordinaatin.}
 \label{fig:unit-quarter}
 \end{center}
 \end{figure}
@@ -3332,14 +3332,14 @@ Esimerkiksi kavuttuamme yksikköympyrän kaarta matkan $\theta = \dfrac{2\pi/4}{
 
 ## Kiertomatriisi
 
-Kun haluamme kiertää koordinaatin $(x_1,y_1)$ origon ympäri, kerromme kiertomatriisilla $R$ koordinaattimatriisin.
+Kun haluamme kiertää pisteen $\mathbf p = (x_1,y_1)$ origon ympäri, kerromme kiertomatriisilla $\mathbf R$ koordinaattimatriisin.
 
-$$R = \begin{pmatrix}
+$$\mathbf R = \begin{pmatrix}
 \cos \theta &-\sin \theta \\
 \sin \theta &\cos \theta 
 \end{pmatrix}$$
 
-Haskell-kielessä esitämme matriisit listoina. Esimerkiksi voimme määritellä kiertomatriisin $R$ funktiossa `rotationMatrix`.
+Haskell-kielessä esitämme matriisit listoina. Esimerkiksi voimme määritellä kiertomatriisin $\mathbf R$ funktiossa `rotationMatrix`.
 
 ```haskell
 rotationMatrix t = [[cos1 t,-sin1 t],[sin1 t,cos1 t]]
@@ -3359,7 +3359,7 @@ Määrittelemämme funktion `matrixTimes1` tyyppi on `[[a]] -> [a] -> [a]`, miss
 matrixTimes1 :: Num a => [[a]] -> [a] -> [a]
 ```
 
-Nyt määrittelemme pisteen $(x_1,y_1)$ kierron origon ympäri kulman $t$ verran funktiossa `rot1`.
+Nyt määrittelemme pisteen $\mathbf p = (x_1,y_1)$ kierron origon ympäri kulman $t$ verran funktiossa `rot1`.
 
 ```haskell
 rot1 t (Point x1 y1) = Point x y
@@ -3416,12 +3416,12 @@ mkVector (Point x0 y0) (Point x1 y1) =
 
 ## Vektorien suuntakulmat
 
-Etsimme seuraavaksi ympyröiden keskipisteiden $p_1$ ja $p_2$ sekä leikkauspisteiden $p_3$ ja $p_4$ välisten vektorien suuntakulmat (kuva \ref{fig:cc-intersec}).
+Etsimme seuraavaksi ympyröiden keskipisteiden $\mathbf p_1$ ja $\mathbf p_2$ sekä leikkauspisteiden $\mathbf p_3$ ja $\mathbf p_4$ välisten vektorien suuntakulmat (kuva \ref{fig:cc-intersec}).
 
 \begin{figure}[ht]
 \begin{center}
 \includegraphics{cc-intersec.pdf}
-\caption{Ympyröiden keskipisteet $p_1$ ja $p_2$ sekä leikkauspisteet $p_3$ ja $p_4$.}
+\caption{Ympyröiden keskipisteet $\mathbf p_1$ ja $\mathbf p_2$ sekä leikkauspisteet $\mathbf p_3$ ja $\mathbf p_4$.}
 \label{fig:cc-intersec}
 \end{center}
 \end{figure}
@@ -3441,12 +3441,12 @@ angleBt (Vector x1 y1) (Vector x2 y2) = RAD t
     t = atan2 (x1*y2 - y1*x2) (x1*x2 + y1*y2)
 ```
 
-Ympyrän $c_1$ kohdalla tilanne on kuvan \ref{fig:cc-intersec-c1} mukainen.
+Ympyrän $\mathbf c_1$ kohdalla tilanne on kuvan \ref{fig:cc-intersec-c1} mukainen.
 
 \begin{figure}[ht]
 \begin{center}
 \includegraphics{cc-intersec-c1.pdf}
-\caption{Ympyrän $c_1$ keskipiste $p_1$, leikkauspisteet $p_3$ ja $p_4$ sekä nollakulmaa vastaava kehäpiste $p_5$.}
+\caption{Ympyrän $\mathbf c_1$ keskipiste $\mathbf p_1$, leikkauspisteet $\mathbf p_3$ ja $\mathbf p_4$ sekä nollakulmaa vastaava kehäpiste $\mathbf p_5$.}
 \label{fig:cc-intersec-c1}
 \end{center}
 \end{figure}
@@ -3473,12 +3473,12 @@ RAD 1.5707963267948966
 RAD (-0.6435011087932844)
 ```
 
-Ympyrän $c_2$ kohdalla voimme käyttää edellä saamiamme tuloksia ja etsiä vektorit $v_3$ ja $v_4$ (kuva \ref{fig:cc-intersec-c2}).
+Ympyrän $\mathbf c_2$ kohdalla voimme käyttää edellä saamiamme tuloksia ja etsiä vektorit $v_3$ ja $v_4$ (kuva \ref{fig:cc-intersec-c2}).
 
 \begin{figure}[ht]
 \begin{center}
 \includegraphics{cc-intersec-c2.pdf}
-\caption{Ympyrän $c_2$ keskipiste $p_2$, leikkauspisteet $p_3$ ja $p_4$ sekä nollakulmaa vastaava kehäpiste $p_6$.}
+\caption{Ympyrän $\mathbf c_2$ keskipiste $\mathbf p_2$, leikkauspisteet $\mathbf p_3$ ja $\mathbf p_4$ sekä nollakulmaa vastaava kehäpiste $\mathbf p_6$.}
 \label{fig:cc-intersec-c2}
 \end{center}
 \end{figure}
@@ -3772,12 +3772,12 @@ Edellä määrittelimme funktion `angleBt` palauttamaan kahden vektorin välisen
 
 Tyypillisesti piirtokirjastoissa ympyrän kaaren piirtäminen tapahtuu pienemmästä arvosta suurempaan riippumatta siitä, kumpi arvoista on asetettu alkukulmaksi ja kumpi loppukulmaksi.
 
-Esimerkiksi kuvan \ref{fig:e-problem} tilanteessa olemme löytäneet pisteet $p_1$ ja $p_2$, joiden suuntakulmat ovat $t\,(p_1) = 2.44$ rad ja $t\,(p_2) = -1.75$ rad, ja joiden välille haluamme piirtää ympyränkaaren. Tällöin piirtokirjasto tyypillisesti piirtää kaaren pidempää reittiä ympyrän oikeaa puolta pisteestä $p_2$ pisteeseen $p_1$, kun haluaisimme kaaren kulkevan lyhyempää reittiä ympyrän vasenta puolta.
+Esimerkiksi kuvan \ref{fig:e-problem} tilanteessa olemme löytäneet pisteet $\mathbf p_1$ ja $\mathbf p_2$, joiden suuntakulmat ovat $t\,(\mathbf p_1) = 2.44$ rad ja $t\,(\mathbf p_2) = -1.75$ rad, ja joiden välille haluamme piirtää ympyränkaaren. Tällöin piirtokirjasto tyypillisesti piirtää kaaren pidempää reittiä ympyrän oikeaa puolta pisteestä $\mathbf p_2$ pisteeseen $\mathbf p_1$, kun haluaisimme kaaren kulkevan lyhyempää reittiä ympyrän vasenta puolta.
 
 \begin{figure}[ht]
 \begin{center}
 \includegraphics{e-problem.pdf}
-\caption{Kaaren piirrossa on varauduttava tilanteeseen, jossa pisteiden $p_1$ ja $p_2$ suuntakulmat ovat vastakkaismerkkiset, esimerkiksi $t\,(p_1) = 2.44$ rad ja $t\,(p_2) = -1.75$ rad.}
+\caption{Kaaren piirrossa on varauduttava tilanteeseen, jossa pisteiden $\mathbf p_1$ ja $\mathbf p_2$ suuntakulmat ovat vastakkaismerkkiset, esimerkiksi $t\,(\mathbf p_1) = 2.44$ rad ja $t\,(\mathbf p_2) = -1.75$ rad.}
 \label{fig:e-problem}
 \end{center}
 \end{figure}
@@ -3949,11 +3949,11 @@ sc1 = scanl1 move0 pts4
 
 ## Bezier-käyrät
 
-Sanomme kuutiolliseksi *Bezier-käyräksi* käyrää $B(t)$, jonka kulku määräytyy pisteiden $p_0$, $p_1$, $p_2$ ja $p_3$ mukaan painotettuna kaavalla
+Sanomme kuutiolliseksi *Bezier-käyräksi* käyrää $\mathbf B(t)$, jonka kulku määräytyy pisteiden $\mathbf p_0$, $\mathbf p_1$, $\mathbf p_2$ ja $\mathbf p_3$ mukaan painotettuna kaavalla
 
-$$B(t)=(1-t)^3 \cdot p_0+3(1-t)^2t \cdot p_1+3(1-t)t^2 \cdot p_2+t^3 \cdot p_3$$
+$$\mathbf B(t)=(1-t)^3 \cdot \mathbf p_0+3(1-t)^2t \cdot \mathbf p_1+3(1-t)t^2 \cdot \mathbf p_2+t^3 \cdot \mathbf p_3$$
 
-Tässä muuttuja $t$ saa arvot väliltä $0 \le t \le 1$. Piste $p_0$ on käyrän alkupiste ja piste $p_3$ loppupiste. Kun $t=0$, olemme käyrän alussa pisteessä $p_0$. Kun $t=1$, olemme käyrän lopussa pisteessä $p_3$. Pisteet $p_1$ ja $p_2$ ovat vetovoimapisteitä, joiden suuntaan käyrä kaartuu, kuitenkaan (yleensä) kulkematta niiden lävitse.
+Tässä muuttuja $t$ saa arvot väliltä $0 \le t \le 1$. Piste $\mathbf p_0$ on käyrän alkupiste ja piste $\mathbf p_3$ loppupiste. Kun $t=0$, olemme käyrän alussa pisteessä $\mathbf p_0$. Kun $t=1$, olemme käyrän lopussa pisteessä $\mathbf p_3$. Pisteet $\mathbf p_1$ ja $\mathbf p_2$ ovat vetovoimapisteitä, joiden suuntaan käyrä kaartuu, kuitenkaan (yleensä) kulkematta niiden lävitse.
 
 Määrittelemällä Haskell-kielisen funktion `bezier` voimme laskea pisteitä annetun Bezier-käyrän varrelta.
 
@@ -3992,7 +3992,7 @@ pts0 = [
 
 ## Funktio `chunksOf`
 
-Kirjaston `Data.List.Split` funktiokutsu `chunksOf n` jakaa listan alilistoiksi, joissa kussakin on `n` alkiota.
+Kirjaston `Data.List.Split` funktiokutsu `chunksOf` $n$ jakaa listan alilistoiksi, joissa kussakin on $n$ alkiota.
 
 ```haskell
 > chunksOf 3 [1..12]
@@ -4838,7 +4838,7 @@ $$\begin{aligned}
  d &= -b
 \end{aligned}$$
 
-Matriiseista järjestysluvultaan parittomat antavat kuvauskoordinaatistoksi vasenkätisen ja parilliset oikeakätisen koordinaatiston. Haskell-kielelle muunnettuna voimme esittää perspektiivimatriisit $M_{1..12}$ `case`-lauseen avulla.
+Matriiseista järjestysluvultaan parittomat antavat kuvauskoordinaatistoksi vasenkätisen ja parilliset oikeakätisen koordinaatiston. Haskell-kielelle muunnettuna voimme esittää perspektiivimatriisit $\mathbf M_{1..12}$ `case`-lauseen avulla.
 
 ```haskell
 matrix1 m alpha = case m of
@@ -4861,15 +4861,15 @@ matrix1 m alpha = case m of
     z = [0,0,0]
 ```
 
-Asetamme nyt muunnosmatriiseiksi matriisit $M_2$ ja $M_8$ (kuva \ref{fig:perspective-2}).
+Asetamme nyt muunnosmatriiseiksi matriisit $\mathbf M_2$ ja $\mathbf M_8$ (kuva \ref{fig:perspective-2}).
 
-$$M_2 = \begin{pmatrix}
+$$\mathbf M_2 = \begin{pmatrix}
     1 & \sfrac{1}{2} \cdot \cos 30^{\circ} & 0 \\
     0 & \sfrac{1}{2} \cdot \sin 30^{\circ} & 1\\
     0 & 0 & 0 
 \end{pmatrix}
 \qquad{}
-M_8 = \begin{pmatrix}
+\mathbf M_8 = \begin{pmatrix}
     1 & 0 & -\sfrac{1}{2} \cdot \cos 35^{\circ} \\
     0 & 1 & -\sfrac{1}{2} \cdot \sin 35^{\circ} \\
     0 & 0 & 0 
@@ -4880,7 +4880,7 @@ M_8 = \begin{pmatrix}
 \includegraphics{perspective-2.pdf}
 \qquad{}
 \includegraphics{perspective-5.pdf}
-\caption{Karttapallon puoliskot muunnosmatriiseja $M_2$ ja $M_8$ käyttäen.}
+\caption{Karttapallon puoliskot muunnosmatriiseja $\mathbf M_2$ ja $\mathbf M_8$ käyttäen.}
 \label{fig:perspective-2}
 \end{center}
 \end{figure}
@@ -4940,18 +4940,18 @@ serenitatis = [ Filled $ Polygon [
 
 Kiertomatriisit kolmessa ulottuvuudessa kulman $\theta$ verran akselien $x$, $y$ ja $z$ suhteen ovat (<https://en.wikipedia.org/wiki/Rotation_matrix>)
 
-$$R_x = \begin{pmatrix}
+$$\mathbf R_x = \begin{pmatrix}
   1 & 0 & 0 \\
   0 & \cos \theta & -\sin \theta \\
   0 & \sin \theta & \cos \theta 
 \end{pmatrix}
 \qquad{}
-R_y = \begin{pmatrix}
+\mathbf R_y = \begin{pmatrix}
   \cos \theta & 0 & \sin \theta \\
   0 & 1 & 0 \\
   -\sin \theta & 0& \cos \theta 
 \end{pmatrix}$$
-$$R_z = \begin{pmatrix}
+$$\mathbf R_z = \begin{pmatrix}
   \cos \theta & -\sin \theta & 0 \\
   \sin \theta & \cos \theta & 0 \\ 
   0 & 0 & 1 \\
@@ -4989,7 +4989,7 @@ rotYZ delta lambda (Point3D x1 y1 z1) = Point3D x y z
     phi = DEG 90 `subAngles` delta
 ```
 
-Valitsemme perspektiivimatriisin $M_{10}$.
+Valitsemme perspektiivimatriisin $\mathbf M_{10}$.
 
 ```haskell
 perspective = matr1 pv pAlpha
@@ -5104,7 +5104,9 @@ fecunditatis = marePts2 d pos
 ## Pisteet monikulmion sisä- ja ulkopuolella
 
 Käytämme monikulmion paloitteluun *Sutherland-Hodgmanin algoritmia*
-(<https://en.wikipedia.org/wiki/Sutherland-Hodgman_algorithm>). Paloittelussa muokkaamme monikulmion kärkipistejoukkoa vertaamalla sitä leikkaavan monikulmion sivuihin sivu kerrallaan. Leikkauksen lähtöjoukkona toimii aina edellisessä vaiheessa saatu kärkipistejoukko. Kukin sivu leikkaa osan kärkipisteistä pois sekä muodostaa uusia kärkipisteitä paloiteltavan ja leikkaavan monikulmion sivujen leikkauspisteisiin.  Paloittelualgoritmia varten tarvitsemme tiedon siitä, kummalla puolella annettua sivua tietty kärkipiste sijaitsee.
+(<https://en.wikipedia.org/wiki/Sutherland-Hodgman_algorithm>). 
+
+Paloittelussa muokkaamme monikulmion kärkipistejoukkoa vertaamalla sitä leikkaavan monikulmion sivuihin sivu kerrallaan. Leikkauksen lähtöjoukkona toimii aina edellisessä vaiheessa saatu kärkipistejoukko. Kukin sivu leikkaa osan kärkipisteistä pois sekä muodostaa uusia kärkipisteitä paloiteltavan ja leikkaavan monikulmion sivujen leikkauspisteisiin.  Paloittelualgoritmia varten tarvitsemme tiedon siitä, kummalla puolella annettua sivua tietty kärkipiste sijaitsee.
 
 Saamme selville kummalla puolella sivua piste sijaitsee muodostamalla kolmion, jonka kärkipisteet ovat sivun alkupiste, sivun loppupiste ja vertailtava piste. Kun piste sijaitsee sivun oikealla puolella, muodostuneen kolmion kiertosuunta on myötäpäivään, jolloin sen ala determinanttisäännön mukaan on negatiivinen. Kun piste sijaitsee sivun vasemmalla puolella, kiertosuunta on vastapäivään ja muodostuneen kolmion ala positiivinen.
 
@@ -5155,7 +5157,7 @@ det [[a,b],[c,d]] = a * d - b * c
 
 ## Rajauksen ensimmäinen vaihe
 
-Aloitamme kuvion paloittelun neliöstä $(s_1 s_2 s_3 s_4)$ alueen vasemmassa alanurkassa (kuva \ref{fig:fecunditatis-2}).
+Aloitamme kuvion paloittelun neliöstä $(\mathbf s_1 \mathbf s_2 \mathbf s_3 \mathbf s_4)$ alueen vasemmassa alanurkassa (kuva \ref{fig:fecunditatis-2}).
 
 ```haskell
 parte = 0
@@ -5202,7 +5204,7 @@ nextGen fc s1 s2 = concat [new i1 i2 p1 p2
       fromJust (intersection s1 s2 p1 p2)]
 ```
 
-Ensimmäinen rajaava suora on neliön alareuna $s_1 s_2$. Monikulmion pistejoukon `fc0` kaikki kärkipisteet kuuluvat alueen sisäpuolelle.
+Ensimmäinen rajaava suora on neliön alareuna $\mathbf s_1 \mathbf s_2$. Monikulmion pistejoukon `fc0` kaikki kärkipisteet kuuluvat alueen sisäpuolelle.
 
 ```haskell
 > io1 = inOut1 s1 s2 fc0
@@ -5210,7 +5212,7 @@ Ensimmäinen rajaava suora on neliön alareuna $s_1 s_2$. Monikulmion pistejouko
 [In,In,In,In,In,In,In,In,In]
 ```
 
-Pistejoukon kaikki pisteet kuuluvat luokkaan `(In,In)`, joten alareuna säilyttää kaikki monikulmion pisteet $(p_1 \cdots p_9)$.
+Pistejoukon kaikki pisteet kuuluvat luokkaan `(In,In)`, joten alareuna säilyttää kaikki monikulmion pisteet $(\mathbf p_1 \cdots \mathbf p_9)$.
 
 ```haskell
 > around io1
@@ -5226,7 +5228,7 @@ fc1 = nextGen fc0 s1 s2
 
 ## Rajauksen toinen vaihe
 
-Toinen rajaava suora on neliön oikea reuna $s_2 s_3$. Nyt rajaavan suoran vasemmalle puolelle eli alueen sisäpuolelle jäävät monikulmion pisteet $(p_1\, p_2\, p_9)$. Alueen ulkopuolelle jäävät monikulmion pisteet $(p_3 \cdots p_8)$.
+Toinen rajaava suora on neliön oikea reuna $\mathbf s_2 \mathbf s_3$. Nyt rajaavan suoran vasemmalle puolelle eli alueen sisäpuolelle jäävät monikulmion pisteet $(\mathbf p_1\, \mathbf p_2\, \mathbf p_9)$. Alueen ulkopuolelle jäävät monikulmion pisteet $(\mathbf p_3 \cdots \mathbf p_8)$.
 
 ```haskell
 > io2 = inOut1 s2 s3 fc1
@@ -5234,7 +5236,7 @@ Toinen rajaava suora on neliön oikea reuna $s_2 s_3$. Nyt rajaavan suoran vasem
 [In,In,Out,Out,Out,Out,Out,Out,In]
 ```
 
-Monikulmion sivut suhteessa rajaavan neliön oikeaan reunaan $s_2 s_3$ kuuluvat nyt seuraaviin luokkiin: 
+Monikulmion sivut suhteessa rajaavan neliön oikeaan reunaan $\mathbf s_2 \mathbf s_3$ kuuluvat nyt seuraaviin luokkiin: 
 
 ```haskell
 > around io2
@@ -5242,19 +5244,19 @@ Monikulmion sivut suhteessa rajaavan neliön oikeaan reunaan $s_2 s_3$ kuuluvat 
   (Out,Out),(Out,Out),(Out,In),(In,In) ]
 ```
 
-Luokat `(In,Out)` ja `(Out,In)` tuottavat uuden kärkipisteen $i_1$ suorien $s_2 s_3$ ja $p_2\, p_3$ leikkauspisteeseen sekä pisteen $i_4$ suorien $s_2 s_3$ ja $p_8\, p_9$ leikkauspisteeseen.
+Luokat `(In,Out)` ja `(Out,In)` tuottavat uuden kärkipisteen $\mathbf i_1$ suorien $\mathbf s_2 \mathbf s_3$ ja $\mathbf p_2\, \mathbf p_3$ leikkauspisteeseen sekä pisteen $\mathbf i_4$ suorien $\mathbf s_2 \mathbf s_3$ ja $\mathbf p_8\, \mathbf p_9$ leikkauspisteeseen.
 
 ```haskell
 i1 = intersection s2 s3 p2 p3
 i2 = intersection s2 s3 p8 p9
 ```
 
-Kuvan \ref{fig:fecunditatis-4} merkinnöillä suoran $s_2 s_3$ suhteen leikattu toinen monikulmio koostuu kärkipisteistä $(p_1\, p_2\, i_1\, i_2\, p_9)$.
+Kuvan \ref{fig:fecunditatis-4} merkinnöillä suoran $\mathbf s_2 \mathbf s_3$ suhteen leikattu toinen monikulmio koostuu kärkipisteistä $(\mathbf p_1\, \mathbf p_2\, \mathbf i_1\, \mathbf i_2\, \mathbf p_9)$.
 
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics{fecunditatis-4.pdf}
-\caption{Toinen leikkaus antaa monikulmion kärkipisteet $(p_1\, p_2\, i_1\, i_2\, p_9)$.}
+\caption{Toinen leikkaus antaa monikulmion kärkipisteet $(\mathbf p_1\, \mathbf p_2\, \mathbf i_1\, \mathbf i_2\, \mathbf p_9)$.}
 \label{fig:fecunditatis-4}
 \end{center}
 \end{figure}
@@ -5267,7 +5269,7 @@ fc2 = nextGen fc1 s2 s3
 
 ## Rajauksen kolmas vaihe
 
-Kolmas leikkaus tapahtuu suoran $s_3 s_4$ suhteen edellä saadulle kärkipistejoukolle $(i_1\, p_2\, p_3\, p_4\, i_2)$. 
+Kolmas leikkaus tapahtuu suoran $\mathbf s_3 \mathbf s_4$ suhteen edellä saadulle kärkipistejoukolle $(\mathbf i_1\, \mathbf p_2\, \mathbf p_3\, \mathbf p_4\, \mathbf i_2)$. 
 
 ```haskell
 fc3 = nextGen fc2 s3 s4
@@ -5278,31 +5280,31 @@ Saamme pisteväleille uudet luokat
 ```
 > io3 = inOut1 s3 s4 fc2
 > io3
-[Out,In,In,Out,Out]
+[Out,In,Out,Out,Out]
 > around io3
-[(Out,In),(In,In),(In,Out),(Out,Out),(Out,Out)]
+[(Out,In),(In,Out),(Out,Out),(Out,Out),(Out,Out)]
 ```
 
-Tässä luokat `(Out,In)` ja `(In,Out)` tuottavat uuden kärkipisteen $i_3$ suorien $s_3 s_4$ ja $p_1\, p_2$ leikkauspisteeseen sekä pisteen $i_4$ suorien $s_3 s_4$ ja $i_1\, i_2$  leikkauspisteeseen.
+Tässä luokat `(Out,In)` ja `(In,Out)` tuottavat uuden kärkipisteen $\mathbf i_3$ suorien $\mathbf s_3 \mathbf s_4$ ja $\mathbf p_1\, \mathbf p_2$ leikkauspisteeseen sekä pisteen $\mathbf i_4$ suorien $\mathbf s_3 \mathbf s_4$ ja $\mathbf i_1\, \mathbf i_2$  leikkauspisteeseen.
 
 ```haskell
 i3 = intersection s3 s4 p1 p2
 i4 = intersection s3 s4 i1 i2
 ```
 
-Leikattu monikulmio koostuu nyt kärkipisteistä $(i_3\, p_2\, i_1\, i_4)$ (kuva \ref{fig:fecunditatis-6}).
+Leikattu monikulmio koostuu nyt kärkipisteistä $(\mathbf i_3\, \mathbf p_2\, \mathbf i_1\, \mathbf i_4)$ (kuva \ref{fig:fecunditatis-6}).
 
 \begin{figure}[H]
 \begin{center}
 \includegraphics{fecunditatis-6.pdf}
-\caption{Kolmas leikkaus antaa monikulmion kärkipisteet $(i_3\, p_2\, i_1\, i_4)$.}
+\caption{Kolmas leikkaus antaa monikulmion kärkipisteet $(\mathbf i_3\, \mathbf p_2\, \mathbf i_1\, \mathbf i_4)$.}
 \label{fig:fecunditatis-6}
 \end{center}
 \end{figure}
 
 ## Rajauksen neljäs vaihe
 
-Viimeinen leikkaus tapahtuu suoran $s_4 s_1$ suhteen. Leikkaus säilyttää kärkipistejoukon $(i_3\, p_2\, i_1\, i_4)$ sellaisenaan (kuva \ref{fig:fecunditatis-7}).
+Viimeinen leikkaus tapahtuu suoran $\mathbf s_4 \mathbf s_1$ suhteen. Leikkaus säilyttää kärkipistejoukon $(\mathbf i_3\, \mathbf p_2\, \mathbf i_1\, \mathbf i_4)$ sellaisenaan (kuva \ref{fig:fecunditatis-7}).
 
 ```haskell
 fc3 = nextGen fc2 s3 s4
@@ -5311,7 +5313,7 @@ fc3 = nextGen fc2 s3 s4
 \begin{figure}[H]
 \begin{center}
 \includegraphics{fecunditatis-7.pdf}
-\caption{Ensimmäisen alueen valmis kärkipistejoukko $(i_3\, p_2\, i_1\, i_4)$.}
+\caption{Ensimmäisen alueen valmis kärkipistejoukko $(\mathbf i_3\, \mathbf p_2\, \mathbf i_1\, \mathbf i_4)$.}
 \label{fig:fecunditatis-7}
 \end{center}
 \end{figure}
@@ -5551,7 +5553,7 @@ Lataamme verkosta tiedoston `gshhg-bin-2.3.7.zip` ja puramme sen kansioon `coast
 gmt gshhg gshhs_c.b  > gshhs_c.txt
 ```
 
-Tiedosto `gshhs_c.txt` sisältää nyt monikulmion kärkipisteiden koordinaatit longitudi-latitude-pareina tabulaattorimerkillä `'\t'` erotettuina seuraavasti:
+Tiedosto `gshhs_c.txt` sisältää nyt monikulmion kärkipisteiden koordinaatit longitudi-latitudi-pareina tabulaattorimerkillä `'\t'` erotettuina seuraavasti:
 
 ```
 180	68.993778
@@ -5649,14 +5651,14 @@ Syntynyt kuvio on kuvassa \ref{fig:mondo-2}.
 
 Kolmiulotteiseen projektioon käytämme seuraavaa perspektiivimatriisia:
 
-$P_1 = \begin{pmatrix}
+$\mathbf P_1 = \begin{pmatrix}
 { \dfrac{2n}{ r-l } } & 0 & 0 & 0 \\
 0 & { \dfrac{2n}{ t-b } } & 0 & 0 \\
 { \dfrac{r + l}{ r-l } } & { \dfrac{t + b}{ t-b } } & -{\dfrac{f+n}{f-n}} & -1\\
 0 & 0 & -{\dfrac{2fn}{f-n}}& 0\\
 \end{pmatrix}$
 
-$P_2 = \left(
+$\mathbf P_2 = \left(
 \begin{array}{cccc}
 \frac{2n}{r-l}&        0&  \frac{r+l}{r-l}&         0\\
 0& \frac{2n}{t-b}&  \frac{t+b}{t-b}&         0\\

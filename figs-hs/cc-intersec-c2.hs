@@ -16,28 +16,28 @@ lines1 =
   [Line p2 p3] ++
   [Line p2 p4] ++
   [Line p2 p6] ++
-  [NamedSymbPos "$v_0$" "" N (Node (halfway p2 p6))] ++
-  [NamedSymbPos "$v_3$" "" NE (Node (halfway p2 p3))] ++
-  [NamedSymbPos "$v_4$" "" E (Node (halfway p2 p4))]
+  [NamedSymbPos "$\\mathbf v_0$" "" N (Node (halfway p2 p6))] ++
+  [NamedSymbPos "$\\mathbf v_3$" "" NE (Node (halfway p2 p3))] ++
+  [NamedSymbPos "$\\mathbf v_4$" "" E (Node (halfway p2 p4))]
   -- [Line p2 p3] ++
   -- [Line p2 p4] 
  
 
 pts2 =
   --[NamedSymbPos "$p_1$" "$\\bullet$" SW (Node p1)] ++
-  [NamedSymbPos "$p_2$" "" SW (Node p2)] ++
-  [NamedSymbPos "$p_3$" "" NW (Node p3)] ++
-  [NamedSymbPos "$p_4$" "" SE (Node p4)] ++
-  [NamedSymbPos "$p_6$" "" SE (Node p6)] ++
+  [NamedSymbPos "$\\mathbf p_2$" "" SW (Node p2)] ++
+  [NamedSymbPos "$\\mathbf p_3$" "" NW (Node p3)] ++
+  [NamedSymbPos "$\\mathbf p_4$" "" SE (Node p4)] ++
+  [NamedSymbPos "$\\mathbf p_6$" "" SE (Node p6)] ++
   [Filled (Circle 0.10 p) | p <- [p2,p3,p4,p6]]
 
  
 pts1 =
   --[NamedSymbPos "$p_1$" "$\\bullet$" SW (Node p1)] ++
-  [NamedSymbPos "$p_2$" "$\\bullet$" SW (Node p2)] ++
-  [NamedSymbPos "$p_3$" "$\\bullet$" NW (Node p3)] ++
-  [NamedSymbPos "$p_4$" "$\\bullet$" SE (Node p4)] ++
-  [NamedSymbPos "$p_6$" "$\\bullet$" SE (Node p6)] 
+  [NamedSymbPos "$\\mathbf p_2$" "$\\bullet$" SW (Node p2)] ++
+  [NamedSymbPos "$\\mathbf p_3$" "$\\bullet$" NW (Node p3)] ++
+  [NamedSymbPos "$\\mathbf p_4$" "$\\bullet$" SE (Node p4)] ++
+  [NamedSymbPos "$\\mathbf p_6$" "$\\bullet$" SE (Node p6)] 
   --[Node p3, Node p4] ++
   --[TextE p3 "$p_3$" "above left"] ++
   --[TextE p4 "$p_4$" "below right"] ++

@@ -24,13 +24,13 @@ headPts1 = zip4 sc1 ex1 ex2 (tail sc1)
    pts2 = chunksOf 3 pts0
    --pts1 = map (\(x,y) -> (x,-y)) pts0
 
-namedPts3 = [NamedSymbPos ("$p_" ++ show n ++ "$") 
+namedPts3 = [NamedSymbPos ("$\\mathbf p_" ++ show n ++ "$") 
   "$\\bullet$" SE (Node (mkPoint p0)) 
   | (n,p0) <- zip [1..] pts5]
   
 pts5 = scanl1 move0 pts4
 
-namedPts2 = init [NamedSymbPos ("$p_" ++ show n ++ "$") 
+namedPts2 = init [NamedSymbPos ("$\\mathbf p_" ++ show n ++ "$") 
   "$\\bullet$" SE (Node (mkPoint p0)) 
   | (n,p0) <- zip [1..] (nub pts)]
   where

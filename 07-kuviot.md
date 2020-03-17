@@ -2,14 +2,14 @@
 
 ## Piste `Point`
 
-Määrittelemme tyypin `Point`, joka kuvaa pistettä $(x,y)$ kaksiulotteisessa avaruudessa.
+Määrittelemme tyypin `Point`, joka kuvaa pistettä $\mathbf p = (x,y)$ kaksiulotteisessa avaruudessa.
 
 ```haskell
 data Point = Point Double Double
   deriving Show
 ```
 
-Pisteet `p1` ja `p2` sijaitsevat koordinaateissa $p_1 = (1,1)$ ja $p_2 = (3,2)$ (kuva \ref{fig:points}).
+Pisteet `p1` ja `p2` sijaitsevat koordinaateissa $\mathbf p_1 = (1,1)$ ja $\mathbf p_2 = (3,2)$ (kuva \ref{fig:points}).
 
 ```haskell
 p1 = Point 1 1
@@ -19,7 +19,7 @@ p2 = Point 3 2
 \begin{figure}[ht]
 \begin{center}
 \includegraphics{points.pdf}
-\caption{Pisteet $p_1 = (1,1)$ ja $p_2 = (3,2)$.}
+\caption{Pisteet $\mathbf p_1 = (1,1)$ ja $\mathbf p_2 = (3,2)$.}
 \label{fig:points}
 \end{center}
 \end{figure}
@@ -83,7 +83,7 @@ shapes1 :: [Shape]
 
 ## Ympyröiden leikkauspisteet
 
-Piirrämme kaksi ympyrää $c_1$ ja $c_2$, joiden keskipisteinä ovat pisteet $p_1 = (1,1)$ ja $p_2 = (3,2)$. Molempien ympyröiden säde on $r = 2.5$. Etsimme ympyröiden leikkauspisteet $p_3$ ja $p_4$ (kuva \ref{fig:circles}).
+Piirrämme kaksi ympyrää $\mathbf c_1$ ja $\mathbf c_2$, joiden keskipisteinä ovat pisteet $\mathbf p_1 = (1,1)$ ja $\mathbf p_2 = (3,2)$. Molempien ympyröiden säde on $r = 2.5$. Etsimme ympyröiden leikkauspisteet $\mathbf p_3$ ja $\mathbf p_4$ (kuva \ref{fig:circles}).
 
 ```haskell
 p1 = Point 1 1
@@ -96,7 +96,7 @@ c2 = Circle 2.5 p2
 \begin{figure}[ht]
 \begin{center}
 \includegraphics{circles.pdf}
-\caption{Ympyröiden $c_1$ ja $c_2$ leikkauspisteet $p_3$ ja $p_4$.}
+\caption{Ympyröiden $\mathbf c_1$ ja $\mathbf c_2$ leikkauspisteet $\mathbf p_3$ ja $\mathbf p_4$.}
 \label{fig:circles}
 \end{center}
 \end{figure}
@@ -157,7 +157,7 @@ Kun ympyröillä on kaksi leikkauspistettä, algoritmi palauttaa listan
 
 Leikkauspisteiden yhtyessä pisteet `Point x3 y3` ja `Point x4 y4` ovat laskentatarkkuuden rajoissa samat.
 
-Leikkauspisteiden laskennassa käyttämämme pisteiden $p_1$ ja $p_2$ välinen etäisyys on
+Leikkauspisteiden laskennassa käyttämämme pisteiden $\mathbf p_1$ ja $\mathbf p_2$ välinen etäisyys on
 
 ```haskell
 d = dist p1 p2
@@ -304,8 +304,8 @@ Esimerkiksi kavuttuamme yksikköympyrän kaarta matkan $\theta = \dfrac{2\pi/4}{
 
 \begin{figure}[ht]
 \begin{center}
-\includegraphics{unit-quarter.pdf}
-\caption{Sinifunktio palauttaa korkeuden nollatasosta eli yksikköympyrän keskuskulmaa $\theta$ vastaavan pisteen $y$-koordinaatin.}
+\includegraphics{unit-quarter-2.pdf}
+\caption{Sinifunktio palauttaa korkeuden nollatasosta eli yksikköympyrän keskuskulmaa $\theta$ vastaavan pisteen $\mathbf p$ $y$-koordinaatin.}
 \label{fig:unit-quarter}
 \end{center}
 \end{figure}
@@ -319,14 +319,14 @@ Esimerkiksi kavuttuamme yksikköympyrän kaarta matkan $\theta = \dfrac{2\pi/4}{
 
 ## Kiertomatriisi
 
-Kun haluamme kiertää koordinaatin $(x_1,y_1)$ origon ympäri, kerromme kiertomatriisilla $R$ koordinaattimatriisin.
+Kun haluamme kiertää pisteen $\mathbf p = (x_1,y_1)$ origon ympäri, kerromme kiertomatriisilla $\mathbf R$ koordinaattimatriisin.
 
-$$R = \begin{pmatrix}
+$$\mathbf R = \begin{pmatrix}
 \cos \theta &-\sin \theta \\
 \sin \theta &\cos \theta 
 \end{pmatrix}$$
 
-Haskell-kielessä esitämme matriisit listoina. Esimerkiksi voimme määritellä kiertomatriisin $R$ funktiossa `rotationMatrix`.
+Haskell-kielessä esitämme matriisit listoina. Esimerkiksi voimme määritellä kiertomatriisin $\mathbf R$ funktiossa `rotationMatrix`.
 
 ```haskell
 rotationMatrix t = [[cos1 t,-sin1 t],[sin1 t,cos1 t]]
@@ -346,7 +346,7 @@ Määrittelemämme funktion `matrixTimes1` tyyppi on `[[a]] -> [a] -> [a]`, miss
 matrixTimes1 :: Num a => [[a]] -> [a] -> [a]
 ```
 
-Nyt määrittelemme pisteen $(x_1,y_1)$ kierron origon ympäri kulman $t$ verran funktiossa `rot1`.
+Nyt määrittelemme pisteen $\mathbf p = (x_1,y_1)$ kierron origon ympäri kulman $t$ verran funktiossa `rot1`.
 
 ```haskell
 rot1 t (Point x1 y1) = Point x y
@@ -403,12 +403,12 @@ mkVector (Point x0 y0) (Point x1 y1) =
 
 ## Vektorien suuntakulmat
 
-Etsimme seuraavaksi ympyröiden keskipisteiden $p_1$ ja $p_2$ sekä leikkauspisteiden $p_3$ ja $p_4$ välisten vektorien suuntakulmat (kuva \ref{fig:cc-intersec}).
+Etsimme seuraavaksi ympyröiden keskipisteiden $\mathbf p_1$ ja $\mathbf p_2$ sekä leikkauspisteiden $\mathbf p_3$ ja $\mathbf p_4$ välisten vektorien suuntakulmat (kuva \ref{fig:cc-intersec}).
 
 \begin{figure}[ht]
 \begin{center}
 \includegraphics{cc-intersec.pdf}
-\caption{Ympyröiden keskipisteet $p_1$ ja $p_2$ sekä leikkauspisteet $p_3$ ja $p_4$.}
+\caption{Ympyröiden keskipisteet $\mathbf p_1$ ja $\mathbf p_2$ sekä leikkauspisteet $\mathbf p_3$ ja $\mathbf p_4$.}
 \label{fig:cc-intersec}
 \end{center}
 \end{figure}
@@ -428,12 +428,12 @@ angleBt (Vector x1 y1) (Vector x2 y2) = RAD t
     t = atan2 (x1*y2 - y1*x2) (x1*x2 + y1*y2)
 ```
 
-Ympyrän $c_1$ kohdalla tilanne on kuvan \ref{fig:cc-intersec-c1} mukainen.
+Ympyrän $\mathbf c_1$ kohdalla tilanne on kuvan \ref{fig:cc-intersec-c1} mukainen.
 
 \begin{figure}[ht]
 \begin{center}
 \includegraphics{cc-intersec-c1.pdf}
-\caption{Ympyrän $c_1$ keskipiste $p_1$, leikkauspisteet $p_3$ ja $p_4$ sekä nollakulmaa vastaava kehäpiste $p_5$.}
+\caption{Ympyrän $\mathbf c_1$ keskipiste $\mathbf p_1$, leikkauspisteet $\mathbf p_3$ ja $\mathbf p_4$ sekä nollakulmaa vastaava kehäpiste $\mathbf p_5$.}
 \label{fig:cc-intersec-c1}
 \end{center}
 \end{figure}
@@ -460,12 +460,12 @@ RAD 1.5707963267948966
 RAD (-0.6435011087932844)
 ```
 
-Ympyrän $c_2$ kohdalla voimme käyttää edellä saamiamme tuloksia ja etsiä vektorit $v_3$ ja $v_4$ (kuva \ref{fig:cc-intersec-c2}).
+Ympyrän $\mathbf c_2$ kohdalla voimme käyttää edellä saamiamme tuloksia ja etsiä vektorit $v_3$ ja $v_4$ (kuva \ref{fig:cc-intersec-c2}).
 
 \begin{figure}[ht]
 \begin{center}
 \includegraphics{cc-intersec-c2.pdf}
-\caption{Ympyrän $c_2$ keskipiste $p_2$, leikkauspisteet $p_3$ ja $p_4$ sekä nollakulmaa vastaava kehäpiste $p_6$.}
+\caption{Ympyrän $\mathbf c_2$ keskipiste $\mathbf p_2$, leikkauspisteet $\mathbf p_3$ ja $\mathbf p_4$ sekä nollakulmaa vastaava kehäpiste $\mathbf p_6$.}
 \label{fig:cc-intersec-c2}
 \end{center}
 \end{figure}
@@ -759,12 +759,12 @@ Edellä määrittelimme funktion `angleBt` palauttamaan kahden vektorin välisen
 
 Tyypillisesti piirtokirjastoissa ympyrän kaaren piirtäminen tapahtuu pienemmästä arvosta suurempaan riippumatta siitä, kumpi arvoista on asetettu alkukulmaksi ja kumpi loppukulmaksi.
 
-Esimerkiksi kuvan \ref{fig:e-problem} tilanteessa olemme löytäneet pisteet $p_1$ ja $p_2$, joiden suuntakulmat ovat $t\,(p_1) = 2.44$ rad ja $t\,(p_2) = -1.75$ rad, ja joiden välille haluamme piirtää ympyränkaaren. Tällöin piirtokirjasto tyypillisesti piirtää kaaren pidempää reittiä ympyrän oikeaa puolta pisteestä $p_2$ pisteeseen $p_1$, kun haluaisimme kaaren kulkevan lyhyempää reittiä ympyrän vasenta puolta.
+Esimerkiksi kuvan \ref{fig:e-problem} tilanteessa olemme löytäneet pisteet $\mathbf p_1$ ja $\mathbf p_2$, joiden suuntakulmat ovat $t\,(\mathbf p_1) = 2.44$ rad ja $t\,(\mathbf p_2) = -1.75$ rad, ja joiden välille haluamme piirtää ympyränkaaren. Tällöin piirtokirjasto tyypillisesti piirtää kaaren pidempää reittiä ympyrän oikeaa puolta pisteestä $\mathbf p_2$ pisteeseen $\mathbf p_1$, kun haluaisimme kaaren kulkevan lyhyempää reittiä ympyrän vasenta puolta.
 
 \begin{figure}[ht]
 \begin{center}
 \includegraphics{e-problem.pdf}
-\caption{Kaaren piirrossa on varauduttava tilanteeseen, jossa pisteiden $p_1$ ja $p_2$ suuntakulmat ovat vastakkaismerkkiset, esimerkiksi $t\,(p_1) = 2.44$ rad ja $t\,(p_2) = -1.75$ rad.}
+\caption{Kaaren piirrossa on varauduttava tilanteeseen, jossa pisteiden $\mathbf p_1$ ja $\mathbf p_2$ suuntakulmat ovat vastakkaismerkkiset, esimerkiksi $t\,(\mathbf p_1) = 2.44$ rad ja $t\,(\mathbf p_2) = -1.75$ rad.}
 \label{fig:e-problem}
 \end{center}
 \end{figure}
@@ -936,11 +936,11 @@ sc1 = scanl1 move0 pts4
 
 ## Bezier-käyrät
 
-Sanomme kuutiolliseksi *Bezier-käyräksi* käyrää $B(t)$, jonka kulku määräytyy pisteiden $p_0$, $p_1$, $p_2$ ja $p_3$ mukaan painotettuna kaavalla
+Sanomme kuutiolliseksi *Bezier-käyräksi* käyrää $\mathbf B(t)$, jonka kulku määräytyy pisteiden $\mathbf p_0$, $\mathbf p_1$, $\mathbf p_2$ ja $\mathbf p_3$ mukaan painotettuna kaavalla
 
-$$B(t)=(1-t)^3 \cdot p_0+3(1-t)^2t \cdot p_1+3(1-t)t^2 \cdot p_2+t^3 \cdot p_3$$
+$$\mathbf B(t)=(1-t)^3 \cdot \mathbf p_0+3(1-t)^2t \cdot \mathbf p_1+3(1-t)t^2 \cdot \mathbf p_2+t^3 \cdot \mathbf p_3$$
 
-Tässä muuttuja $t$ saa arvot väliltä $0 \le t \le 1$. Piste $p_0$ on käyrän alkupiste ja piste $p_3$ loppupiste. Kun $t=0$, olemme käyrän alussa pisteessä $p_0$. Kun $t=1$, olemme käyrän lopussa pisteessä $p_3$. Pisteet $p_1$ ja $p_2$ ovat vetovoimapisteitä, joiden suuntaan käyrä kaartuu, kuitenkaan (yleensä) kulkematta niiden lävitse.
+Tässä muuttuja $t$ saa arvot väliltä $0 \le t \le 1$. Piste $\mathbf p_0$ on käyrän alkupiste ja piste $\mathbf p_3$ loppupiste. Kun $t=0$, olemme käyrän alussa pisteessä $\mathbf p_0$. Kun $t=1$, olemme käyrän lopussa pisteessä $\mathbf p_3$. Pisteet $\mathbf p_1$ ja $\mathbf p_2$ ovat vetovoimapisteitä, joiden suuntaan käyrä kaartuu, kuitenkaan (yleensä) kulkematta niiden lävitse.
 
 Määrittelemällä Haskell-kielisen funktion `bezier` voimme laskea pisteitä annetun Bezier-käyrän varrelta.
 
@@ -979,7 +979,7 @@ pts0 = [
 
 ## Funktio `chunksOf`
 
-Kirjaston `Data.List.Split` funktiokutsu `chunksOf n` jakaa listan alilistoiksi, joissa kussakin on `n` alkiota.
+Kirjaston `Data.List.Split` funktiokutsu `chunksOf` $n$ jakaa listan alilistoiksi, joissa kussakin on $n$ alkiota.
 
 ```haskell
 > chunksOf 3 [1..12]

@@ -267,17 +267,17 @@ axes =
 sx = 90
 
 ptLegends2 = [ 
-  NamedSymbPos "$s_{1}$" "$\\bullet$" SW n1,
-  NamedSymbPos "$s_{2}$" "$\\bullet$" SE n2,
-  NamedSymbPos "$s_{3}$" "$\\bullet$" NE n3,
-  NamedSymbPos "$s_{4}$" "$\\bullet$" NW n4
+  NamedSymbPos "$\\mathbf s_{1}$" "$\\bullet$" SW n1,
+  NamedSymbPos "$\\mathbf s_{2}$" "$\\bullet$" SE n2,
+  NamedSymbPos "$\\mathbf s_{3}$" "$\\bullet$" NE n3,
+  NamedSymbPos "$\\mathbf s_{4}$" "$\\bullet$" NW n4
   ]
   where
     [n1,n2,n3,n4] = map Node pg
     Polygon pg = grid1
 
 ptLegends = 
-  [Text pt ("$p_{" ++ show n ++ "}$") | (n,pt) <- zip [1..] f] ++
+  [Text pt ("$\\mathbf p_{" ++ show n ++ "}$") | (n,pt) <- zip [1..] f] ++
   [Text pt ("$\\bullet$") | (n,pt) <- zip [1..] g]
   where
     Polygon f = fecunditatis2

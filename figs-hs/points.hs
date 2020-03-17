@@ -6,8 +6,8 @@ p2 = Point 3 2
 line1 = Line (Point 4.1 (-0.1)) (Point 4.1 4.1)
 
 points1 = 
-  [NamedSymbPos "$p_1$" "$\\bullet$" SE (Node p1)] ++
-  [NamedSymbPos "$p_2$" "$\\bullet$" SE (Node p2)] ++
+  [NamedSymbPos "$\\mathbf p_1$" "$\\bullet$" SE (Node p1)] ++
+  [NamedSymbPos "$\\mathbf p_2$" "$\\bullet$" SE (Node p2)] ++
   [Arrow "" (Point 0 0) (Point 4 0)] ++
   [TextE (Point 4 0) "$x$" "above left"] ++
   [Arrow "" (Point 0 0) (Point 0 4)] ++

@@ -15,10 +15,10 @@ line1 = Line (Point 4.1 (-0.1)) (Point 4.1 4.1)
 pts1 =
   [Line p0 p1] ++
   [Line p0 p2] ++
-  [NamedSymbPos "$p_0$" "$\\bullet$" NE (Node p0)] ++
+  [NamedSymbPos "$\\mathbf p_0$" "$\\bullet$" NE (Node p0)] ++
   -- [NamedSymbPos "$\\texttt{RAD}\\,\\frac{\\pi}{2}$" "" NE (Node p0)] ++
-  [NamedSymbPos "$p_1$" "$\\bullet$" NW (Node p1)] ++
-  [NamedSymbPos "$p_2$" "$\\bullet$" SW (Node p2)]
+  [NamedSymbPos "$\\mathbf p_1$" "$\\bullet$" NW (Node p1)] ++
+  [NamedSymbPos "$\\mathbf p_2$" "$\\bullet$" SW (Node p2)]
   --[Node p3, Node p4] ++
   --[TextE p3 "$p_3$" "above left"] ++
   --[TextE p4 "$p_4$" "below right"] ++

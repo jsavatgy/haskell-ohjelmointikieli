@@ -14,8 +14,8 @@ c3 = Circle 2.5 p2
 line1 = Line (Point 4.1 (-0.1)) (Point 4.1 4.1)
 
 circles1 =
-  [NamedSymbPos "$p_3$" "$\\bullet$" NW (Node p3)] ++
-  [NamedSymbPos "$p_4$" "$\\bullet$" SE (Node p4)] ++
+  [NamedSymbPos "$\\mathbf p_3$" "$\\bullet$" NW (Node p3)] ++
+  [NamedSymbPos "$\\mathbf p_4$" "$\\bullet$" SE (Node p4)] ++
   --[Node p3, Node p4] ++
   --[TextE p3 "$p_3$" "above left"] ++
   --[TextE p4 "$p_4$" "below right"] ++

@@ -78,19 +78,18 @@ cartesian (Spheric3D lambda delta) = Point3D x y z
     phi = (DEG 90) `subAngles` delta
 
 
-
 nextGen fc s1 s2 = concat [new i1 i2 p1 p2 
   | ((i1,i2),(p1,p2)) <- zip io2 pts]
   where
     io1 = inOut1 s1 s2 fc
     io2 = around io1
     pts = around fc
-    new In  In  p1 p2 = [p1]
-    new In  Out p1 p2 = [p1,ix]
+    new In In  p1 p2 = [p1]
+    new In Out p1 p2 = [p1,
+      fromJust (intersection s1 s2 p1 p2)]
     new Out Out p1 p2 = []
-    new Out In  p1 p2 = [ix]
-    ix = fromJust (intersection s1 s2 p1 p2)
-
+    new Out In  p1 p2 = [
+      fromJust (intersection s1 s2 p1 p2)]
 
 data InOut = In | Out
   deriving Show
@@ -190,7 +189,7 @@ marePts d pos = [ pt0 `addCoords`
 sx = 90
 
 ptLegends = 
-  [Text pt ("$p_{" ++ show n ++ "}$") | (n,pt) <- zip idx pg2] ++
+  [Text pt ("$\\mathbf p_{" ++ show n ++ "}$") | (n,pt) <- zip idx pg2] ++
   [Text pt ("$\\bullet$") | pt <- pg1]
   where
     pg2 = takeIndex fecunditatis150
@@ -200,20 +199,19 @@ ptLegends =
 
 
 ptLegends2 = [ 
-  NamedSymbPos "$s_{1}$" "$\\bullet$" SW n1,
-  NamedSymbPos "$s_{2}$" "$\\bullet$" SE n2,
-  --NamedSymbPos "$s_{3}$" "$\\bullet$" NE n3,
-  NamedSymbPos "$s_{4}$" "$\\bullet$" NW n4
+  NamedSymbPos "$\\mathbf s_{1}$" "$\\bullet$" SW n1,
+  NamedSymbPos "$\\mathbf s_{2}$" "$\\bullet$" SE n2,
+  NamedSymbPos "$\\mathbf s_{4}$" "$\\bullet$" NW n4
   ]
   where
     [n1,n2,n3,n4] = map Node pg
     Polygon pg = grid1
 
 iPts1 = [ 
-  NamedSymbPos "$i_{1}$" "$\\bullet$" SE n1,
-  NamedSymbPos "$i_{2}$" "$\\bullet$" NE n2,
-  NamedSymbPos "$i_{3}$" "$\\bullet$" NE n3,
-  NamedSymbPos "$i_{4}$" "$\\bullet$" NE n4
+  NamedSymbPos "$\\mathbf i_{1}$" "$\\bullet$" SE n1,
+  NamedSymbPos "$\\mathbf i_{2}$" "$\\bullet$" NE n2,
+  NamedSymbPos "$\\mathbf i_{3}$" "$\\bullet$" NE n3,
+  NamedSymbPos "$\\mathbf i_{4}$" "$\\bullet$" NE n4
   ]
   where
     [n1,n2] = map Node [pg1 !! 2, pg1 !! 3]

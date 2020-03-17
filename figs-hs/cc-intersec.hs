@@ -17,10 +17,10 @@ arrows1 =
   [Arrow "" p2 p4] 
 
 pts1 =
-  [NamedSymbPos "$p_1$" "$\\bullet$" SE (Node p1)] ++
-  [NamedSymbPos "$p_2$" "$\\bullet$" SW (Node p2)] ++
-  [NamedSymbPos "$p_3$" "$\\bullet$" NW (Node p3)] ++
-  [NamedSymbPos "$p_4$" "$\\bullet$" SE (Node p4)] 
+  [NamedSymbPos "$\\mathbf p_1$" "$\\bullet$" SE (Node p1)] ++
+  [NamedSymbPos "$\\mathbf p_2$" "$\\bullet$" SW (Node p2)] ++
+  [NamedSymbPos "$\\mathbf p_3$" "$\\bullet$" NW (Node p3)] ++
+  [NamedSymbPos "$\\mathbf p_4$" "$\\bullet$" SE (Node p4)] 
   --[Node p3, Node p4] ++
   --[TextE p3 "$p_3$" "above left"] ++
   --[TextE p4 "$p_4$" "below right"] ++

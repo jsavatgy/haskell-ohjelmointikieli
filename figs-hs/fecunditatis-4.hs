@@ -182,7 +182,7 @@ mare d pos = Polygon [ pt0 `addCoords`
 sx = 90
 
 ptLegends = 
-  [Text pt ("$p_{" ++ show n ++ "}$") | (n,pt) <- zip [1..] pg2] ++
+  [Text pt ("$\\mathbf p_{" ++ show n ++ "}$") | (n,pt) <- zip [1..] pg2] ++
   [Text pt ("$\\bullet$") | (n,pt) <- zip [1..] pg]
   where
     Polygon pg2 = fecunditatis2
@@ -190,18 +190,18 @@ ptLegends =
 
 
 ptLegends2 = [ 
-  NamedSymbPos "$s_{1}$" "$\\bullet$" SW n1,
-  NamedSymbPos "$s_{2}$" "$\\bullet$" SE n2,
-  NamedSymbPos "$s_{3}$" "$\\bullet$" NE n3,
-  NamedSymbPos "$s_{4}$" "$\\bullet$" NW n4
+  NamedSymbPos "$\\mathbf s_{1}$" "$\\bullet$" SW n1,
+  NamedSymbPos "$\\mathbf s_{2}$" "$\\bullet$" SE n2,
+  NamedSymbPos "$\\mathbf s_{3}$" "$\\bullet$" NE n3,
+  NamedSymbPos "$\\mathbf s_{4}$" "$\\bullet$" NW n4
   ]
   where
     [n1,n2,n3,n4] = map Node pg
     Polygon pg = grid1
 
 iPts1 = [ 
-  NamedSymbPos "$i_{1}$" "$\\bullet$" SW n1,
-  NamedSymbPos "$i_{2}$" "$\\bullet$" NW n2
+  NamedSymbPos "$\\mathbf i_{1}$" "$\\bullet$" SW n1,
+  NamedSymbPos "$\\mathbf i_{2}$" "$\\bullet$" NW n2
   ]
   where
     [n1,n2] = map Node [pg !! 2, pg !! 3]

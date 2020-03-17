@@ -135,7 +135,7 @@ $$\begin{aligned}
  d &= -b
 \end{aligned}$$
 
-Matriiseista järjestysluvultaan parittomat antavat kuvauskoordinaatistoksi vasenkätisen ja parilliset oikeakätisen koordinaatiston. Haskell-kielelle muunnettuna voimme esittää perspektiivimatriisit $M_{1..12}$ `case`-lauseen avulla.
+Matriiseista järjestysluvultaan parittomat antavat kuvauskoordinaatistoksi vasenkätisen ja parilliset oikeakätisen koordinaatiston. Haskell-kielelle muunnettuna voimme esittää perspektiivimatriisit $\mathbf M_{1..12}$ `case`-lauseen avulla.
 
 ```haskell
 matrix1 m alpha = case m of
@@ -158,15 +158,15 @@ matrix1 m alpha = case m of
     z = [0,0,0]
 ```
 
-Asetamme nyt muunnosmatriiseiksi matriisit $M_2$ ja $M_8$ (kuva \ref{fig:perspective-2}).
+Asetamme nyt muunnosmatriiseiksi matriisit $\mathbf M_2$ ja $\mathbf M_8$ (kuva \ref{fig:perspective-2}).
 
-$$M_2 = \begin{pmatrix}
+$$\mathbf M_2 = \begin{pmatrix}
     1 & \sfrac{1}{2} \cdot \cos 30^{\circ} & 0 \\
     0 & \sfrac{1}{2} \cdot \sin 30^{\circ} & 1\\
     0 & 0 & 0 
 \end{pmatrix}
 \qquad{}
-M_8 = \begin{pmatrix}
+\mathbf M_8 = \begin{pmatrix}
     1 & 0 & -\sfrac{1}{2} \cdot \cos 35^{\circ} \\
     0 & 1 & -\sfrac{1}{2} \cdot \sin 35^{\circ} \\
     0 & 0 & 0 
@@ -177,7 +177,7 @@ M_8 = \begin{pmatrix}
 \includegraphics{perspective-2.pdf}
 \qquad{}
 \includegraphics{perspective-5.pdf}
-\caption{Karttapallon puoliskot muunnosmatriiseja $M_2$ ja $M_8$ käyttäen.}
+\caption{Karttapallon puoliskot muunnosmatriiseja $\mathbf M_2$ ja $\mathbf M_8$ käyttäen.}
 \label{fig:perspective-2}
 \end{center}
 \end{figure}
@@ -237,18 +237,18 @@ serenitatis = [ Filled $ Polygon [
 
 Kiertomatriisit kolmessa ulottuvuudessa kulman $\theta$ verran akselien $x$, $y$ ja $z$ suhteen ovat (<https://en.wikipedia.org/wiki/Rotation_matrix>)
 
-$$R_x = \begin{pmatrix}
+$$\mathbf R_x = \begin{pmatrix}
   1 & 0 & 0 \\
   0 & \cos \theta & -\sin \theta \\
   0 & \sin \theta & \cos \theta 
 \end{pmatrix}
 \qquad{}
-R_y = \begin{pmatrix}
+\mathbf R_y = \begin{pmatrix}
   \cos \theta & 0 & \sin \theta \\
   0 & 1 & 0 \\
   -\sin \theta & 0& \cos \theta 
 \end{pmatrix}$$
-$$R_z = \begin{pmatrix}
+$$\mathbf R_z = \begin{pmatrix}
   \cos \theta & -\sin \theta & 0 \\
   \sin \theta & \cos \theta & 0 \\ 
   0 & 0 & 1 \\
@@ -286,7 +286,7 @@ rotYZ delta lambda (Point3D x1 y1 z1) = Point3D x y z
     phi = DEG 90 `subAngles` delta
 ```
 
-Valitsemme perspektiivimatriisin $M_{10}$.
+Valitsemme perspektiivimatriisin $\mathbf M_{10}$.
 
 ```haskell
 perspective = matr1 pv pAlpha
@@ -401,7 +401,9 @@ fecunditatis = marePts2 d pos
 ## Pisteet monikulmion sisä- ja ulkopuolella
 
 Käytämme monikulmion paloitteluun *Sutherland-Hodgmanin algoritmia*
-(<https://en.wikipedia.org/wiki/Sutherland-Hodgman_algorithm>). Paloittelussa muokkaamme monikulmion kärkipistejoukkoa vertaamalla sitä leikkaavan monikulmion sivuihin sivu kerrallaan. Leikkauksen lähtöjoukkona toimii aina edellisessä vaiheessa saatu kärkipistejoukko. Kukin sivu leikkaa osan kärkipisteistä pois sekä muodostaa uusia kärkipisteitä paloiteltavan ja leikkaavan monikulmion sivujen leikkauspisteisiin.  Paloittelualgoritmia varten tarvitsemme tiedon siitä, kummalla puolella annettua sivua tietty kärkipiste sijaitsee.
+(<https://en.wikipedia.org/wiki/Sutherland-Hodgman_algorithm>). 
+
+Paloittelussa muokkaamme monikulmion kärkipistejoukkoa vertaamalla sitä leikkaavan monikulmion sivuihin sivu kerrallaan. Leikkauksen lähtöjoukkona toimii aina edellisessä vaiheessa saatu kärkipistejoukko. Kukin sivu leikkaa osan kärkipisteistä pois sekä muodostaa uusia kärkipisteitä paloiteltavan ja leikkaavan monikulmion sivujen leikkauspisteisiin.  Paloittelualgoritmia varten tarvitsemme tiedon siitä, kummalla puolella annettua sivua tietty kärkipiste sijaitsee.
 
 Saamme selville kummalla puolella sivua piste sijaitsee muodostamalla kolmion, jonka kärkipisteet ovat sivun alkupiste, sivun loppupiste ja vertailtava piste. Kun piste sijaitsee sivun oikealla puolella, muodostuneen kolmion kiertosuunta on myötäpäivään, jolloin sen ala determinanttisäännön mukaan on negatiivinen. Kun piste sijaitsee sivun vasemmalla puolella, kiertosuunta on vastapäivään ja muodostuneen kolmion ala positiivinen.
 
@@ -452,7 +454,7 @@ det [[a,b],[c,d]] = a * d - b * c
 
 ## Rajauksen ensimmäinen vaihe
 
-Aloitamme kuvion paloittelun neliöstä $(s_1 s_2 s_3 s_4)$ alueen vasemmassa alanurkassa (kuva \ref{fig:fecunditatis-2}).
+Aloitamme kuvion paloittelun neliöstä $(\mathbf s_1 \mathbf s_2 \mathbf s_3 \mathbf s_4)$ alueen vasemmassa alanurkassa (kuva \ref{fig:fecunditatis-2}).
 
 ```haskell
 parte = 0
@@ -499,7 +501,7 @@ nextGen fc s1 s2 = concat [new i1 i2 p1 p2
       fromJust (intersection s1 s2 p1 p2)]
 ```
 
-Ensimmäinen rajaava suora on neliön alareuna $s_1 s_2$. Monikulmion pistejoukon `fc0` kaikki kärkipisteet kuuluvat alueen sisäpuolelle.
+Ensimmäinen rajaava suora on neliön alareuna $\mathbf s_1 \mathbf s_2$. Monikulmion pistejoukon `fc0` kaikki kärkipisteet kuuluvat alueen sisäpuolelle.
 
 ```haskell
 > io1 = inOut1 s1 s2 fc0
@@ -507,7 +509,7 @@ Ensimmäinen rajaava suora on neliön alareuna $s_1 s_2$. Monikulmion pistejouko
 [In,In,In,In,In,In,In,In,In]
 ```
 
-Pistejoukon kaikki pisteet kuuluvat luokkaan `(In,In)`, joten alareuna säilyttää kaikki monikulmion pisteet $(p_1 \cdots p_9)$.
+Pistejoukon kaikki pisteet kuuluvat luokkaan `(In,In)`, joten alareuna säilyttää kaikki monikulmion pisteet $(\mathbf p_1 \cdots \mathbf p_9)$.
 
 ```haskell
 > around io1
@@ -523,7 +525,7 @@ fc1 = nextGen fc0 s1 s2
 
 ## Rajauksen toinen vaihe
 
-Toinen rajaava suora on neliön oikea reuna $s_2 s_3$. Nyt rajaavan suoran vasemmalle puolelle eli alueen sisäpuolelle jäävät monikulmion pisteet $(p_1\, p_2\, p_9)$. Alueen ulkopuolelle jäävät monikulmion pisteet $(p_3 \cdots p_8)$.
+Toinen rajaava suora on neliön oikea reuna $\mathbf s_2 \mathbf s_3$. Nyt rajaavan suoran vasemmalle puolelle eli alueen sisäpuolelle jäävät monikulmion pisteet $(\mathbf p_1\, \mathbf p_2\, \mathbf p_9)$. Alueen ulkopuolelle jäävät monikulmion pisteet $(\mathbf p_3 \cdots \mathbf p_8)$.
 
 ```haskell
 > io2 = inOut1 s2 s3 fc1
@@ -531,7 +533,7 @@ Toinen rajaava suora on neliön oikea reuna $s_2 s_3$. Nyt rajaavan suoran vasem
 [In,In,Out,Out,Out,Out,Out,Out,In]
 ```
 
-Monikulmion sivut suhteessa rajaavan neliön oikeaan reunaan $s_2 s_3$ kuuluvat nyt seuraaviin luokkiin: 
+Monikulmion sivut suhteessa rajaavan neliön oikeaan reunaan $\mathbf s_2 \mathbf s_3$ kuuluvat nyt seuraaviin luokkiin: 
 
 ```haskell
 > around io2
@@ -539,19 +541,19 @@ Monikulmion sivut suhteessa rajaavan neliön oikeaan reunaan $s_2 s_3$ kuuluvat 
   (Out,Out),(Out,Out),(Out,In),(In,In) ]
 ```
 
-Luokat `(In,Out)` ja `(Out,In)` tuottavat uuden kärkipisteen $i_1$ suorien $s_2 s_3$ ja $p_2\, p_3$ leikkauspisteeseen sekä pisteen $i_4$ suorien $s_2 s_3$ ja $p_8\, p_9$ leikkauspisteeseen.
+Luokat `(In,Out)` ja `(Out,In)` tuottavat uuden kärkipisteen $\mathbf i_1$ suorien $\mathbf s_2 \mathbf s_3$ ja $\mathbf p_2\, \mathbf p_3$ leikkauspisteeseen sekä pisteen $\mathbf i_4$ suorien $\mathbf s_2 \mathbf s_3$ ja $\mathbf p_8\, \mathbf p_9$ leikkauspisteeseen.
 
 ```haskell
 i1 = intersection s2 s3 p2 p3
 i2 = intersection s2 s3 p8 p9
 ```
 
-Kuvan \ref{fig:fecunditatis-4} merkinnöillä suoran $s_2 s_3$ suhteen leikattu toinen monikulmio koostuu kärkipisteistä $(p_1\, p_2\, i_1\, i_2\, p_9)$.
+Kuvan \ref{fig:fecunditatis-4} merkinnöillä suoran $\mathbf s_2 \mathbf s_3$ suhteen leikattu toinen monikulmio koostuu kärkipisteistä $(\mathbf p_1\, \mathbf p_2\, \mathbf i_1\, \mathbf i_2\, \mathbf p_9)$.
 
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics{fecunditatis-4.pdf}
-\caption{Toinen leikkaus antaa monikulmion kärkipisteet $(p_1\, p_2\, i_1\, i_2\, p_9)$.}
+\caption{Toinen leikkaus antaa monikulmion kärkipisteet $(\mathbf p_1\, \mathbf p_2\, \mathbf i_1\, \mathbf i_2\, \mathbf p_9)$.}
 \label{fig:fecunditatis-4}
 \end{center}
 \end{figure}
@@ -564,7 +566,7 @@ fc2 = nextGen fc1 s2 s3
 
 ## Rajauksen kolmas vaihe
 
-Kolmas leikkaus tapahtuu suoran $s_3 s_4$ suhteen edellä saadulle kärkipistejoukolle $(i_1\, p_2\, p_3\, p_4\, i_2)$. 
+Kolmas leikkaus tapahtuu suoran $\mathbf s_3 \mathbf s_4$ suhteen edellä saadulle kärkipistejoukolle $(\mathbf i_1\, \mathbf p_2\, \mathbf p_3\, \mathbf p_4\, \mathbf i_2)$. 
 
 ```haskell
 fc3 = nextGen fc2 s3 s4
@@ -575,31 +577,31 @@ Saamme pisteväleille uudet luokat
 ```
 > io3 = inOut1 s3 s4 fc2
 > io3
-[Out,In,In,Out,Out]
+[Out,In,Out,Out,Out]
 > around io3
-[(Out,In),(In,In),(In,Out),(Out,Out),(Out,Out)]
+[(Out,In),(In,Out),(Out,Out),(Out,Out),(Out,Out)]
 ```
 
-Tässä luokat `(Out,In)` ja `(In,Out)` tuottavat uuden kärkipisteen $i_3$ suorien $s_3 s_4$ ja $p_1\, p_2$ leikkauspisteeseen sekä pisteen $i_4$ suorien $s_3 s_4$ ja $i_1\, i_2$  leikkauspisteeseen.
+Tässä luokat `(Out,In)` ja `(In,Out)` tuottavat uuden kärkipisteen $\mathbf i_3$ suorien $\mathbf s_3 \mathbf s_4$ ja $\mathbf p_1\, \mathbf p_2$ leikkauspisteeseen sekä pisteen $\mathbf i_4$ suorien $\mathbf s_3 \mathbf s_4$ ja $\mathbf i_1\, \mathbf i_2$  leikkauspisteeseen.
 
 ```haskell
 i3 = intersection s3 s4 p1 p2
 i4 = intersection s3 s4 i1 i2
 ```
 
-Leikattu monikulmio koostuu nyt kärkipisteistä $(i_3\, p_2\, i_1\, i_4)$ (kuva \ref{fig:fecunditatis-6}).
+Leikattu monikulmio koostuu nyt kärkipisteistä $(\mathbf i_3\, \mathbf p_2\, \mathbf i_1\, \mathbf i_4)$ (kuva \ref{fig:fecunditatis-6}).
 
 \begin{figure}[H]
 \begin{center}
 \includegraphics{fecunditatis-6.pdf}
-\caption{Kolmas leikkaus antaa monikulmion kärkipisteet $(i_3\, p_2\, i_1\, i_4)$.}
+\caption{Kolmas leikkaus antaa monikulmion kärkipisteet $(\mathbf i_3\, \mathbf p_2\, \mathbf i_1\, \mathbf i_4)$.}
 \label{fig:fecunditatis-6}
 \end{center}
 \end{figure}
 
 ## Rajauksen neljäs vaihe
 
-Viimeinen leikkaus tapahtuu suoran $s_4 s_1$ suhteen. Leikkaus säilyttää kärkipistejoukon $(i_3\, p_2\, i_1\, i_4)$ sellaisenaan (kuva \ref{fig:fecunditatis-7}).
+Viimeinen leikkaus tapahtuu suoran $\mathbf s_4 \mathbf s_1$ suhteen. Leikkaus säilyttää kärkipistejoukon $(\mathbf i_3\, \mathbf p_2\, \mathbf i_1\, \mathbf i_4)$ sellaisenaan (kuva \ref{fig:fecunditatis-7}).
 
 ```haskell
 fc3 = nextGen fc2 s3 s4
@@ -608,7 +610,7 @@ fc3 = nextGen fc2 s3 s4
 \begin{figure}[H]
 \begin{center}
 \includegraphics{fecunditatis-7.pdf}
-\caption{Ensimmäisen alueen valmis kärkipistejoukko $(i_3\, p_2\, i_1\, i_4)$.}
+\caption{Ensimmäisen alueen valmis kärkipistejoukko $(\mathbf i_3\, \mathbf p_2\, \mathbf i_1\, \mathbf i_4)$.}
 \label{fig:fecunditatis-7}
 \end{center}
 \end{figure}
@@ -848,7 +850,7 @@ Lataamme verkosta tiedoston `gshhg-bin-2.3.7.zip` ja puramme sen kansioon `coast
 gmt gshhg gshhs_c.b  > gshhs_c.txt
 ```
 
-Tiedosto `gshhs_c.txt` sisältää nyt monikulmion kärkipisteiden koordinaatit longitudi-latitude-pareina tabulaattorimerkillä `'\t'` erotettuina seuraavasti:
+Tiedosto `gshhs_c.txt` sisältää nyt monikulmion kärkipisteiden koordinaatit longitudi-latitudi-pareina tabulaattorimerkillä `'\t'` erotettuina seuraavasti:
 
 ```
 180	68.993778
